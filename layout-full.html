@@ -1,0 +1,14 @@
+				<li loop="$GNB->list => $key1, $val1"  cond="$val1['href']">
+					<a cond="$val1['href']" href="{$val1['href']}" class="active1"|cond="$val1['selected']"  target="_blank"|cond="$val1['open_window'] == 'Y'"><i cond="$val1['desc']"  class='{$val1['desc']}'></i> {$val1['link']|noescape}</a>
+					<a cond="$val1['list']" class="morelist"><i class='bx bx-list-plus'></i></a>
+					<ul cond="$val1['list']" class="depth2">
+						<li loop="$val1['list'] => $key2, $val2" class="more"|cond="$val2['list']">
+							<a href="{$val2['href']}" class="active2"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">{$val2['link']|noescape}</a>
+							<ul cond="$val2['list']" class="depth3">
+								<li loop="$val2['list'] => $key3, $val3">
+									<a href="{$val3['href']}" class="active3"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">{$val3['link']|noescape}</a>										
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
