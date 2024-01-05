@@ -5,14 +5,11 @@
 /* GNB > BOX */
 	--oday_gnbBgColor: rgba(255,255,255,1);
 	--oday_gnbBgColorSub: rgba(0,0,0,.03);
-
 	--oday_gnbFontSize:12px;
 	--oday_gnbHeight:35px;
 	--oday_gnbSubHeight:30px ;
 	--oday_gnbHeightSmall:calc(--oday_gnbHeight / 2);
-
 	--oday_gnbMoHeight:60px;
-	
 	--oday_gnbBorder:  1px solid rgba(100,100,100, 0.15);
 	--oday_gnbSize:1px;
 }
