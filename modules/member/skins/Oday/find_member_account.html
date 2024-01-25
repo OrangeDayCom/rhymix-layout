@@ -1,0 +1,47 @@
+<include target="./common_header.html" />
+<load target="filter/find_member_account.xml" />
+<div class="bd_con_out">
+	<div>
+		<h1>{$lang->cmd_find_member_account_with_email}</h1>
+		<p>{$lang->about_find_member_account}</p>
+		<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skin/default/find_member_account/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+			<p>{$XE_VALIDATOR_MESSAGE}</p>
+		</div>
+		<form action="{getUrl('', 'act', 'procMemberFindAccount')}" method="post" ruleset="findAccount">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="act" value="procMemberFindAccount" />
+			<input type="hidden" name="document_srl" value="{$document_srl}" />
+			<input type="hidden" name="page" value="{$page}" />
+			<input type="hidden" name="xe_validator_id" value="modules/member/skin/default/find_member_account/1" />
+
+				<input type="email" name="email_address" required placeholder="{$lang->email_address}" title="{$lang->email_address}" /><br />
+				<block cond="isset($captcha) && $captcha && $captcha->isTargetAction('recovery')">
+					{$captcha}<br />
+				</block>
+				<input type="submit" class="xbtn" value="{$lang->cmd_find_member_account}" />
+
+		</form>
+	</div>
+
+	<div>
+		<h1>{$lang->cmd_resend_auth_mail}</h1>
+		<p>{$lang->about_resend_auth_mail}</p>
+		<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skin/default/find_member_account/3'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+			<p>{$XE_VALIDATOR_MESSAGE}</p>
+		</div>
+		<form ruleset="resendAuthMail" action="{getUrl('', 'act', 'procMemberResendAuthMail')}" method="post">
+			<input type="hidden" name="module" value="member" />
+			<input type="hidden" name="act" value="procMemberResendAuthMail" />
+			<input type="hidden" name="success_return_url" value="{getUrl('act', $act)}" />
+			<input type="hidden" name="xe_validator_id" value="modules/member/skin/default/find_member_account/3" />
+
+				<input type="email" id="email_address" name="email_address" value="" required placeholder="{$lang->email_address}" title="{$lang->email_address}" /><br />
+				<block cond="isset($captcha) && $captcha && $captcha->isTargetAction('recovery')">
+					{$captcha}<br />
+				</block>
+				<input type="submit" value="{$lang->cmd_resend_auth_mail}" class="xbtn" />
+
+		</form>
+	</div>
+</div>
+<include target="./common_footer.html" />

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">Oday 스킨</title>
+
+    <description xml:lang="ko">
+        Oday 스킨
+    </description>
+
+    <version>1.7</version>
+    <date>2013-11-27</date>
+
+    <author  link="https://www.orangeday.com/">
+        <name xml:lang="ko">Oday</name>
+    </author>
+
+    <colorset>
+        <color name="white">
+            <title xml:lang="ko">기본</title>
+        </color>
+    </colorset>
+</skin>
