@@ -1,0 +1,56 @@
+<load target="css/home.css" />
+<load target="asset/parallax.js" type="body" />
+<article>
+	<ul class="sectionIdx intro" data-parallax="scroll" data-position="center" data-bleed="0" data-speed="0.5" data-image-src="{$oi->site_bg}" data-natural-width="1920" >
+		<li>
+			<h1 class="<!--@if($oi->site_title_lang == 'kor')--> korean<!--@end-->"><span>
+				<!--@if($oi->site_title1)-->
+				{$oi->site_title1}
+				<!--@end-->
+				<!--@if($oi->site_title2)-->
+				{$oi->site_title2}
+				<!--@end-->
+				<!--@if(!$oi->site_title1 && !$oi->site_title2)-->
+				{$oi->site_title_temp}
+				<!--@end-->				
+			</span></h1>
+			<p>
+				{$oi->site_dec}
+			</p>
+			<img class="zbxe_widget_output" widget="counter_status" skin="OrangeDay_counter_status" />
+		</li>
+	</ul>
+{@
+	if(!$oi->site_new_con_num) $oi->site_new_con_num = 20;
+	if(!$oi->site_new_com_num) $oi->site_new_com_num = 20;	
+	if(!$oi->site_new_gall_num) $oi->site_new_gall_num = 10;	
+}
+	<ul class="sectionIdx newContent">
+		<li>
+			<h2><i class='bx bxs-message-square-dots'></i> New Content</h2>
+		</li>
+		<li>
+			<img class="zbxe_widget_output" widget="content" skin="OrangeDay_content" colorset="white" content_type="document" list_type="image_title" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="Y" show_comment_count="N" show_trackback_count="N" show_category="N" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="crop" thumbnail_width="36" thumbnail_height="36" 
+			module_srls="{$oi->site_new_con}"
+			 list_count="{$oi->site_new_con_num}" 
+			/>
+				
+		</li>
+		<li class="comment">
+			<h2>New Comment</h2>
+		</li>
+		<li>
+			<img class="zbxe_widget_output" widget="content" skin="OrangeDay_content" content_type="comment" list_type="image_title" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="Y" show_comment_count="Y" show_trackback_count="N" show_category="Y" show_icon="N" order_target="update_order" order_type="desc"  duration_new="24" thumbnail_type="crop" thumbnail_width="30" thumbnail_height="30"  
+			 module_srls="{$oi->site_new_com}"
+			  list_count="{$oi->site_new_com_num}"
+			/>
+		</li>
+	</ul>
+	<div class="slidebanner">
+		<img class="zbxe_widget_output" widget="content" skin="OrangeDay_content" colorset="white" content_type="document" list_type="gallery" tab_type="none" markup_type="list" page_count="1" subject_cut_size="30" option_view="title,regdate,nickname,thumbnail,content" show_browser_title="Y" show_comment_count="N" show_trackback_count="N" show_category="Y" show_icon="N" order_target="update_order" order_type="desc"  duration_new="24" thumbnail_type="crop" thumbnail_width="300" thumbnail_height="500" 
+		 module_srls="{$oi->site_new_gall}"
+		  list_count="{$oi->site_new_gall_num}"
+		/>
+	</div>
+</article>
+

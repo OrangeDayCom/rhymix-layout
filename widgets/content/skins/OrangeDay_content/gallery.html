@@ -1,0 +1,66 @@
+<load target="./js/owl.carousel.min.js" />
+<load target="./css/owl.theme.default.min.css" />
+{@
+	$sHeight = $widget_info->thumbnail_height * .7;
+}
+<ul class="contentsOne owl-carousel">
+<!--@foreach($widget_info->content_items as $key => $item)-->
+    <li style="background-image:url('{$item->getThumbnail()}'); height:{$sHeight}px">
+		<a href="{$item->getLink()}" class="thumb" target="_blank"|cond="$widget_info->new_window">
+			<!--@if($item->getThumbnail())-->
+			<!--@else-->
+			    <i class='bx bx-camera-off'></i>
+			<!--@end-->
+			
+			<div class="newconbox">
+				<!--@if($widget_info->show_browser_title=='Y' && $item->getBrowserTitle())-->
+				<span class="btitle">{$item->getBrowserTitle()}</span>
+				<!--@end-->
+				<span class="title">{$item->getTitle($widget_info->subject_cut_size)|noescape}</span>
+				<!--@if($widget_info->option_view_arr[$j+1]=='regdate')-->
+				<span class="date">{$item->getRegdate("Y. m. d")}</span>
+				<!--@end-->
+			</div>
+		</a>
+    </li>
+<!--@end-->
+</ul>
+<script>
+$(document).ready(function(){
+  $(".contentsOne").owlCarousel({
+	responsive : {
+	    0 : {
+		items:2
+	    },
+	    600 : {
+		  items:3
+	    },
+	    900 : {
+		  items:4
+	    },
+	     1200 : {
+		  items:5
+	   },
+	     1500 : {
+		  items:6
+	    },
+	     1800 : {
+		  items:7
+	    },
+	     2100 : {
+		  items:8
+	    },
+	     2400 : {
+		  items:9
+	    }
+	},
+	nav:true,
+	autoplay:true,
+	center:true,
+	autoplayTimeout:5000,
+	margin:0,
+	loop:true,
+	autoplayHoverPause:true
+  });
+});
+</script>

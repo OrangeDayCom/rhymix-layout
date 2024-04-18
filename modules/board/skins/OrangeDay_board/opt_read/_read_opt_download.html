@@ -1,0 +1,3 @@
+<div cond="$oDocument->hasUploadedFiles()" class="downlist">
+	<a loop="$oDocument->getUploadedFiles()=>$key,$file" href="{getUrl('')}{$file->download_url}">{$file->source_filename} <span class="fileSize">{FileHandler::filesize($file->file_size)} <i class='bx bxs-downvote'></i>{number_format($file->download_count)}</span></a>
+</div>

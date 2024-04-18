@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">OrangeDay 블로그 레이아웃</title>
+    <description xml:lang="ko">블로그 형태의 커뮤니티용 레이아웃</description>
+    <version>Beta 1.0</version>
+    <date>2024.</date>
+    <author email_address="yabssabi@gmail.com" link="https://www.orangeday.com">
+        <name xml:lang="ko">Yabi 夜飛</name>
+    </author>
+    <menus>
+        <menu name="GNB" maxdepth="2" default="true">
+            <title xml:lang="ko">주 메뉴</title>
+        </menu>
+		 <!-- menu name="BNB" maxdepth="1" default="true">
+            <title xml:lang="ko">중단 배너용 메뉴</title>
+        </menu -->
+		<menu name="LNB" maxdepth="1" default="true">
+            <title xml:lang="ko">하단 서브 메뉴</title>
+        </menu>
+    </menus>
+	<extra_vars>
+		<group>
+			<title xml:lang="ko">레이아웃</title>
+			<var name="gnb_width" type="text" default="180">
+				<title xml:lang="ko">메뉴-가로폭</title>
+				<description xml:lang="ko">메뉴-가로폭를 정할수 있습니다.(디폴트 : 180px)</description>
+			</var>
+			<var name="site_sign_meta" type="select">
+				<title xml:lang="ko">서명 사용</title>
+				<description xml:lang="ko">로그인 사용자 보이기</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>
+
+		</group>
+		<group>
+			<title xml:lang="ko">헤더</title>
+			<var name="site_birthday" type="text">
+				<title xml:lang="ko">사이트 시작일</title>
+			</var>
+			
+			<var name="lgo_view_img" type="radio">
+				<title xml:lang="ko">로고이미지 보기</title>
+				<options value="yes">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="lgo_view_text" type="radio">
+				<title xml:lang="ko">로고텍스트 보기</title>
+				<options value="yes">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>			
+
+			<var name="logo_img" type="image">
+				<title xml:lang="ko">로고 이미지</title>
+				<description xml:lang="ko">로고 이미지가 사이트명 보다 우선으로 적용됩니다. (배경이 없는 png, svg 사용 추천) </description>
+			</var>
+			<var name="logo_img_width" type="text">
+				<title xml:lang="ko">로고 이미지 크기</title>
+				<description xml:lang="ko">메뉴 폭 대비 로고 크기 비율(기본 : 80%)</description>
+			</var>
+			<var name="logo_img_round" type="text">
+				<title xml:lang="ko">이미지 라운드</title>
+				<description xml:lang="ko">로고 이미지에 라운드를 줍니다. 기본 0px</description>
+			</var>	
+			
+			
+			<var name="site_title_lang" type="radio">
+				<title xml:lang="ko">사이트명 한/영</title>
+				<description xml:lang="ko">한,영 혼합일 경우 국문으로 체크해 주세요.</description>
+				<options value="eng">
+					<title xml:lang="ko">영문</title>
+				</options>
+				<options value="kor">
+					<title xml:lang="ko">국문</title>
+				</options>
+			</var>			
+			<var name="site_title1" type="text">
+				<title xml:lang="ko">사이트명 상</title>
+			</var>
+			<var name="site_title2" type="text">
+				<title xml:lang="ko">사이트명 하</title>
+				<description xml:lang="ko">사이트명이 길면 상하로 나누어서 입력할 수 있습니다.</description>
+			</var>
+	
+			
+
+		</group>
+		<group>
+			<title xml:lang="ko">푸터</title>
+			<var name="site_address" type="text">
+				<title xml:lang="ko">주소</title>
+			</var>
+			<var name="site_copyright" type="text">
+				<title xml:lang="ko">카피라이트 주체</title>
+				<description xml:lang="ko">위치 : (C) 'OOO' all rights reserved.</description>
+			</var>
+		</group>		
+		<group>
+			<title xml:lang="ko">메인 설정 (새글)</title>
+			
+			<var name="use_index" type="select">
+				<title xml:lang="ko">메인사용</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">메인 사용 여부 설정</description>
+			</var>
+			<var name="site_bg" type="image">
+				<title xml:lang="ko">상단 배경</title>
+				<description xml:lang="ko">상단 박스 배경 이미지</description>
+			</var>
+			<var name="site_dec" type="textarea">
+				<title xml:lang="ko">사이트 설명</title>
+				<description xml:lang="ko">사이트 간단 설명</description>
+			</var>
+	
+			<var name="site_new_con" type="text">
+				<title xml:lang="ko">새글</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능 </description>
+			</var>
+			<var name="site_new_con_num" type="text">
+				<title xml:lang="ko">새글 갯수</title>
+				<description xml:lang="ko">기본 20개</description>
+			</var>
+			<var name="site_new_com" type="text">
+				<title xml:lang="ko">새 댓글</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능 </description>
+			</var>
+			<var name="site_new_com_num" type="text">
+				<title xml:lang="ko">새 댓글 갯수</title>
+				<description xml:lang="ko">기본 20개</description>
+			</var>
+			<var name="site_new_gall" type="text">
+				<title xml:lang="ko">새 이미지 글</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능 </description>
+			</var>
+			<var name="site_new_gall_num" type="text">
+				<title xml:lang="ko">새 이미지 글 갯수</title>
+				<description xml:lang="ko">기본 10개</description>
+			</var>
+		</group>
+
+	</extra_vars>
+</layout>

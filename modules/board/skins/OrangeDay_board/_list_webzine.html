@@ -1,0 +1,87 @@
+{@
+	if($layout_info->gnb_width) : 
+		$mi->layout_gap  = $layout_info->gnb_width;
+	elseif(!$layout_info->gnb_width) :
+		if(!$mi->layout_gap) $mi->layout_gap = 0;
+	endif;
+	if(!$mi->gall_cell_gap) $mi->gall_cell_gap = 2;
+}
+<!-- script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script -->
+<load target="asset/masonry.pkgd.min.js" />
+<div class='stickyTopBox'>
+	<include target="opt_list/_list__opt_category.html" />
+	<include target="opt_list/_list__opt_search.html" />
+</div>
+<include target="opt_list/_list__opt_notice.html" />
+
+<div class="bd-all">
+<div id="list-webzine">
+	<div class="boxsize"></div>
+	<div loop="$document_list =>$no,$document" class="box boxsize<!--@if(isset($document_srl) && $document_srl == $document->document_srl)--> readActive<!--@end-->">
+		<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon
+			<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)-->
+			<!--@if($val == 'secret')-->S<!--@end-->
+			<!--@if($val == 'new')--> Fbox N<!--@end-->
+			<!--@if($val == 'update')--> Fbox U<!--@end-->
+			<!--@if($val == 'file')-->F<!--@end-->
+			<!--@end-->
+		"><block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key"><block cond="$key == 'new'">N</block><block cond="$key == 'update'">U</block></block></span>
+		<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+			<span class="newicon Fbox secret"><i class='bx bxs-lock'></i></span>
+		<!--@end-->
+		<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">
+			<div class="wrapimg" style="
+			<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+				background-image:url( '/modules/board/skins/OdayDefault/img/secret.png');
+			<!--@else-->
+				background-image:url( '<!--@if($document->thumbnailExists())-->{$document->getThumbnail($mi->thumbnail_width, $mi->thumbnail_height, $mi->thumbnail_type)}<!--@else-->/modules/board/skins/OdayDefault/img/noimg.png<!--@end-->');
+			<!--@end-->
+			">
+			</div>
+			<div class="boxT">
+				<div class="category" cond="$category_list[$document->get('category_srl')]">{$category_list[$document->get('category_srl')]->title}</div> 
+				<div class="title">{strip_tags($document->getTitle())}</div>
+				<div class="summary" cond="$document->getSummary()">{$document->getSummary(100)}</div>
+				<div class="opt">
+					<span class="author">{$document->getNickName()}</span>
+					<span cond="$document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>&nbsp;{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+					<span cond="$document->getCommentCount()" class="count"><i class='bx bxs-message-rounded-dots'></i>&nbsp;{$document->getCommentCount()}</span>
+				</div>
+				<div class="opt">
+					<span class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+					<input cond="$grant->manager" type="checkbox" name="cart" value="{$document->document_srl}" title="Check this" onclick="doAddDocumentCart(this)" class="listchk" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+				</div>
+			</div>	
+		</a>	
+	</div>
+</div>
+</div>
+<include target="opt_list/_list__opt_pagenavi.html" />
+<include target="opt_list/_list__opt_btnbox.html" />
+
+<style>
+:root {
+	--cellWidth : calc(var(--oday_maxWidth) - var(--oday_scrollWidth)); 
+	--cellWidth2 : calc(100vw - var(--oday_scrollWidth));
+	--cellGap : calc({$mi->gall_cell_gap}px * .75);
+}
+#list-webzine {margin: 0 auto; width:var(--oday_maxWidth); margin-top: {$mi->gall_cell_gap}px; }
+#list-webzine .box { margin-bottom:{$mi->gall_cell_gap}px; }
+.boxsize{ width: calc((var(--oday_maxWidth) / 4) - var(--cellGap)); }
+@media screen and (max-width:768px){
+	.boxsize {  width: calc(var(--cellWidth2) / 2); }
+}
+</style>
+<script>
+$(function(){
+	$('#list-webzine').masonry({
+		// options
+		itemSelector: '.box',
+		columnWidth: '.boxsize',
+		gutter: {$mi->gall_cell_gap},
+		fitWidth: true,
+		visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+		hiddenStyle: { transform: 'translateY(50px)', opacity: 0 }
+	});
+});
+</script>

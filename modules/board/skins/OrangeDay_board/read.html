@@ -1,0 +1,107 @@
+{@ if($_SERVER['HTTP_SEC_FETCH_DEST']!="document") Context::set('layout','none');}
+{@
+	if($layout_info->gnb_width) : 
+		$mi->layout_gap  = $layout_info->gnb_width;
+	elseif(!$layout_info->gnb_width) :
+		if(!$mi->layout_gap) $mi->layout_gap = 0;
+	endif;
+}
+<block loop="$document_list=>$no,$document" cond="$document_srl==$document->document_srl">
+	<block cond="!$search_keyword">
+		<block cond="(!$document_list[$no+1]->document_srl && $page!=1) || (!$document_list[$no-1]->document_srl && $page!=$total_page)">
+			{@
+				$oModuleModel = &getModel('module');
+				$module_srl_temp = $oModuleModel->getModuleSrlByMid($mid);
+				if(is_array($module_srl_temp)) $module_srl = $module_srl_temp[0];
+				else $module_srl = $module_srl_temp;
+				$args = new stdClass();
+				$args->module_srl = $module_srl;
+				$args->category_srl2 = $category;
+				$args->list_count = $module_info->list_count;
+				$args->sort_index = $module_info->order_target;
+				if($sort_index) $args->sort_index = $sort_index;
+				$args->order_type = $module_info->order_type;
+				if($sort_index) $args->order_type = $order_type;
+				if($module_info->except_notice=='Y') $prevnext_except_notice=1;
+			}
+			<!--@if(!$document_list[$no+1]->document_srl && $page!=1)-->
+				{@
+					$is_prevnext='P';
+					$args->page = $page-1;
+					$prevnext_list = executeQueryArray('document.getDocumentList',$args);
+					$prevnext_data = array_reverse($prevnext_list->data);
+				}
+			<!--@else if(!$document_list[$no-1]->document_srl && $page!=$total_page)-->
+				{@
+					$is_prevnext='N';
+					$args->page = $page+1;
+					$prevnext_list = executeQueryArray('document.getDocumentList',$args);
+					$prevnext_data = $prevnext_list->data;
+				}
+			<!--@end-->
+			<!--@foreach($prevnext_data as $no2 => $document2)-->
+				<block cond="!$prevnext_except_notice || ($prevnext_except_notice && $document2->is_notice!='Y')">
+					{@
+						$prevnext_doc = $document2->document_srl;
+						$prevnext_title = $document2->title;
+						$prevnext_date = $document2->regdate;
+						$prevnext_nick = $document2->nick_name;
+						break;
+					}
+				</block>
+			<!--@end-->
+		</block>
+	</block>
+{@ break;}
+</block>
+<!--@if($mi->default_style=='gallery')-->
+<div class="widthSideNavi">
+<include target="_read_gallery.html" />
+</div>
+<!--@elseif($mi->default_style=='guest')-->
+<div class="widthSideNavi">
+<include target="_read_guest.html" />
+</div>
+<!--@elseif($mi->default_style=='blog')-->
+<include target="_read_blog.html" />
+<!--@else-->
+<div class="widthSideNavi">
+<include target="_read_normal.html" />
+</div>
+<!--@end-->
+
+<div class="loading-page" title="The orange is ripenning...."><i class='bx bx-loader-circle bx-spin bx-flip-horizontal' ></i></div>
+<div cond="$_SERVER['HTTP_SEC_FETCH_DEST']!='document'" class="iframeBg4Click"></div>
+<style>
+	.pagelocation { display:none}
+	.loading-page { width:100vw; height:100%; position:fixed; top:0; left:0; display:flex; font-size:8em; color:var(--oday_fontColor); align-items: center; justify-content: center;}
+	.widthSideNavi {
+		transition: 0.3s ease;
+		visibility: hidden;
+		opacity:0;
+		transform: translateY(10px) ;
+	}
+	.loading-done {
+		visibility: visible;
+		opacity:1;
+		transform: translateY(0) ;
+	}
+	<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']=='document')-->
+		<!--@if($mi->default_style=='blog')-->
+			.loading-page { display:none; }
+		<!--@else-->
+			.loading-page { padding-left:{$mi->layout_gap}px;}
+			@media screen and (max-width:768px){
+				.loading-page { padding-left:0; font-size:3em; }
+			}	
+		<!--@end-->
+	<!--@else-->
+		body {background-color:transparent; overflow-y:scroll; }
+	<!--@end-->
+</style>
+<script>
+window.onload = function(){
+	$(".widthSideNavi").addClass("loading-done");
+	$(".loading-page").hide();
+}
+</script>

@@ -1,0 +1,517 @@
+{@
+	if(!$mi->blog_top_gap) $mi->blog_top_gap = 0;
+	if(!$mi->blog_layout) $mi->blog_layout = "right";
+	if(!$mi->blog_menu_width) $mi->blog_menu_width = 200;
+}
+<ul class="blogHeader">
+	<li>
+		<div class="page-t"><a href="{getUrl('document_srl','')}">{$module_info->browser_title}</a></div>
+		<a class="open_catemenu"><i class='bx bx-menu'></i></a>		
+	</li>		
+	<li class=" ">
+		<a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn middle"><i class='bx bx-edit'></i> 수정</a>
+		<a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn middle"><i class='bx bx-trash'></i> 삭제</a>	
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a cond="$grant->write_document" href="{getUrl('act','dispBoardWrite','document_srl','')}" class="obtn primary middle"><i class='bx bxs-pencil'></i> 글쓰기</a>				
+		<a cond="$grant->manager" href="{getUrl('act','dispBoardAdminBoardInfo')}" class="obtn middle"><i class='bx bx-slider'></i> 설정</a>&nbsp;&nbsp;
+		<form  action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+			<input type="hidden" name="search_target" value="title_content" />
+			<input type="hidden" name="vid" value="{$vid}" />
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="category" value="{$category}" />
+			<input type="hidden" name="listStyle" value="{$listStyle}" />
+			<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class=" searchBox" placeholder="Search... " />
+			<button type="submit" class=" middle" onclick="xGetElementById('board_search').submit();return false;"><span class="material-symbols-sharp">search</span></button>
+			<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><span class="material-symbols-sharp">restart_alt</span></a>
+			<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn">{$lang->cmd_search_next}</a>
+		</form>
+	</li>
+</ul>
+<ul id="list-blog">	
+	<li class="dlist-menu v-wrap">
+		<div class="nav v-stretch">
+			<ul class="v-start">
+				<li class="vm">
+					<a cond="$grant->write_document" href="{getUrl('act','dispBoardWrite','document_srl','')}" class="obtn primary"><i class='bx bxs-pencil'></i></a>				
+					<a cond="$grant->manager" href="{getUrl('act','dispBoardAdminBoardInfo')}" class="obtn"><i class='bx bx-slider'></i></a>&nbsp;&nbsp;
+					<form  action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+						<input type="hidden" name="search_target" value="title_content" />
+						<input type="hidden" name="vid" value="{$vid}" />
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="category" value="{$category}" />
+						<input type="hidden" name="listStyle" value="{$listStyle}" />
+						<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="" placeholder="Search... " />
+						<button type="submit" class="" onclick="xGetElementById('board_search').submit();return false;"><span class="material-symbols-sharp">search</span></button>
+						<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><span class="material-symbols-sharp">restart_alt</span></a>
+						<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn">{$lang->cmd_search_next}</a>
+					</form>
+				</li>			
+				<li class="dlist_menu_opt"><span>ALL OPEN - Total : {$total_count}</span><input type="checkbox" class="checkonoff" id="catemenuopen" /><label for="catemenuopen"></label></li>
+			</ul>
+			<div class="navlist v-scroll">
+				{@ 
+					$cate_list = array(); $current_key = null; 
+				}
+				<!--@foreach($category_list as $key=>$val)-->
+					<!--@if(!$val->depth)-->
+						{@
+							$cate_list[$key] = $val;
+							$cate_list[$key]->children = array();
+							$current_key = $key;
+						}
+					<!--@elseif($current_key)-->
+						{@ $cate_list[$current_key]->children[] = $val }
+					<!--@end-->
+				<!--@end-->
+				
+				<ul class="dlist_menu">
+					<li class="dlist_menu_notice_list" cond="$notice_list">
+						<a loop="$notice_list=>$no,$document" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" title="{strip_tags($document->getTitle())}">
+							<!--@if($document_srl==$document->document_srl)-->
+							<i class='bx bxs-badge-check'></i>
+							<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+							<i class='bx bxs-badge-check'></i>
+							<!--@else-->
+							<i class='bx bxs-microphone bx-flip-horizontal'></i>
+							<!--@end-->
+							<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+								<i class='bx bxs-lock'></i>
+							<!--@end-->
+							<span class="title">{strip_tags($document->getTitle())}</span>
+						</a>
+					</li>
+					<li loop="$cate_list=>$key,$val" class="dlist_menu_list" cond="$val->document_count">
+						<div class="dlist_menu_title">
+							<i class='bx bxs-folder'></i> {$val->title} <em cond="$val->document_count">{$val->document_count}</em>
+							<span class="morecatelist_cate"><i class='bx bx-list-plus'></i></span>
+						</div>
+						<div class="dlist_doc_list slide">
+							<a loop="$document_list =>$no,$document" cond="$val->category_srl == $document->get('category_srl')" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" class="dlist_menu_link <!--@if($document_srl==$document->document_srl)--> active<!--@end-->" title="{strip_tags($document->getTitle())}">
+								<!--@if($document_srl==$document->document_srl)-->
+								<i class='bx bxs-badge-check'></i>
+								<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+								<i class='bx bxs-badge-check'></i>
+								<!--@else-->
+								<i class='bx bx-file-blank' ></i>
+								<!--@end-->
+								<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+									<i class='bx bxs-lock'></i>
+								<!--@end-->								
+								<span class="title">{strip_tags($document->getTitle())}</span>
+								<span cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+							</a>
+						</div>
+						<ul cond="count($val->children)" class="dlist_doc_list_sub">
+							<li loop="$val->children=>$idx,$item" class=" ">
+								<div class="dlist_menu_title dep2">
+									<i class='bx bxs-folder-open' ></i> {$item->title} <em cond="$val->document_count">{$item->document_count}</em>
+								</div>
+								<div loop="$document_list =>$no,$document" cond="$item->category_srl == $document->get('category_srl')" class="dlist_doc_list ">
+									<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel=" " class="dlist_menu_link dep2 <!--@if($document_srl==$document->document_srl)--> active<!--@end-->" title="{strip_tags($document->getTitle())}">
+										<!--@if($document_srl==$document->document_srl)-->
+										<i class='bx bxs-badge-check'></i>
+										<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+										<i class='bx bxs-badge-check'></i>
+										<!--@else-->
+										<i class='bx bx-file-blank' ></i>
+										<!--@end-->
+										<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+											<i class='bx bxs-lock'></i>
+										<!--@end-->										
+										<span class="title">{strip_tags($document->getTitle())}</span>
+										<span cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li class="dlist_menu_list">
+						<div class="dlist_doc_list slide nocate_c">
+							{@ $nocate_list_count = 0;  <!--// 비카테고리글 숫자 체크 -->}
+							<a  loop="$document_list =>$no,$document" cond="!$val->category_srl == $document->get('category_srl') || !$val->category_srl" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" class="dlist_menu_link <!--@if($document_srl==$document->document_srl)--> active<!--@end-->" title="{strip_tags($document->getTitle())}">
+								{@ $nocate_list_count = $nocate_list_count +1; }
+								<!--@if($document_srl==$document->document_srl)-->
+								<i class='bx bxs-badge-check'></i>
+								<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+								<i class='bx bxs-badge-check'></i>
+								<!--@else-->
+								<i class='bx bx-file-blank' ></i>
+								<!--@end-->
+								<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+									<i class='bx bxs-lock'></i>
+								<!--@end-->								
+								<span class="title">{strip_tags($document->getTitle())}</span>
+								<span cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+							</a>
+						</div>
+						<div class="dlist_menu_title nocate_t">
+							<i class='bx bx-folder' ></i> No Category <em>{$nocate_list_count}</em>
+							<span class="morecatelist_cate"><i class='bx bx-list-plus'></i></span>
+						</div>	
+					</li>
+				</ul>
+			</div>
+			<div class="v-end">
+				<a class="close_catemenu"><i class='bx bxs-x-circle'></i></a>
+			</div>
+		</div>
+		
+	</li>
+	<li class="dlist-content">
+	
+		<!--@if(!$document_list && !$notice_list)-->			
+			<div style="height:100%; display:flex; justify-content: center; align-items: center; font-size:1.5em">
+			<!--@if($search_keyword)-->
+				검색된 글이 없습니다.
+			<!--@else-->
+				{$lang->no_documents}
+			<!--@end-->
+			</div>
+		<!--@else-->		
+			<article id="readBox" class="nolimit">
+				<block loop="$document_list=>$no,$document" cond="$document_srl==$document->document_srl" cond="$mi->read_bnavi == 'use'">
+					<block cond="!$search_keyword">
+						<block cond="(!$document_list[$no+1]->document_srl && $page!=1) || (!$document_list[$no-1]->document_srl && $page!=$total_page)">
+							{@
+								$oModuleModel = &getModel('module');
+								$module_srl_temp = $oModuleModel->getModuleSrlByMid($mid);
+								if(is_array($module_srl_temp)) $module_srl = $module_srl_temp[0];
+								else $module_srl = $module_srl_temp;
+								$args = new stdClass();
+								$args->module_srl = $module_srl;
+								$args->category_srl = $category;
+								$args->list_count = $module_info->list_count;
+								$args->sort_index = $module_info->order_target;
+								if($sort_index) $args->sort_index = $sort_index;
+								$args->order_type = $module_info->order_type;
+								if($sort_index) $args->order_type = $order_type;
+								if($module_info->except_notice=='Y') $prevnext_except_notice=1;
+							}
+							<!--@if(!$document_list[$no+1]->document_srl && $page!=1)-->
+								{@
+									$is_prevnext='P';
+									$args->page = $page-1;
+									$prevnext_list = executeQueryArray('document.getDocumentList',$args);
+									$prevnext_data = array_reverse($prevnext_list->data);
+								}
+							<!--@else if(!$document_list[$no-1]->document_srl && $page!=$total_page)-->
+								{@
+									$is_prevnext='N';
+									$args->page = $page+1;
+									$prevnext_list = executeQueryArray('document.getDocumentList',$args);
+									$prevnext_data = $prevnext_list->data;
+								}
+							<!--@end-->
+							<!--@foreach($prevnext_data as $no2 => $document2)-->
+								<block cond="!$prevnext_except_notice || ($prevnext_except_notice && $document2->is_notice!='Y')">
+									{@
+										$prevnext_doc = $document2->document_srl;
+										$prevnext_title = $document2->title;
+										$prevnext_date = $document2->regdate;
+										$prevnext_nick = $document2->nick_name;
+										break;
+									}
+								</block>
+							<!--@end-->
+						</block>
+					</block>
+				{@ break;}
+				</block>				
+			<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+				<include target="opt_read/_read_opt_secret.html" />
+				<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+			<!--@else--><!-- 비밀글 분기 -->
+				<include target="opt_read/_read_opt_title.html" />	
+				<include target="opt_read/_read_opt_meta.html" cond="$mi->read_meta == 'use'"/>
+				<div class="rMain">
+				{$oDocument->getContent(false)|noescape}
+				</div>
+				<include target="opt_read/_read_opt_extravar.html" />
+				<include target="opt_read/_read_opt_vote.html" cond="$mi->read_vote == 'use'" />
+				<include target="opt_read/_read_opt_tags.html" cond="$mi->read_tag == 'use'" />
+				<include target="opt_read/_read_opt_download.html" cond="$mi->read_download == 'use'" />
+				<include target="opt_read/_read_opt_doNsns.html" cond="$mi->read_utility == 'use' || $mi->read_sns == 'use'"/>
+				<include target="opt_read/_read_opt_sign.html" cond="$mi->read_sign == 'use'" />
+				<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+				<include target="_comment.html" />
+				<include target="_comment_write.html" />
+			<!--@end-->	
+			</article>
+
+			<a style="display: none ;" class="gototop-blog"><i class='bx bx-chevron-up' ></i></a>
+
+		<!--@end-->
+	</li>
+</ul>
+
+<style>
+:root {
+	--cmenu_width : {$mi->blog_menu_width}px;
+	--cmenu_size : 40px;
+	--cmenu_bg : rgba(240,240,240,.5);
+	--cmenu_topGap:{$mi->blog_top_gap}px;
+	--oday_listBgColorBlog:rgb(250,250,250);
+	--blogTopGap : 50px;
+}
+:is(.color_scheme_dark),
+:root[color-theme='dark']{
+	--cmenu_bg : rgba(0,0,0,.2);
+	--oday_listBgColorBlog:rgb(33,33,33);
+}
+
+
+.formBox,
+ul.naviBtn li,
+.downlist,
+.voteVsList,
+.doNsns,
+.tags  { justify-content: flex-start;}
+.formBox .end { margin-left:10px}
+.feedback h2 { margin-left:30px; background-color: var(--oday_listBgColorBlog); }
+body { background-color:var(--oday_listBgColorBlog)}
+footer { display:none;}
+<!--@if($layout_info)-->
+.od-bord { border-left:3px solid var(--oday_bodyBgColor)}
+<!--@end-->
+.blogHeader {background-color:var(--oday_listBgColorBlog); margin-top:0; border-top:none; width: -webkit-fill-available; position:fixed; z-index:2; bottom:unset; border-bottom:var(--oday_listBorder); padding:.5em; display:flex; justify-content: space-between; box-shadow:var(--oday_listShadowStress)}
+<!--@if($mi->preview=='use' || $mi->theme_use == 'use')-->
+.blogHeader { padding-right:30px}
+<!--@end-->
+.blogHeader li {display: flex; align-items: center; }
+
+.blogHeader .page-t { padding:0 .5em; font-weight:700; font-size:1.2em;}
+.board_search { display:flex; align-items: center;  }
+.board_search button,
+.board_search a {display:flex; align-items: center; justify-content: center; border: none; background-color:transparent !important; width: calc(var(--oday_iptHeight) * .8); height: var(--oday_iptHeight); flex-shrink: 0;}
+.board_search span { font-size:1.4em}
+
+#list-blog  { display:flex; margin-top:var(--cmenu_topGap);}
+#list-blog li.dlist-menu { width:var(--cmenu_width); }
+#list-blog li.dlist-content { width: calc(100% - var(--cmenu_width));  }
+<!--@if($mi->blog_layout == "right")-->
+	#list-blog li.dlist-menu { order:2}
+	#list-blog li.dlist-content  { order:1; border-right:var(--oday_listBorder); }
+	.gototop-blog {right: calc( {$mi->blog_menu_width}px + 5px)}
+	@media screen and (max-width: 768px){
+		.gototop-blog { right:5px; bottom:70px;}
+	}	
+<!--@else-->
+	#list-blog li.dlist-menu { order:1}
+	#list-blog li.dlist-content  { order:2; border-left:var(--oday_listBorder);}
+	.gototop-blog {right: 5px}
+<!--@end-->
+
+.v-wrap { height:calc(100vh - var(--cmenu_topGap)); /* position:sticky; top:var(--cmenu_topGap); */ }
+.v-stretch { width: 100%; height:100vh; height: -webkit-fill-available; min-height: -webkit-fill-available; display: flex; flex-direction: column; justify-content: space-between; width:var(--cmenu_width); position:fixed; }
+.v-scroll { overflow-y: scroll; flex: auto; background-color:var(--cmenu_bg);}
+.v-scroll::-webkit-scrollbar { width: 1px; }
+.v-scroll::-webkit-scrollbar-thumb { border:none; }
+.v-start { padding-top:var(--blogTopGap);}
+.v-end { border-top:var(--oday_listBorder);}
+
+#list-blog .wrap_c_menu { 
+	position:fixed;  z-index:2; 
+	background-color:var(--oday_listBgColorStress1);
+	width:var(--cmenu_width); padding-top:5px;
+	overflow-y:auto; overflow-x:hidden; 
+	box-shadow:var(--oday_listShadowStress);
+	height:calc(100vh - var(--cmenu_topGap) ); top:var(--cmenu_topGap);
+}
+#list-blog .dlist_menu_opt { display:flex; justify-content: flex-end; align-items: center;  padding:1em .5em .5em 1em; background-color:var(--cmenu_bg) }
+#list-blog .dlist_menu_opt span {font-size:8px}
+#list-blog .dlist_menu_opt label { 
+	--onoff_height: 10px;
+	height: var(--onoff_height);
+	font-size: var(--onoff_height);
+}
+#list-blog .dlist_menu { padding:0 5px 20px 5px;}
+#list-blog .dlist_menu_notice_list {  }
+#list-blog .dlist_menu_notice_list a { display:flex; align-items: center; height:var(--cmenu_size);  width:100%; padding:0 10px}
+#list-blog .dlist_menu_notice_list a + a {border-top:var(--oday_listBorder);}
+#list-blog .dlist_menu_notice_list a i.bx {color:#f00; font-size:1.2em;    margin-bottom: -4px; }
+
+#list-blog .dlist_menu_list {display:flex; flex-direction: column; border:var(--oday_listBorder); border-radius:6px; overflow:hidden; box-shadow:var(--oday_listShadow); background-color:var(--oday_listBgColorStress1)}
+#list-blog .dlist_menu_list  + .dlist_menu_list  { margin-top:4px;}
+#list-blog .dlist_menu_list.active { border:var(--oday_listBorderStress); position: relative; z-index: 1;box-shadow:var(--oday_listShadowStress);  /*box-shadow:var(--oday_listShadow);*/ }
+#list-blog .dlist_menu_list .nocate_t {order:1}
+#list-blog .dlist_menu_list .nocate_c { order:2}
+#list-blog .dlist_menu_title { display:flex; align-items: center; height:calc(var(--cmenu_size) * .9); font-weight:500; font-size:10px; padding-left:10px; padding-right:10px; cursor: pointer;}
+#list-blog .dlist_menu_title.dep2 { padding-left:15px; height:calc(var(--cmenu_size) * .7); }
+#list-blog .morecatelist_cate { margin-left:auto;}
+#list-blog .dlist_menu_link {display:flex; align-items: center; height: var(--cmenu_size);  border-top:var(--oday_listBorder);  font-size:12px;padding-left:15px; padding-right:10px;}
+#list-blog .dlist_menu_link.active {  /*color: var(--oday_mainColor);border-right:var(--oday_listBorder);   border-right-color:var(--oday_mainColorLight);  border-right-width:3px; color:#00a4ff; background-color: color-mix( in srgb, var(--oday_mainColorOpt), #000 90%);*/}
+#list-blog .dlist_menu_link.dep2 { padding-left:30px;}
+#list-blog .dlist_menu_notice_list span.title,
+#list-blog .dlist_menu_link span.title {white-space:nowrap; overflow:hidden; text-overflow: ellipsis; padding:0 5px }
+
+#list-blog .dlist_doc_list.slide,
+#list-blog .dlist_doc_list + ul {display:none;}
+#list-blog .dlist_doc_list {background-color:var(--cmenu_bg); }
+
+
+#list-blog .dlist_menu span.count {white-space:nowrap; font-size:.8em}
+#list-blog .dlist_menu span.count i.bx {font-size:; margin-right:3px}
+#list-blog .dlist_menu .dlist_menu_title i.bx { font-size:1.5em; margin-right:3px;}
+#list-blog .dlist_menu em {color:var(--oday_mainColor); margin-left:5px; font-size:.8em; font-weight:500}
+#list-blog .dlist_menu i.bxs-folder,
+#list-blog .dlist_menu i.bx-folder  { color:var(--oday_mainColorDark);  opacity:.8}
+#list-blog .dlist_menu i.bxs-folder-open{ color:var(--oday_mainColorLight);  opacity:.5}
+#list-blog .dlist_menu i.bx-subdirectory-right { color:var(--oday_mainColorOpt); opacity:.5}
+#list-blog .dlist_menu i.bxs-badge-check { color:#00a4ff; font-size:1.2em;}
+#list-blog .dlist_menu i.bxs-lock  { color:#ff0000; font-size:1.2em;}
+#readBox.nolimit {
+	background-color:var(--oday_listBgColorBlog) ; border-radius: unset; box-shadow: unset;
+	margin-bottom:0; padding-bottom: 30px; width:100%; overflow:unset; 
+	padding-top:var(--blogTopGap); border:none;
+}
+#readBox.nolimit .comList { background-color: unset; }
+.close_catemenu,
+.open_catemenu { display:none}
+#write_comment { max-width: var(--oday_maxWidth);}
+@media screen and (max-width: 768px){
+	:root {
+		--cmenu_size : 50px;
+	}
+	#readBox.nolimit {padding-top:0}
+	.blogHeader { position:relative; width:100%; flex-direction: column;}
+	.blogHeader li:first-child {justify-content: space-between;}
+	.blogHeader li:first-child i { font-size:2em;}
+	.blogHeader li:last-child {justify-content: center;}
+	.blogHeader .page-t { padding:1em .5em 1.2em .5em}
+	
+	#list-blog .dlist_menu_opt { padding:1em}
+	#list-blog .dlist_menu_opt span {font-size:10px}
+	#list-blog .dlist_menu_opt label { 
+		--onoff_height: 15px;
+	    height: var(--onoff_height);
+	    font-size: var(--onoff_height);
+	}
+	
+	<!--@if($mi->blog_layout == "right")-->
+		#list-blog li.dlist-menu { order:1}
+		#list-blog li.dlist-content  { order:2}
+	<!--@else-->
+		#list-blog li.dlist-menu { order:1}
+		#list-blog li.dlist-content  { order:2}
+	<!--@end-->
+	#list-blog li.dlist-menu { /* ; width:100%; display:flex; transition: 0.3s ease; background-color:rgba(0,0,0,.9); */
+		position:fixed;
+		z-index:4;
+		background-color: rgba(0, 0, 0, .8); backdrop-filter: blur(5px);
+		top:0;
+		width:100%;
+		display:none;
+	}
+	:is(.color_scheme_light ) {
+		#list-blog li.dlist-menu {background-color:rgba(255,255,255,.9); }
+	}
+	#list-blog li.dlist-menu.hide-cmenu {
+		display:unset;
+	}
+	.v-stretch {width:100%; top:0; }
+	.v-start {padding-top:20px;}
+	.v-start li.vm { display:flex; justify-content: center; align-items: center;}
+	.v-end {
+	    padding: 20px;
+	    border-top: var(--oday_listBorder);
+	    text-align: center;
+	}
+	#list-blog .dlist_menu_link { font-size:14px}
+	#list-blog .wrap_c_menu {position:relative; width:100%; padding:20px;}
+	#list-blog li.dlist-content  { width:100%}
+	
+	.open_catemenu { display:inline-block; margin-left: auto;}
+	.close_catemenu { display:inline-block; font-size:40px; }
+}
+.naviBtn { display:flex; align-items: center; justify-content: space-between;}
+.gototop-blog {
+	position:fixed; bottom:5px; z-index:10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	width: 40px;
+	background-color: var(--oday_mainColorDark);
+	color: var(--oday_primaryBtnColor);
+	font-size: 2em;
+	transition: 0.3s;
+	border-radius: 100%;
+}
+.gototop-blog:hover {
+    background-color: var(--oday_mainColor);
+    color: var(--oday_primaryBtnColor);
+}
+</style>
+<script>
+	$(window).scroll(function () {
+		Yposition = $(this).scrollTop();
+		Wwidth = $(this).width();
+		if (Wwidth > 768) {
+			if (Yposition > 100) {
+				$(".gototop-blog").fadeIn(100);
+			}else {
+				$(".gototop-blog").fadeOut(500);
+			}
+		}
+	});
+	$(".gototop-blog").click(function(){$('html, body').animate({scrollTop: 0}, 500);});
+	
+	$(".dlist_menu_title").click(function(){
+		$(".dlist_doc_list.slide, .dlist_doc_list.slide + ul").slideUp();
+		$(".morecatelist_cate").html("<i class='bx bx-list-plus'></i>");
+		if(!$(this).parent().find(".dlist_doc_list").is(":visible")){
+			$(this).parent().find(".dlist_doc_list").slideDown();
+			$(this).parent().find(".dlist_doc_list").next().slideDown();
+			$(this).find(".morecatelist_cate").html("<i class='bx bx-list-minus'></i>");
+		}
+	});	
+	//서브 메뉴 이동시 해당 메뉴 열어 놓기
+	$(".dlist_menu_list").has(".active").find(".dlist_doc_list, .dlist_doc_list_sub").show();
+	$(".dlist_menu_list").has(".active").addClass("active");
+	$(".dlist_menu_list").has(".active").find(".morecatelist_cate").html("<i class='bx bx-list-minus'></i>");
+
+	var $getCateopen = XE.cookie.get('setOdayCateopen_{$mid}');
+	if( $getCateopen == "open" ) {
+		$(".dlist_doc_list, .dlist_doc_list_sub").show();
+		$(".morecatelist_cate").hide();
+		setCookie( "setOdayCateopen_{$mid}", "open" , 365 );
+		$("input:checkbox[id='catemenuopen']").prop("checked", true);
+	}
+
+	$(function(){
+		$("#catemenuopen").change(function(){
+			if($(this).is(":checked")){
+				$(".dlist_doc_list, .dlist_doc_list_sub").slideDown();
+				$(".morecatelist_cate").hide();
+				setCookie( "setOdayCateopen_{$mid}", "open" , 365 );
+			}else{
+				$(".dlist_doc_list.slide,.dlist_doc_list_sub").slideUp();
+				$(".morecatelist_cate").show();
+				$(".morecatelist_cate").html("<i class='bx bx-list-plus'></i>");
+				$(".dlist_menu_list").has(".active").find(".dlist_doc_list, .dlist_doc_list_sub").slideDown();
+				$(".dlist_menu_list").has(".active").addClass("active");
+				$(".dlist_menu_list").has(".active").find(".morecatelist_cate").html("<i class='bx bx-list-minus'></i>");
+				setCookie( "setOdayCateopen_{$mid}", "" , 365 );
+			}
+		});
+	});
+
+	$(".morecatelist").click(function(){
+		$(".dlist_nocate_list").slideUp();
+		$(".morecatelist").html("<i class='bx bx-list-plus'></i>");
+		if(!$(".dlist_nocate_list").is(":visible")){
+			$(".dlist_nocate_list").slideDown();
+			$(this).html("<i class='bx bx-list-minus'></i>");
+		}
+	});
+	$(".open_catemenu").click(function(){
+		scrollDisable();
+		$(".dlist-menu").addClass("hide-cmenu")
+	});
+	$(".close_catemenu").click(function(){
+		scrollAble();
+		$(".dlist-menu").removeClass("hide-cmenu")
+	});
+//$(".dlist-menu").addClass("hide-cmenu")
+	
+</script>

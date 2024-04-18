@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+ul.newContents {display:flex; justify-content: center; align-items: center; flex-wrap: wrap;}
+ul.newContents li {display:flex; justify-content: center; align-items: center; margin: 1px; padding: 5px 20px 5px 5px; background-color:var(--oday_listBgColor);  border:var(--oday_listBorder); border-radius: 50px; } 
+
+ul.newContents li.showNew.N,ul.newContents li.showNew.N.U { border:1px solid var(--oday_mainColor); /*background-color:#212016*/ }
+ul.newContents li.showNew.U { border:1px solid #00ceff;/* background-color:#1e2225*/ }
+ul.newContents .title {font-size:1.1em; font-weight:400; margin-bottom:.2em; display:inline-block;}
+ul.newContents .newconbox { opacity:.9; font-weight:300; margin-top:2px}
+ul.newContents .newconbox .btitle {color: var(--oday_mainColor);}
+
+
+
+ul.newContents a.thumb { border-radius:100%; overflow:hidden; display:flex; justify-content: center; align-items: center; margin-right:.8em}
+ul.newContents a.thumb { background-color: var(--oday_metaBgColor)}
+ul.newContents a.thumb i {color: var(--oday_metaColor);}
+
+.contentsOne li { background-position:center; background-size:120% auto; transition: 0.3s; }
+.contentsOne a.thumb {  height:100%; display: flex; justify-content: center; align-items: flex-end; text-align:center; padding-bottom:30px; color:#fff; transition:.3s; background:linear-gradient(transparent 70%, rgba(0,0,0,.7) 100% ); z-index:1}
+.contentsOne a.thumb span { display:block; /*mix-blend-mode: difference*/ line-height:1; font-weight:100 }
+.contentsOne a.thumb span + span {margin-top:5px;}
+.contentsOne a.thumb span.btitle {font-size:.8em; opacity:.6}
+.contentsOne a.thumb span.title {font-size:1.2em; font-weight:400 }
+.contentsOne a.thumb span.date {font-size:.8em;  opacity:.6}
+/*.contentsOne a.thumb:hover { background:linear-gradient(transparent 70%, rgba(0,0,0,.8) 100% )}*/
+.icon img[alt="file"] { display: none; }
+
+@media screen and (max-width:768px){
+	ul.newContents li { padding: 2px 20px 2px 2px;}
+	ul.newContents .title {font-size:1em;}
+	ul.newContents .newconbox  {font-size:.8em;}
+}
