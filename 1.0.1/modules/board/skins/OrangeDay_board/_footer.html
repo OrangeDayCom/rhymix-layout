@@ -1,0 +1,34 @@
+</div>
+<!--@if($oday_srl->homepage!='https://www.orangeday.com')-->
+<div class="powered"><a href="https://www.orangeday.com/" target="_blank">by <span>Orangeday</span></a></div>
+<!--@end-->
+<div class="gototopboard" style="display:none;"><a><i class='bx bx-chevron-up'></i></a></div>
+<style>
+.gototop.layout { display:none !important}
+.gototopboard {position: fixed; bottom:5px; right:5px; z-index:3 }
+.gototopboard a {display:flex; align-items: center; justify-content: center; height:40px; width:40px; background-color:var(--oday_mainColorDark); color:var(--oday_primaryBtnColor); font-size:2em; transition: 0.3s; border-radius:100%}
+.gototopboard a:hover {background-color:var(--oday_mainColor); ; color:var(--oday_primaryBtnColor); }
+</style>
+<script>
+<!--@if($oDocument->isExists() && $mi->list_in_read == 'use')-->
+Tposition = $(".posi-chk-gototop").offset().top - $( window ).height() + 100;
+<!--@elseif($oDocument->isExists() && $mi->list_in_read != 'use')-->
+Tposition = 0;
+<!--@elseif(!$oDocument->isExists())-->
+Tposition = 100;
+<!--@end-->
+$(window).scroll(function () {
+	$(".gototop.layout").removeClass("layout");
+	Yposition2 = $(this).scrollTop();
+	if(Tposition > 0) {
+		if (Yposition2 >= Tposition) {
+			$(".gototopboard").fadeIn();
+		}else {
+			$(".gototopboard").fadeOut();
+		}
+	}
+});
+$(".gototopboard").click(function(){
+	$('html, body').animate({scrollTop: 0}, 500);
+});
+</script>

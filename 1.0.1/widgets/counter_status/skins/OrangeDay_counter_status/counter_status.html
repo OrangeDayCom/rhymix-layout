@@ -1,0 +1,6 @@
+<load target="./css/widget.css" />
+<ul class="widgetCounter<!--@if($colorset=="black")--> black<!--@end-->">
+	<li>{number_format($today_counter->unique_visitor)}</li>
+	<li>{number_format($yesterday_counter->unique_visitor)}</li>
+	<li>{number_format($total_counter->unique_visitor)}</li>
+</ul>

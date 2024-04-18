@@ -1,0 +1,63 @@
+<!-- ////////////////////////
+
+	검색창
+
+ ////////////////////////-->
+
+<div class="searchBox">
+	<div class="sort">
+	<!--@if($order_type=="desc")-->
+	{@
+		$order_icon="down";
+	}
+	<!--@else-->
+	{@
+		$order_icon="up";
+	}
+	<!--@end-->
+		<a href="{getUrl('','mid',$mid)}" class="on"|cond="$sort_index==''">기본 <em>({number_format($total_count)})</em></a>
+		<a href="{getUrl('sort_index','title','order_type',$order_type)}" class="on"|cond="$sort_index=='title'">
+			{$lang->title} <span cond="$sort_index=='title'" class='material-symbols-sharp'>keyboard_arrow_{$order_icon}</span>
+		</a>
+		<a href="{getUrl('sort_index','regdate','order_type',$order_type)}" rel="nofollow" class="on"|cond="$sort_index=='regdate'">
+			{$lang->date} <span cond="$sort_index=='regdate'" class='material-symbols-sharp'>keyboard_arrow_{$order_icon}</span>
+		</a>
+		<a href="{getUrl('sort_index','update_order','order_type',$order_type)}" rel="nofollow" class="on"|cond="$sort_index=='update_order'">
+			{$lang->last_update} <span cond="$sort_index=='update_order'" class='material-symbols-sharp'>keyboard_arrow_{$order_icon}</span>
+		</a>
+		<a href="{getUrl('sort_index','readed_count','order_type',$order_type)}" rel="nofollow" class="on"|cond="$sort_index=='readed_count'">
+			{$lang->readed_count} <span cond="$sort_index=='readed_count'" class='material-symbols-sharp'>keyboard_arrow_{$order_icon}</span>
+		</a>
+		<a href="{getUrl('sort_index','comment_count','order_type',$order_type)}" rel="nofollow" class="on"|cond="$sort_index=='comment_count'">
+			{$lang->comment_count} <span cond="$sort_index=='comment_count'" class='material-symbols-sharp'>keyboard_arrow_{$order_icon}</span>
+		</a>
+		<!--@if(!Mobile::isMobileCheckByAgent())-->
+		<a cond="$mi->default_style=='gallery' || $mi->default_style=='galleryai'" class="viewOne"><span class="material-symbols-sharp fill">browse</span></a>
+		<a cond="$mi->default_style=='gallery' || $mi->default_style=='galleryai'" class="viewTwo"><span class="material-symbols-sharp fill">space_dashboard</span></a>
+		<!--@end-->			
+	</div>
+	<form cond="$grant->view" action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+		<select name="search_target" class="niceselect">
+			<option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
+		</select>
+		<input type="hidden" name="vid" value="{$vid}" />
+		<input type="hidden" name="mid" value="{$mid}" />
+		<input type="hidden" name="category" value="{$category}" />
+		<input type="hidden" name="listStyle" value="{$listStyle}" />
+		<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" placeholder="Search... " />
+		<button type="submit" class="" onclick="xGetElementById('board_search').submit();return false;"><span class="material-symbols-sharp">search</span></button>
+		<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><span class="material-symbols-sharp">restart_alt</span></a>
+		<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn">{$lang->cmd_search_next}</a>
+	</form>
+</div>
+ <script>
+	$(document).ready(function() { $('select.niceselect').niceSelect(); });	
+	$(window).scroll(function () {
+		Yposition = $(this).scrollTop();
+		if (Yposition >= 100) {
+			$(".searchBox").addClass("scrollchange");
+		}else {
+			$(".searchBox").removeClass("scrollchange");
+		}
+	});
+</script>

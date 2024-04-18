@@ -1,0 +1,192 @@
+<load target="../../../editor/skins/xpresseditor/js/xe_textarea.min.js" type="body" />
+<load target="asset/autosize.min.js" type="body" />
+{@
+	$listCheck = 1; <!--// 리스트에서 코멘트 관리 버튼 안보이게 -->
+}
+<script>//<![CDATA[
+var lang_type = "{$lang_type}";
+jQuery(function($){ board('#bd_{$mi->module_srl}_{$oDocument->document_srl}'); });
+//]]></script>
+<!--%import("filter/insert.xml")-->
+<div class='stickyTopBox'>
+	<include target="opt_list/_list__opt_category.html" />
+	<include target="opt_list/_list__opt_search.html" />
+</div>
+
+<include target="opt_list/_list__opt_notice_pop.html" />
+
+<div id="bd_{$mi->module_srl}_{$oDocument->document_srl}" class="list_guest_write bd-all">
+	<div class="box">
+		<!--// 상단 쓰기 -->
+		<form cond="$grant->write_document" action="./" method="post" onsubmit="return procFilter(this, window.insert)" class="bd_guest">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="comment_status" value="ALLOW" id="comment_status" />
+			<input type="hidden" name="allow_trackback" value="Y" id="allow_trackback" />
+			<input type="hidden" name="content" value="{$mi->content_default}"|cond="$mi->content_default" />
+			<input type="hidden" name="document_srl" value="" />
+
+			<input type="hidden" name="use_html" value="Y" />
+			<input type="hidden" id="htm_1" value="n" />
+			<textarea id="editor_1" cols="50"></textarea>
+			<ul class="formBox split">
+				<li class="front">
+					<ul cond="!$is_logged" class="namepass">
+						<li>
+							<label for="userName" class="iLabel">{$lang->writer}</label>
+							<input type="text" name="nick_name" id="userName" value="{htmlspecialchars($oDocument->get('nick_name'))}" />
+						</li>
+						<li>
+							<label for="userPw" class="iLabel">{$lang->password}</label>
+							<input type="password" name="password" id="userPw" autocomplete="new-password" />
+						</li>
+					</ul>
+				</li>
+				<li class="end">
+					<div cond="$is_logged">
+						<input type="checkbox" name="notify_message" value="Y" id="notify_message" class="iCheck" />
+						<label for="notify_message">{$lang->notify}</label>
+					</div>
+					<div  cond="$module_info->secret=='Y'">
+						<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="iCheck" />
+						<label for="is_secret">{$lang->secret}</label> 
+					</div>
+					&nbsp;
+					<button type="submit" class="obtn"><i class='bx bx-book-bookmark'></i> 방명록 작성하기</button>
+				</li>
+			</ul>
+		</form>
+		<div cond="!$grant->write_document" class="bd_guest_no">
+			{$lang->cmd_write} {$lang->msg_not_permitted}
+		</div>
+	</div>
+</div>
+
+<div id="list_guest" class="bd-all">
+
+	<div loop="$document_list=>$no,$oDocument" class="box">		
+		<ul class="grid">
+			<li class="meta size2">
+				<img cond="$oDocument->getProfileImage()" src="{$oDocument->getProfileImage()}" alt="profile" title="{$oDocument->getNickName()}" class="profile" />
+				<div cond="!$oDocument->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></div>
+				
+			</li>
+			<li class="gCon">
+				<div cond="$oDocument->getTitle()" class="conTop">
+						<span cond="$oDocument->printExtraImages(60*60*$mi->duration_new)" class="newicon 
+							<!--@foreach($oDocument->getExtraImages(60*60*$mi->duration_new) as $key=>$val)-->
+								<!--@if($val == 'secret')-->S<!--@end-->
+								<!--@if($val == 'new')--> Fbox left N<!--@end-->
+								<!--@if($val == 'update')--> Fbox left U<!--@end-->
+								<!--@if($val == 'file')-->F<!--@end-->
+							<!--@end-->
+						">
+							<block loop="$oDocument->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+							<block cond="$key == 'new'">N</block>
+							<block cond="$key == 'update'">U</block>
+							</block>
+						</span>
+					<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+						<span class="newicon Fbox secret"><i class='bx bxs-lock'></i></span>
+					<!--@end-->
+					<span class="number">{$no}</span>
+					<span cond="$category_list[$oDocument->get('category_srl')]->title" class="category">{$category_list[$oDocument->get('category_srl')]->title}</span>
+					<span class="title">
+						<!--@if(Mobile::isMobileCheckByAgent())-->
+						<a href="{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle, '','')}">
+						<!--@else-->
+						<a href="{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon();" target="viewgall">
+						<!--@end-->
+							{strip_tags($oDocument->getTitle())}
+						</a>
+					</span>
+					<br />
+					<span class="author" style="margin-top:.5em;">
+						<a cond="!$oDocument->getMemberSrl() && $oDocument->isExistsHomepage()" href="{$oDocument->getHomepageUrl()}" onclick="window.open(this.href);return false">{$oDocument->getNickName()}</a>
+						<p cond="!$oDocument->getMemberSrl() && !$oDocument->isExistsHomepage()">{$oDocument->getNickName()}</p>
+						<a cond="$oDocument->getMemberSrl()" href="#popup_menu_area" class="member_{$oDocument->get('member_srl')}" onclick="return false">{$oDocument->getNickName()}</a>
+					</span>
+					<span class="od_date">{getTimeGap($oDocument->get('regdate'), "Y.m.d - H:i")}</span>
+					<input cond="$grant->manager" type="checkbox" name="cart" value="{$oDocument->document_srl}" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($oDocument->isCarted())-->checked="checked"<!--@end--> />
+				</div>
+				
+				<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+				<div class="utilityMessage">{$lang->msg_is_secret} {$lang->msg_input_password}</div>
+				<form action="./" method="get" onsubmit="return procFilter(this, input_password)" class="secretMessage secretForm">
+					<input type="hidden" name="mid" value="{$mid}" />
+					<input type="hidden" name="page" value="{$page}" />
+					<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+					<div class="formBoxCenter">
+						<input type="password" name="password" id="cpw_{$oDocument->document_srl}" class="iText userPw" />
+						<input class="obtn ipt" type="submit" value="{$lang->cmd_input}" />
+					</div>
+				</form>
+				<!--@else-->
+				{$oDocument->getContent(false)}
+				<!--@end-->
+
+			</li>
+		</ul>
+		<include target="_comment.html" />
+		<ul class="formBox" cond="$grant->write_document">
+			<li>
+			</li>
+			<li>
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<a href="{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle, '','')}" class="obtn">
+				<!--@else-->
+				<a href="{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon();" target="viewgall" class="obtn">
+				<!--@end-->
+					<i class="xi-message"></i> 댓글 참여 하기
+				</a>
+			</li>
+		</ul>
+		
+
+	</div>
+
+</div>
+<div class="iframeCon"><iframe src ="" width="100%" height="100%" frameborder="no" id="iframeWin" name="viewgall"></iframe><div class="iframeBg"></div></div>
+
+<include target="opt_list/_list__opt_pagenavi.html" />
+<include target="opt_list/_list__opt_btnbox.html" />
+
+<script>
+function board(bdObj){
+	(function($){
+		var bd = $(bdObj);
+			$.getScript("modules/editor/tpl/js/editor_common.min.js",function(){
+				if(bd.find('form.bd_guest textarea').length){
+					$.getScript('files/cache/js_filter_compiled/35d29adbe4b14641f9eac243af40093b.'+lang_type+'.compiled.js');
+					editorStartTextarea(1,'content','document_srl');
+				};
+			});
+	})(jQuery)
+}
+
+function scrollDisable(){
+    $('body').addClass('scrollDisable').on('scroll touchmove mousewheel', function(e){
+        e.preventDefault();
+    });
+}
+function scrollAble(){
+    $('body').removeClass('scrollDisable').off('scroll touchmove mousewheel');
+}
+function viewCon() {
+	scrollDisable();
+	setTimeout(function() { 
+		$(".iframeCon").show();
+	}, 200);
+}
+var tUrl = "{getUrl('document_srl','')}";
+function closeCon() {
+	document.title = "{Context::getBrowserTitle()}";
+	scrollAble();
+	$(".iframeCon").hide();
+	$("#iframeWin").attr('src',"");
+	history.replaceState({ data: 'end' }, '', tUrl);
+}
+$(function(){
+	autosize($('textarea'));
+});
+
+</script>
