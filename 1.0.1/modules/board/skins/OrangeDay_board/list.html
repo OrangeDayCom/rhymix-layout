@@ -16,13 +16,25 @@
 	<!--@end-->
 </block>
 <block cond="!$oDocument->isExists()">
-	<div class="board-message header_text">
-		<!--@if($m && $module_info->mobile_header_text)-->
+	
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		<!--@if($module_info->mobile_header_text)-->
+		<div class="board-message header_text">
 			{$module_info->mobile_header_text}
-		<!--@else-->
+		</div>	
+		<!--@elseif(!$module_info->mobile_header_text && $module_info->header_text)-->
+		<div class="board-message header_text">
 			{$module_info->header_text}
+		</div>	
 		<!--@end-->
-	</div>	
+	<!--@else-->
+		<!--@if($module_info->header_text)-->
+		<div class="board-message header_text">
+			{$module_info->header_text}
+		</div>	
+		<!--@end-->
+	<!--@end-->
+	
 	<!-- ////////////////////////
 
 		보드 스타일
@@ -76,13 +88,25 @@
 	<!--@else-->
 	<include target="_list_normal_table.html" />
 	<!--@end-->
-	<div class="board-message footer_text">
-		<!--@if($m && $module_info->mobile_footer_text)-->
+
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		<!--@if($module_info->mobile_footer_text)-->
+		<div class="board-message footer_text">
 			{$module_info->mobile_footer_text}
-		<!--@else-->
+		</div>
+		<!--@elseif(!$module_info->mobile_footer_text && $module_info->footer_text)-->
+		<div class="board-message footer_text">
 			{$module_info->footer_text}
+		</div>	
 		<!--@end-->
-	</div>	
+	<!--@else-->
+		<!--@if($module_info->footer_text)-->
+		<div class="board-message footer_text">
+			{$module_info->footer_text}
+		</div>	
+		<!--@end-->
+	<!--@end-->
+	
 </block>
 <include target="_footer.html" />
 
