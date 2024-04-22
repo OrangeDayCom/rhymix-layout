@@ -1,4 +1,9 @@
-# 버전 1.0.2 (작업중)
+# 오렌지 데이
+- 오렌지데이 https://www.orangeday.com/
+- XE타운 https://xetown.com/download/1817419
+
+
+## 버전 1.0.2 (작업중)
 
 ### 게시판
 - $_SERVER['HTTP_SEC_FETCH_DEST' 제거
