@@ -1,0 +1,36 @@
+{@ 
+
+	$Contitle = strip_tags($oDocument->getTitle());
+<!--//	
+	$loc_browsertitle = $Contitle.'- OrangeDay.com';
+	Context::setBrowserTitle($loc_browsertitle);
+//-->
+}
+<script>
+	$(function() {
+		if (window.self !== window.top) {
+			/** 검색을 위한 바닥 타이틀 설정 **/
+			parent.document.title = "{Context::getBrowserTitle()}";
+		} 
+	});
+</script>
+<ul class="rTitle">
+	<li class="location">
+		<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+			<a href="/" class="gotohome" id="focusin"><i class='bx bxs-home'></i></a> <i class='bx bxs-chevron-right'></i>
+			<a href="{$val1['href']}"><!--@if(!$val1['list'])--><em>{$val1['text']}</em><!--@else--><em>{$val1['text']}</em><!--@end--></a>
+			<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+				<i class='bx bxs-chevron-right'></i><a href="{$val2['href']}"><!--@if(!$val2['list'])--><em> {$val2['text']}</em><!--@else-->{$val2['text']}<!--@end--></a>
+				<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+					<i class='bx bxs-chevron-right'></i><a href="{$val3['href']}"><!--@if(!$val3['list'])--><em> {$val3['text']}</em><!--@else-->{$val3['text']}<!--@end--></a>
+				</block>
+			</block>
+		</block>
+		<block cond="!$GNB->list">
+		<a href="/" class="gotohome"><i class='bx bxs-home'></i></a>
+		</block>
+		<i cond="$oDocument->get('category_srl')" class='bx bxs-arrow-from-left'></i>
+		{$category_list[$oDocument->get('category_srl')]->title}
+	</li>
+	<li class="title"><h1>{$Contitle}</h1></li>
+</ul>

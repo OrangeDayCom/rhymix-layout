@@ -1,0 +1,18 @@
+<!--// Extra Var 내용 있을 때만 출력 -->
+<block loop="$oDocument->getExtraVars() => $key,$val">
+	{@
+		if($val->getValueHTML()):$ExtraVars_ok = true;
+		break;
+		endif;
+	}
+</block>
+<!--@if($ExtraVars_ok)-->
+<div id="exOut" cond="$oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted())">
+	<table border="1" cellspacing="0" summary="Extra Form Output">
+		<tr loop="$oDocument->getExtraVars() => $key,$val" cond="$val->getValueHTML()">
+			<th scope="row">{$val->name}</th>
+			<td>{$val->getValueHTML()|noescape}</td>
+		</tr>
+	</table>
+</div>
+<!--@end-->

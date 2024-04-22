@@ -1,0 +1,55 @@
+@charset "utf-8";
+:root {
+	--sc_padding : 10px 40px;
+}
+.searchall { display:flex; align-items: center; justify-content: center;    padding: var(--oday_sideGap);}
+
+.localNavigation { display:flex; align-items: center; justify-content: center; padding:var(--sc_padding); font-size:1.2em}
+.localNavigation li + li { margin-left:10px;}
+.localNavigation li.on a { color:var(--oday_mainColor); font-weight:500}
+.subNavigation  { display:flex; align-items: center; padding:var(--sc_padding); }
+.subNavigation li + li { margin-left:10px;}
+.subNavigation li.on a { color:var(--oday_mainColor); font-weight:500}
+
+h3.subTitle { padding:var(--sc_padding); font-size:2em;}
+h3.subTitle span {color:var(--oday_mainColor); font-weight:500; font-size:.8em}
+* + h3.subTitle { margin-top:40px;}
+
+
+.searchResult { padding:var(--sc_padding);}
+.searchResult > li + li { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder)}
+.searchResult > li { display:flex; }
+.searchResult > li > a { margin-right:2em}
+.searchResult > li img.thumb { border-radius:10px; }
+.searchResult > li ul li + li { margin-top:8px;}
+.searchResult > li ul li.title a {font-size:1.2em; font-weight:500}
+.searchResult > li ul li.title span {color:var(--oday_mainColor);}
+.searchResult > li ul li.con { line-height:1.4}
+.searchResult > li ul li.opt { font-size:.9em; opacity:.6}
+.searchResult > li ul li.opt span + span { margin-left:10px;}
+
+.searchResult.comment > li ul li.con { font-size:1.1em}
+
+.searchResult.multimedia {display:flex; flex-wrap: wrap; }
+.searchResult.multimedia > li + li { margin-top:0; padding-top:0; border-top:none}
+.searchResult.multimedia > li { flex-direction: column; }
+.searchResult.multimedia > li ul { margin-top:10px;}
+.searchResult.multimedia > li ul li.opt span { display:block;}
+.searchResult.multimedia > li ul li.opt span + span { margin-left:0; margin-top:2px;}
+
+.isMore {padding:var(--sc_padding); display:flex; border-bottom:var(--oday_listBorderStress)}
+.isMore a { margin:20px 0}
+
+.pagination { text-align:center}
+.pagination * + * { margin-left:10px;}
+
+.pagination {margin: 0 auto; max-width: var(--oday_maxWidth); display: flex; justify-content: center; padding:2em 0}
+.pagination > * { display: flex; align-items: center; justify-content: center; width:calc(var(--oday_iptHeight) - 4px); height:calc(var(--oday_iptHeight) - 4px); border-radius: 100%; }
+.pagination > * { margin: 0 5px; letter-spacing: -1px; }
+.pagination > *:first-child { font-size: 1.8em; margin: 0 1em 0 0; border:none; }
+.pagination > *:last-child { font-size: 1.8em; margin: 0 0 0 1em; border:none; }
+.pagination strong { font-weight: 700; border:none; color: var(--oday_bodyBgColor); background-color: var(--oday_mainColor); }
+.pagination a.pageBtn:hover { font-weight: 700; color: var(--oday_bodyBgColor); background-color: var(--oday_mainColor); }
+
+
+.noResult {padding:var(--sc_padding);}

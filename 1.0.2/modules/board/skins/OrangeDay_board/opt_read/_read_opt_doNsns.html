@@ -1,0 +1,20 @@
+<ul class="doNsns">
+	<li cond="$mi->read_utility == 'use'">
+		<a class="document_{$oDocument->document_srl} action" href="#popup_menu_area" onclick="return false">{$lang->cmd_document_do}..</a>
+	</li>
+	<li class="to_sns" cond="$mi->read_sns == 'use'">
+		<a  onClick="share_fb();" class="sns_fb"><i class='bx bxl-facebook'></i></a>
+		<a onClick="share_tw();" class="sns_tw"><i class='bx bxl-twitter' ></i></a>
+		<script>
+		/* SNS공유 공통페이지 */
+		var linkUrlcom = encodeURIComponent(window.location.href);
+		function share_fb() { 
+			window.open( 'http://www.facebook.com/sharer.php?u=' + linkUrlcom, '페이스북 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600' );
+		}
+		function share_tw() {
+			var sendText = document.title;
+			window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + linkUrlcom,  '트위터 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600');
+		}
+		</script>		
+	</li>
+</ul>

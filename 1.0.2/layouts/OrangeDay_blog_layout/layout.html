@@ -1,0 +1,460 @@
+{@ Context::addMetaTag('viewport', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');}
+{@ $_is_indexmodule = ($site_module_info->module_srl === $current_module_info->module_srl)}
+{@
+	$current_version = '1.0.2';
+	$oi = $layout_info;
+	if(!$oi->use_index) $oi->use_index = 'yes';
+	if(!$oi->gnb_width) $oi->gnb_width = '180';
+	if(!$oi->site_title) $oi->site_title_temp = 'OrangeDay';
+	if(!$oi->site_title_lang) $oi->site_title_lang = 'eng';
+	if(!$oi->site_sign_meta) $oi->site_sign_meta = 'yes';
+	if(!$oi->logo_img_round) $oi->logo_img_round = '0';
+	if(!$oi->lgo_view_img) $oi->lgo_view_img = 'yes';
+	if(!$oi->lgo_view_text) $oi->lgo_view_text = 'yes';
+	if(!$oi->site_badge) $oi->site_badge = 'yes';
+	
+}
+<!--// 쪽지  -->
+{@ 
+	$args = new stdClass(); 
+	$args->receiver_srl = $logged_info->member_srl; 
+	$output = executeQuery('communication.getNewMessage', $args);
+}
+<!--// 레벨 -->
+{@
+	$oPointModel = getModel('point');
+	$point = $oPointModel->getPoint($logged_info->member_srl);
+	$oModuleModel = &getModel('module');
+	$config = $oModuleModel->getModuleConfig('point');
+	$level = $oPointModel->getLevel($point, $config->level_step);
+	$next_point = $config->level_step[$level+1];
+	$now_point = $config->level_step[$level];
+	$need_point = (int)($next_point-$now_point);
+	$need_point2 = (int)($point-$now_point);
+	if($next_point > 0) $per = (int)($need_point2 / $need_point*1000);
+}
+
+<load target="/_asset/_Oday_script.js" />
+<load target="/_asset/_Oday_default.css" />
+<load target="/_asset/_Oday_rhymix_fix.css" /> 
+<load target="asset/nice-select.js" type="body" />
+<load target="asset/nice-select.css" />
+<load target="asset/jscookie.js" />
+<load target="css/layout.css" />
+
+<ul class="searchWrap">
+	<li>
+		<h3>SEARCH</h3>
+		<div class="wrapsearch">
+			<form action="{getUrl()}" method="get" class="searchall" no-error-return-url="true">
+				<input type="hidden" name="act" value="IS" />
+				<input type="hidden" name="mid" value="" />
+				<input type="text" name="is_keyword" value="{$is_keyword}" title="{$lang->cmd_search}" />
+				<!-- input type="submit" value="{$lang->cmd_search}" / -->
+				<button type="submit"><i class='bx bx-search'></i></button>									
+			</form>
+		</div>
+	</li>
+	<li><a class="search-close"><i class='bx bxs-x-circle'></i></a></li>
+	<li class="searchBg"></li>
+</ul>
+
+<header>
+	<a class="search-open"><i class='bx bx-search'></i></a>
+	<a href="/" target="_top" class="hlogo">
+		<!--@if($oi->site_title1)-->
+		{$oi->site_title1}
+		<!--@end-->
+		<!--@if($oi->site_title2)-->
+		{$oi->site_title2}
+		<!--@end-->
+		<!--@if(!$oi->site_title1 && !$oi->site_title2)-->
+		{$oi->site_title_temp}
+		<!--@end-->	
+	</a>
+	<a onclick="viewGnb();" class="viewgnb"><span class="material-symbols-sharp sharp bold">menu</span></a>
+</header>
+<ul id="odaylayout">
+	<li id="ol_left">
+		<div>
+			<ul class="setBox vp">
+				<li class="cog"><i class='bx bxs-cog' ></i></li>
+				<li class="setBoxlist">
+					<ul>
+						<li class="titlecon mod-dark">
+							<span>Dark Mode</span>
+							<div>
+								<a onclick="setThemeDark()" class="ovt viewDark"><i class='bx bxs-moon'></i></a>
+								<a onclick="setThemeLight()" class="ovt viewLight"><i class='bx bxs-sun' ></i></a>
+							</div>
+						</li>
+						<li class="titlecon mod-gnb">
+							<span>GNB Open</span>
+							<div>
+								<input type="checkbox" class="checkonoff" id="gnbsubopen" /><label for="gnbsubopen"></label>
+							</div>
+						</li>
+						<li class="titlecon mod-color">
+							<span>Color <i class='bx bxs-square light'></i> <i class='bx bxs-square main'></i> <i class='bx bxs-square dark'></i></span>
+							<div>
+								<a onclick="setTheme_color('white');"><i class='bx bxs-palette default' ></i></a> 
+								<a onclick="setTheme_color('orange');"><i class='bx bxs-palette orange' ></i></a> 
+								<a onclick="setTheme_color('blue');"><i class='bx bxs-palette blue' ></i></a> 
+								<a onclick="setTheme_color('green');"><i class='bx bxs-palette green' ></i></a>
+								<a onclick="setTheme_color('red');"><i class='bx bxs-palette red' ></i></a>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<a class="closegnb vm" onclick="closeGnb();"><i class='bx bx-x'></i></a>
+			<ul id="logo">
+				<!--@if($oi->site_birthday)-->
+				<li class="since">SINCE <span>{$oi->site_birthday}</span></li>
+				<!--@end-->
+				<li class="gnbtitle<!--@if($oi->site_title_lang == 'kor')--> korean<!--@end-->">
+					
+					<!--@if($oi->logo_img && $oi->lgo_view_img == 'yes')-->
+						<a href="/">
+						{@ if(!$oi->logo_img_width) $oi->logo_img_width = '80'; }
+						<img src="{$oi->logo_img}" alt="{$oi->site_title1} {$oi->site_title2}" class="vp" style="width: {$oi->logo_img_width}%; border-radius:{$oi->logo_img_round}px" />
+						</a>
+					<!--@end-->
+					<!--@if($oi->lgo_view_text == 'yes')-->
+						<a href="/">
+						<!--@if($oi->site_title1)-->
+						<span>{$oi->site_title1}</span>
+						<!--@end-->
+						<!--@if($oi->site_title2)-->
+						<span>{$oi->site_title2}</span>
+						<!--@end-->
+						<!--@if(!$oi->site_title1 && !$oi->site_title2)-->
+						<span class="eng">{$oi->site_title_temp}</span>
+						<!--@end-->
+						</a>
+					<!--@end-->					
+					<div class="dec vp" cond="$oi->site_title3">
+						{nl2br($oi->site_title3)}
+					</div>
+				</li>
+				
+				<li class="viewTraffic vp">
+					<img class="zbxe_widget_output" widget="orange_traffic_ViewerCafe24" skin="default" widget_cache="0m" trafficview_url="https://www.orangeday.kr/throttle-me" user_space="500" />
+				</li>
+				
+				<li class="search-btn vp">
+					<a class="search-open"><i class='bx bx-search'></i>SEARCH</a>
+				</li>
+			</ul>
+			<ul class="lt_gnb">
+				<li loop="$GNB->list => $key1, $val1"  cond="$val1['href']">
+					<a cond="$val1['href']" href="{$val1['href']}" class="active1"|cond="$val1['selected']" target="_blank"|cond="$val1['open_window'] == 'Y'" title="">
+						<i cond="$val1['icon']" class="{$val1['icon']}"></i>{$val1['link']|noescape}&nbsp;&nbsp;<span cond="$val1['open_window'] == 'Y'" class="material-symbols-sharp">open_in_new</span>
+					</a>
+					<a cond="$val1['list']" class="morelist"><i class='bx bx-list-plus'></i></a>
+					<ul cond="$val1['list']" class="depth2">
+						<li loop="$val1['list'] => $key2, $val2" class="more"|cond="$val2['list']">
+							<a href="{$val2['href']}" class="active2"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+								<span class="material-symbols-sharp">subdirectory_arrow_right</span>{$val2['link']|noescape}&nbsp;&nbsp;<span cond="$val2['open_window'] == 'Y'" class="material-symbols-sharp">open_in_new</span>
+							</a>
+							<ul cond="$val2['list']" class="depth3">
+								<li loop="$val2['list'] => $key3, $val3">
+									<a href="{$val3['href']}" class="active3"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+										<span class="material-symbols-sharp">subdirectory_arrow_right</span>{$val3['link']|noescape}&nbsp;&nbsp;<span cond="$val3['open_window'] == 'Y'" class="material-symbols-sharp">open_in_new</span>
+									</a>
+									<ul cond="$val3['list']" class="depth4">
+										<li loop="$val3['list'] => $key4, $val4">
+											<a href="{$val4['href']}" class="active4"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+												<span class="material-symbols-sharp">subdirectory_arrow_right</span>{$val4['link']|noescape}&nbsp;&nbsp;<span cond="$val4['open_window'] == 'Y'" class="material-symbols-sharp">open_in_new</span>
+											</a>
+											<ul cond="$val4['list']" class="depth5">
+												<li loop="$val4['list'] => $key5, $val5">
+													<a href="{$val5['href']}" class="active5"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+														<span class="material-symbols-sharp">subdirectory_arrow_right</span>{$val5['link']|noescape}&nbsp;&nbsp;<span cond="$val5['open_window'] == 'Y'" class="material-symbols-sharp">open_in_new</span>
+													</a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+			<ul class="meta">
+				<!--@if($oi->site_sign_meta == 'yes')-->
+				<li cond="!$is_logged" class="login_before">
+					<a href="{getUrl('','act', 'dispMemberLoginForm','', '')}" rel="nofollow"><span class="material-symbols-sharp fill">vpn_key</span></a>
+					<a href="{getUrl('','act', 'dispMemberSignUpForm','', '')}" rel="nofollow"><span class="material-symbols-sharp fill">person_add</span></a>
+				</li>
+				<li cond="$is_logged" class="login_after">
+					<a href="{getUrl('','act', 'dispMemberInfo','', '')}" rel="nofollow">
+						<!--@if($logged_info->profile_image->src)-->
+						<img src="{$logged_info->profile_image->src}" alt="{$logged_info->nick_name}"  class="profile"/>
+						<!--@else-->
+						<div class="profile"><i class='bx bxs-ghost'></i></div>
+						<!--@end-->
+					</a>
+					<a href="{getUrl('','act', 'dispMemberInfo','', '')}" rel="nofollow" class="uname">{$logged_info->nick_name}<span><em>Lv.{$level}</em> {$logged_info->user_id}</span></a>
+					<!--@if($output->page_navigation->total_count>0)-->
+					<a href="{getUrl('','act', 'dispCommunicationMessages','','')}" class="pager">
+						<span class="material-symbols-sharp">forward_to_inbox</span>
+					</a>
+					<!--@end-->
+				</li>
+				<li cond="$is_logged" class="login_info">
+					<div class="levelbarWrap vp">
+						<div class="levelbar">
+							<div class="perbar" style=" width:{($per / 10)}%;"></div>
+						</div>
+						<div class="levelinfo">
+							<div class="leveltitle">Lv.<em>{$level}</em> ( Exp. {($per / 10)}% )</div>
+							<ul class="levelinfoDetail">
+								<li><span>총 Exp</span><span>{$point}</span></li>
+								<li><span>레벨업 Exp</span><span>{$next_point}</span></li>
+								<li class="gap"><span>필요 Exp</span><span>{$need_point}</span></li>
+								<li><span>획득 Exp</span><span>{$need_point2}</span></li>
+								<li><span>남은 Exp</span><span>{$need_point - $need_point2}</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="btnwrap">
+						<a href="{getUrl('act', 'dispMemberLogout')}" rel="nofollow" class="logout"><i class='bx bx-power-off'></i>&nbsp;{$lang->cmd_logout}</a>
+						<a cond="$logged_info->is_admin == 'Y'" href="{getUrl('', 'module', 'admin')}" target="_blank" rel="nofollow" title="{$lang->cmd_management}" class="set"><i class='bx bxs-cog'></i>&nbsp;{$lang->cmd_management}</a>
+					</div>
+				</li>
+				<!--@end-->
+				<li class="lt_lnb" cond="$LNB">
+					<div loop="$LNB->list => $key1, $val1">
+						<a cond="$val1['href']" href="{$val1['href']}" class="active1"|cond="$val1['selected']" target="_top">{$val1['link']|noescape}</a>
+					</div>
+				</li>
+				<li class="mod-color vm">
+					<div>
+						<a onclick="setThemeDark()" class="ovt viewDark"><i class='bx bxs-moon'></i></a>
+						<a onclick="setThemeLight()" class="ovt viewLight"><i class='bx bxs-sun' ></i></a>
+						<a onclick="setTheme_color('white');"><i class='bx bxs-palette default' ></i></a> 
+						<a onclick="setTheme_color('orange');"><i class='bx bxs-palette orange' ></i></a> 
+						<a onclick="setTheme_color('blue');"><i class='bx bxs-palette blue' ></i></a> 
+						<a onclick="setTheme_color('green');"><i class='bx bxs-palette green' ></i></a>
+						<a onclick="setTheme_color('red');"><i class='bx bxs-palette red' ></i></a>
+					</div>
+				</li>
+				<li class="comsummury vp" cond="$oi->site_address || $oi->site_copyright">
+					<span class="address" cond="$oi->site_address">{$oi->site_address}</span>
+					<span class="copy" cond="$oi->site_copyright"><i class='bx bx-copyright'></i>&nbsp;{$oi->site_copyright}&nbsp;all rights reserved.</span>
+				</li>
+				
+				<!--@if($oi->site_badge=='yes')-->
+				<!-- Powered by Orangeday.com 夜飛  -->
+				<li class="layout"><div class="powered"><a href="https://www.orangeday.com/" target="_blank">by <span>Orangeday</span></a></div></li>
+				<!--@end-->
+				
+			</ul>
+		</div>
+	</li>
+	<li id="ol_right" class="content">
+		<!--@if(!$_is_indexmodule)-->
+		<div class="pagelocation">
+			<a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a>
+			<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+						<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+							<a href="{$val4['href']}">{$val4['text']}</a>
+						</block>
+					</block>
+				</block>
+			</block>
+			<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+					</block>
+				</block>
+			</block>
+		</div>
+		<!--@end-->
+		<!--@if($_is_indexmodule && $oi->use_index == 'no')-->
+		<div class="pagelocation">
+			<a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a>
+			<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+						<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+							<a href="{$val4['href']}">{$val4['text']}</a>
+						</block>
+					</block>
+				</block>
+			</block>
+			<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+					</block>
+				</block>
+			</block>
+		</div>
+		<!--@end-->
+		
+		<div class="pagelocation" cond="$act == 'IS'"><a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a></div>
+		<!--@if($_is_indexmodule && $oi->use_index == 'yes')--><!--@if($act != 'IS')-->
+			<include target="home.html" />
+		<!--@end--><!--@end-->
+		<!--@if($module_info->default_style || $_is_indexmodule)-->
+			<div class="templatepage">
+			{$content}
+			</div>
+		<!--@else-->
+			<div class="templatepage">
+			{$content}
+			</div>
+		<!--@end-->
+		<footer>
+			<ul class="comsummury">
+				<li class="location">
+				<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+					<a href="/"><i class='bx bxs-home'></i></a> <a href="{$val1['href']}"><!--@if(!$val1['list'])--><em>{$val1['text']}</em><!--@else--><em>{$val1['text']}</em><!--@end--></a>
+					<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+						<i class='bx bxs-chevron-right'></i><a href="{$val2['href']}"><!--@if(!$val2['list'])--><em> {$val2['text']}</em><!--@else-->{$val2['text']}<!--@end--></a>
+						<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+							<i class='bx bxs-chevron-right'></i><a href="{$val3['href']}"><!--@if(!$val3['list'])--><em> {$val3['text']}</em><!--@else-->{$val3['text']}<!--@end--></a>
+							<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+								<i class='bx bxs-chevron-right'></i><a href="{$val4['href']}"><!--@if(!$val3['list'])--><em> {$val4['text']}</em><!--@else-->{$val4['text']}<!--@end--></a>
+							</block>
+						</block>
+					</block>
+				</block>
+				</li>
+				<li class="address" cond="$oi->site_address">{$oi->site_address}</li>
+				<li class="copy" cond="$oi->site_copyright"><i class='bx bx-copyright'></i>&nbsp;{$oi->site_copyright}&nbsp;all rights reserved.</li>
+			</ul>
+		</footer>
+	</li>
+</ul>
+<div class="gototop layout" style="display:none;"><a><i class='bx bx-chevron-up'></i></a></div>
+<style>
+.viewTraffic .xe-widget-wrapper { overflow: unset;}
+.tviewer .pop,
+#ol_left .meta li.login_info .levelbarWrap .levelinfo { left: {$oi->gnb_width}px; }
+#odaylayout #ol_left { width:{$oi->gnb_width}px;}
+#odaylayout #ol_left > div { width:calc({$oi->gnb_width}px - 0px); }
+.setBox { left: calc({$oi->gnb_width}px - 0px); }
+#odaylayout #ol_right { width:calc(100% - {$oi->gnb_width}px); }
+@media screen and (max-width:768px){
+	#odaylayout #ol_left { width:100%;}
+	#odaylayout #ol_left > div { width:100%; }
+	#odaylayout #ol_right { width:100% }
+}
+</style>
+<script>
+var $ = jQuery;
+/* 바닥 스크롤 잠금 */
+function scrollDisable(){
+    $('body').addClass('scrollDisable').on('scroll touchmove mousewheel', function(e){
+        e.preventDefault();
+    });
+}
+function scrollAble(){
+    $('body').removeClass('scrollDisable').off('scroll touchmove mousewheel');
+}
+/* GNB 열고 닫기 - 모바일 */
+function viewGnb() {
+	scrollDisable();
+	$("#ol_left").show();
+}
+function closeGnb() {
+	scrollAble();
+	$("#ol_left").hide();
+}
+//서브메뉴 펼치기
+$(".morelist").click(function(){
+	$("#ol_left .lt_gnb .depth2").slideUp();
+	$(".morelist").html("<i class='bx bx-list-plus'></i>");
+	if(!$(this).next().is(":visible")){
+		$(this).next().slideDown();
+		$(this).html("<i class='bx bx-list-minus'></i>");
+	}
+});
+//서브 메뉴 이동시 해당 메뉴 열어 놓기
+$(".lt_gnb li").has(".active1, .active2").find(".depth2").show();
+$(".lt_gnb li").has(".active1, .active2").find(".morelist").html("<i class='bx bx-list-minus'></i>");
+//스크롤시 액션
+$(window).scroll(function () {
+	Yposition = $(this).scrollTop();
+	if (Yposition >= 100) {
+		$(".gototop.layout").fadeIn();
+		$("header").addClass("scrollchange");
+	}else {
+		$(".gototop.layout").fadeOut();
+		$("header").removeClass("scrollchange");
+	}
+});
+//상단이동
+$(".gototop").click(function(){
+	$('html, body').animate({scrollTop: 0}, 500);
+});
+//어드민 페이지 / 세팅 페이지에서 제목 감추기
+var itemsWithOnClassaAdmin = $('.x, .xm, .xc, #access, .signin');
+if (itemsWithOnClassaAdmin.length > 0) {
+	$('.pagelocation').hide();
+}
+/* GNB 항상 열기 체크 */
+var $getGnbopen = XE.cookie.get('setOdayGnbopen');
+if( $getGnbopen == "open" ) {
+	$("#ol_left .lt_gnb .depth2").show();
+	$(".morelist").hide();
+	setCookie( "setOdayGnbopen", "open" , 365 );
+	$("input:checkbox[id='gnbsubopen']").prop("checked", true);
+}
+$(function(){
+	/* GNB 열고 닫기 */
+	$("#gnbsubopen").change(function(){
+		if($(this).is(":checked")){
+			$("#ol_left .lt_gnb .depth2").slideDown();
+			$(".morelist").hide();
+			setCookie( "setOdayGnbopen", "open" , 365 );
+		}else{
+			$("#ol_left .lt_gnb .depth2").slideUp();
+			$(".morelist").show();
+			$(".morelist").html("<i class='bx bx-list-plus'></i>");
+			$(".lt_gnb li").has(".active1, .active2").find(".depth2").slideDown();
+			$(".lt_gnb li").has(".active1, .active2").find(".morelist").html("<i class='bx bx-list-minus'></i>");			
+			setCookie( "setOdayGnbopen", "" , 365 );
+		}
+	});
+	/* 활성메뉴 열때 바로 위 뎁스 액티브 제거 */
+	$itemsWithClass2 = $('.active3');
+	$itemsWithClass3 = $('.active4');
+	$itemsWithClass4 = $('.active5');
+	if ($itemsWithClass2.length > 0) { $('a.active2').removeClass('active2'); }
+	if ($itemsWithClass3.length > 0) { $('a.active3').removeClass('active3'); }
+	if ($itemsWithClass4.length > 0) { $('a.active4').removeClass('active4'); }
+	/* 설정메뉴 잠깐 보이기 - 메인에서만 */
+	<!--@if($_is_indexmodule && $oi->use_index == 'yes')--><!--@if($act != 'IS')-->
+		$(".setBoxlist").addClass('active');
+		setTimeout(function() { 
+			$(".setBoxlist").removeClass('active');
+		}, 500);
+	<!--@end--><!--@end-->
+});
+/* 검색 열고 닫기 */
+$(".search-open").click(function(){
+	$('.searchWrap').addClass('active');
+});
+$(".search-close, .searchBg").click(function(){
+	$('.searchWrap').removeClass('active');
+});
+</script>

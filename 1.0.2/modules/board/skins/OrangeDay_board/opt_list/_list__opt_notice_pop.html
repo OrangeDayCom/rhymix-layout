@@ -1,0 +1,43 @@
+<ul id="list-bd" class="bd-all list-notice roundCorner" cond="$page < 2"  cond="$notice_list">
+	<li loop="$notice_list=>$no,$document" class="box">
+		<div class="number">
+			<i class='bx bxs-microphone bx-flip-horizontal'></i>
+		</div>
+		<div class="list">
+			<div class="title">
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}">
+				<!--@else-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon();" target="viewgall">
+				<!--@end-->
+					{$document->getTitle()|noescape}
+				</a>
+			</div>
+			<span cond="$document->getCommentCount()" class="count vp">
+					<i class='bx bxs-message-rounded-dots com'></i>&nbsp;{$document->getCommentCount()}
+				</span>
+			<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon 
+				<!--@foreach($document->getExtraImages() as $key=>$val)-->
+				<!--@if($val == 'secret')-->S<!--@end-->
+				<!--@if($val == 'new')-->N<!--@end-->
+				<!--@if($val == 'update')-->U<!--@end-->
+				<!--@if($val == 'file')-->F<!--@end-->
+				<!--@end-->
+			">
+				<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+				<block cond="$key == 'new'">N</block>
+				<block cond="$key == 'update'">U</block>
+				</block>
+			</span>
+			<div class="end">
+				<span class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+				<span class="read" cond="$document->get('readed_count')>0">
+					{$document->get('readed_count')>0?$document->get('readed_count'):'0'}
+				</span>
+				<span cond="$document->getCommentCount()" class="count vm">
+					<i class='bx bxs-message-rounded-dots com'></i>&nbsp;{$document->getCommentCount()}
+				</span>
+			</div>
+		</div>
+	</li>
+</ul>

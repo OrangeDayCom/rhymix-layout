@@ -1,0 +1,96 @@
+<!-- COMMENT -->
+<div class="feedback" id="comment" cond="$oDocument->getCommentcount()">
+	<h2><i class="xi-comment"></i>&nbsp;{$lang->comment}&nbsp;<em>{$oDocument->getCommentcount()}</em></h2>
+	<ul class="comList">
+		<li loop="$oDocument->getComments()=>$key,$comment" class="fbItem"|cond="!$comment->get('depth')" class="fbItem indent indent{($comment->get('depth'))}"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}" style="padding-left:calc({($comment->get('depth'))}0px * 2);">
+			<ul class="comListSub">
+				<li class="meta">
+					<img cond="$comment->getProfileImage()" src="{$comment->getProfileImage()}" alt="Profile" class="profile" />
+					<span cond="!$comment->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>						
+				</li>
+				<li class="comCon">
+					<div class="authorwrap">
+						<a cond="!$comment->member_srl && $comment->homepage" href="{$comment->getHomepageUrl()}" rel="nofollow noopener"  class="author">{$comment->getNickName()}</a>
+						<span cond="!$comment->member_srl && !$comment->homepage" class="author">{$comment->getNickName()}</span>
+						<a cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl} author" onclick="return false">{$comment->getNickName()}</a>
+						<span class="od_date">({$comment->getIpaddress()})</span>
+						<span class="od_date">{getTimeGap($comment->get('regdate'), "Y.m.d a h:i")}</span> 
+						<span class="od_link"><a href="{$oDocument->getUrl()}#comment_{$comment->comment_srl}" class="copy_comment_url"><i class='bx bx-copy'></i> #comment_{$comment->comment_srl}</a></span>
+<script>
+$('a.copy_comment_url').click(function() {
+    var url = $(this).attr('href');
+    if (!url) {
+        return
+    }
+    copy(url);
+    alert('댓글 주소가 복사되었습니다.');
+    return !1
+});
+function copy(val) {
+    var dummy = document.createElement('textarea');
+    document.body.appendChild(dummy);
+    dummy.value = val;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy)
+}
+</script>
+					</div>
+					<!--@if(!$comment->isAccessible())-->
+					<form action="./" method="get" class="secretForm" onsubmit="return procFilter(this, input_password)">
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="page" value="{$page}" />
+						<input type="hidden" name="document_srl" value="{$comment->get('document_srl')}" />
+						<input type="hidden" name="comment_srl" value="{$comment->get('comment_srl')}" />					
+						<div class="utilityMessage">{$lang->msg_is_secret} {$lang->msg_input_password}</div>
+						<div class="formBoxCenter">					
+							<input type="password" name="password" id="cpw_{$comment->comment_srl}" class="iText" />
+							<input type="submit" class="obtn" value="{$lang->cmd_input}" />
+						</div>
+					</form>
+					<!--@else-->
+					{$comment->getContent(false)|noescape}
+					<block cond="!$listCheck">
+					<ul cond="$comment->hasUploadedFiles()" class="fileList">
+						<li loop="$comment->getUploadedFiles()=>$key,$file">
+							<a href="{getUrl('')}{$file->download_url}" rel="nofollow">{$file->source_filename} 
+								<span class="fileSize">{FileHandler::filesize($file->file_size)} / <i class='bx bxs-downvote'></i> {number_format($file->download_count)}</span>
+							</a>
+						</li>
+					</ul>
+					<div class="action">
+						<div>					
+						<a class="bd_login" href="#" onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}');return false"|cond="$is_logged" title="{$lang->cmd_vote}">
+						<span class="material-symbols-sharp fill<!--@if($comment->get('voted_count')!=0)--> active<!--@end-->">favorite</span> {$comment->get('voted_count')?$comment->get('voted_count'):0}</a>
+						</div>
+
+						<a cond="$oDocument->allowComment()" class="re_comment" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" 
+						onclick="<!--@if(!$grant->write_comment || !$oDocument->isEnableComment())-->
+						alert('{$lang->msg_not_permitted}')
+						<!--@else-->
+						reComment({$comment->get('document_srl')},{$comment->get('comment_srl')},'{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}')
+						<!--@end-->;
+						return false;"><i class="fa fa-comment"></i> {$lang->cmd_reply}aaaa</a>
+
+
+						<a cond="$oDocument->allowComment()" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" class="reply" rel="nofollow"><i class="xi-reply"></i> {$lang->cmd_reply}</a>
+						<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" class="modify" rel="nofollow"><i class="xi-eraser"></i> {$lang->cmd_modify}</a>
+						<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardDeleteComment','comment_srl',$comment->comment_srl)}" class="delete" rel="nofollow"><i class="xi-trash"></i> {$lang->cmd_delete}</a>
+						<a cond="$is_logged" class="comment_{$comment->comment_srl} this" href="#popup_menu_area" onclick="return false">{$lang->cmd_comment_do}</a>
+					</div>
+					</block>
+					<!--@end-->
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<div cond="$oDocument->comment_page_navigation" class="pagination">
+		<a href="{getUrl('cpage',1)}#comment" class="direction prev"><span></span><span></span><i class='bx bxs-chevron-left' ></i></a> 
+		<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+			<strong cond="$cpage==$page_no">{$page_no}</strong> 
+			<a cond="$cpage!=$page_no" href="{getUrl('cpage',$page_no)}#comment">{$page_no}</a>
+		</block>
+		<a href="{getUrl('cpage',$oDocument->comment_page_navigation->last_page)}#comment" class="direction next"><i class='bx bxs-chevron-right'></i><span></span><span></span></a>
+	</div>
+</div>
+

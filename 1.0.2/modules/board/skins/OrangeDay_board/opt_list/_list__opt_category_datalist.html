@@ -1,0 +1,26 @@
+<!-- ////////////////////////
+
+	카테고리
+
+ ////////////////////////-->
+{@ $cate_list = array(); $current_key = null; }
+<!--@foreach($category_list as $key=>$val)-->
+	<!--@if(!$val->depth)-->
+		{@
+			$cate_list[$key] = $val;
+			$cate_list[$key]->children = array();
+			$current_key = $key;
+		}
+	<!--@elseif($current_key)-->
+		{@ $cate_list[$current_key]->children[] = $val }
+	<!--@end-->
+<!--@end-->
+<div class="" cond="$mi->use_category=='Y'">
+	<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->">{$lang->total}</a>
+	<block loop="$cate_list=>$key,$val">
+		<a href="{getUrl(category,$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end--><!--@if(count($val->children))--> wcdr<!--@end-->">{$val->title} <em cond="$val->document_count">{$val->document_count}</em></a>
+		<div cond="count($val->children)" class="warpctDep3">
+			<a loop="$val->children=>$idx,$item" href="{getUrl(category,$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end-->">{$item->title} <em cond="$item->document_count">{$item->document_count}</em></a>
+		</div>
+	</block>
+</div>

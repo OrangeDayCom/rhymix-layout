@@ -1,0 +1,247 @@
+{@ Context::addMetaTag('viewport', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');}
+{@ $mi = $module_info; }
+<!--@if($order_type == "desc")-->
+{@ $order_type = "asc"; }
+<!--@else-->
+{@ $order_type = "desc"; }
+<!--@end-->
+{@ 
+	$current_version = '1.0.2';
+	$mi->duration_new = 24;
+	if(!$mi->preview) $mi->preview = "use_no";
+	if(!$mi->theme_use) $mi->theme_use = "use_no";
+	if(!$mi->search_sticky) $mi->search_sticky = 0;
+	if(!$mi->list_in_read) $mi->list_in_read = "use_no";	
+	if(!$mi->normal_list_height) $mi->normal_list_height = 60;
+	if(!$mi->bg_use) $mi->bg_use = "yes";
+	if(!$mi->page_align) $mi->page_align = "full";
+	if(!$mi->page_width) $mi->page_width = "1000";	
+	
+	if(!$mi->read_meta) $mi->read_meta = "use";
+	if(!$mi->read_vote) $mi->read_vote = "use";
+	if(!$mi->read_tag) $mi->read_tag = "use";
+	if(!$mi->read_download) $mi->read_download = "use";
+	if(!$mi->read_utility) $mi->read_utility = "use";
+	if(!$mi->read_sns) $mi->read_sns = "use";
+	if(!$mi->read_sign) $mi->read_sign = "use";
+	if(!$mi->read_bnavi) $mi->read_bnavi = "use";
+	if(!$mi->site_badge) $mi->site_badge = "use";
+	
+	
+	$oday_srl = $layout_info->author[0];	
+}
+<!--@if($onlyimg=='all')-->
+{@ $mi->view_cell = 'all'}
+<!--@elseif($onlyimg=='thum')-->
+{@ $mi->view_cell = 'thum'}
+<!--@elseif($onlyimg=='sum')-->
+{@ $mi->view_cell = 'sum'}
+<!--@elseif(!in_array($mi->view_cell,array('all','thum','sum')))-->
+{@ $mi->view_cell = 'all'}
+<!--@end-->
+
+<!--@if($listStyle=='list')-->
+{@ $mi->default_style = 'list'}
+<!--@elseif($listStyle=='listtable')-->
+{@ $mi->default_style = 'listtable'}
+<!--@elseif($listStyle=='gallery')-->
+{@ $mi->default_style = 'gallery'}
+<!--@elseif($listStyle=='galleryView')-->
+{@ $mi->default_style = 'galleryView'}
+<!--@elseif($listStyle=='webzine')-->
+{@ $mi->default_style = 'webzine'}
+<!--@elseif($listStyle=='webzinelist')-->
+{@ $mi->default_style = 'webzinelist'}
+<!--@elseif($listStyle=='bookmark')-->
+{@ $mi->default_style = 'bookmark'}
+<!--@elseif($listStyle=='guest')-->
+{@ $mi->default_style = 'guest'}
+<!--@elseif($listStyle=='guestView')-->
+{@ $mi->default_style = 'guestView'}
+<!--@elseif($listStyle=='inputform')-->
+{@ $mi->default_style = 'inputform'}
+<!--@elseif($listStyle=='blog')-->
+{@ $mi->default_style = 'blog'}
+<!--@elseif($listStyle=='history')-->
+{@ $mi->default_style = 'history'}
+<!--@elseif($listStyle=='youtube')-->
+{@ $mi->default_style = 'youtube'}
+<!--@elseif(!in_array($mi->default_style,array('list','listtable','gallery','webzine','webzinelist','bookmark','guest','inputform','blog','history','youtube')))-->
+{@ $mi->default_style = 'list'}
+<!--@end-->
+
+<!--@if($oday_srl->homepage!='https://www.orangeday.com')-->
+<load target="/_asset/_Oday_script.js" />
+<load target="/_asset/_Oday_default.css" />
+<load target="/_asset/_Oday_rhymix_fix.css" /> 
+<load target="asset/nice-select.js" type="body" />
+<load target="asset/nice-select.css" />
+<load target="asset/jscookie.js" />
+<script>
+var $ = jQuery;
+function scrollDisable(){
+    $('body').addClass('scrollDisable').on('scroll touchmove mousewheel', function(e){
+        e.preventDefault();
+    });
+}
+function scrollAble(){
+    $('body').removeClass('scrollDisable').off('scroll touchmove mousewheel');
+}
+</script>
+<!--@end-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">	
+<load target="css/default.css" />
+<style>
+:root {
+	--oday_listHeight:{$mi->normal_list_height}px;
+	--oday_maxWidth: {$mi->page_width}px;
+}
+<!--@if($mi->default_style=='gallery' || $mi->default_style=='blog')-->
+	.pagelocation,
+	footer,
+	.od-bord { max-width:100%; margin-left:0; margin-right:0}
+	.od-bord #writeBox {margin-left:10px; margin-right:10px; max-width: -webkit-fill-available;}
+<!--@end-->
+/* 페이지 정렬 */
+<!--@if($mi->page_align=='center')-->
+
+<!--@elseif($mi->page_align=='left')-->
+	.pagelocation,
+	footer,
+	.od-bord { max-width:var(--oday_maxWidth); margin-left:10px; margin-right:10px}
+	<!--@if($mi->default_style=='gallery' || $mi->default_style=='blog')-->
+		.pagelocation,
+		footer,
+		.od-bord { max-width:100%; margin-left:0; margin-right:0}
+	<!--@elseif($mi->default_style=='galleryView')-->
+		.od-bord { max-width:var(--oday_maxWidth); }
+	<!--@elseif($mi->default_style=='webzine')-->
+		.od-bord { max-width:var(--oday_maxWidth);  width:var(--oday_maxWidth); }
+	<!--@end-->
+<!--@elseif($mi->page_align=='full')-->
+	<!--@if($mi->default_style=='gallery')-->
+		:root {
+			--oday_maxWidth: 1000px;
+		}
+	<!--@else-->
+		:root {
+			--oday_maxWidth: 100%;
+		}	
+	<!--@end-->
+<!--@end-->
+
+/* 상단 검색박스 위치 */
+.stickyTopBox { top:{$mi->search_sticky}px; } 
+@media screen and (max-width:768px){
+	:root {
+		--oday_maxWidth:100%;
+	}
+	.stickyTopBox { top:0px; }
+	.pagelocation,
+	footer,
+	.od-bord { max-width:calc(100vw - 10px); margin-left:5px; margin-right:0}	
+}
+</style>
+
+<!--@if($mi->bg_use=='no')-->
+<style>
+:root {
+	--oday_bodyBgColor: rgb(250 250 250);
+}
+:is(.color_scheme_dark), :root[color-theme='dark'] {
+	--oday_bodyBgColor: rgb(28,28,28);
+}
+.widthSideNavi:not(.ifrm) #readBox ,
+#writeBox,
+#list_inputform,
+.widthSideNavi:not(.ifrm) .naviBoxSide ul { background-color:transparent; border:none; box-shadow:none }
+#readBox:not(.ifrm) .feedback h2  {background-color:var(--oday_bodyBgColor);}
+#list-bd-table table.tbl_board,
+#list-bd.list-bd-ul,
+#list-webzinelist,
+.comList,
+.widthSideNavi:not(.ifrm) #readBox .naviBtn,
+#list_inputform .ap_privacy {background-color:transparent; }
+.widthSideNavi:not(.ifrm) #readBox  .sign li {background-color: var(--oday_listBgColorStress2);}
+</style>
+<!--@end-->
+
+
+<div class="od-bord">
+<div cond="$mi->preview=='use' || $mi->theme_use == 'use'" class="preview_btn">
+	<a class="view_opt"><i class='bx bx-cog' ></i></a>
+	<ul class="cate1" cond="$mi->preview=='use'" style="display:none">
+		<li class="on"|cond="$mi->default_style=='listtable'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','listtable','act','','document_srl','')}" title="기본-table"><span class="material-symbols-sharp">reorder</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='list'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','list','act','','document_srl','')}" title="기본-ul"><span class="material-symbols-sharp">reorder</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='guest'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','guest','act','','document_srl','')}" title="방명록"><span class="material-symbols-sharp">account_box</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='webzine'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','webzine','act','','document_srl','')}" title="웹진"><span class="material-symbols-sharp">newsmode</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='webzinelist'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','webzinelist','act','','document_srl','')}" title="웹진리스트"><span class="material-symbols-sharp">lists</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='bookmark'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','bookmark','act','','document_srl','')}" title="북마크"><span class="material-symbols-sharp">star</span></a>
+		</li>	
+		<li class="on"|cond="$mi->default_style=='inputform'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','inputform','act','','document_srl','')}" title="입력폼"><span class="material-symbols-sharp">inventory</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='blog'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','blog','act','','document_srl','')}" title="블로그(매뉴얼/강좌)"><span class="material-symbols-sharp">feed</span></a>
+		</li>			
+		<li class="on"|cond="$mi->default_style=='history'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','history','act','','document_srl','')}" title="히스토리"><span class="material-symbols-sharp">history</span></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='youtube'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','youtube','act','','document_srl','')}" title="유튜브"><i class='bx bxl-youtube'></i></a>
+		</li>
+		<li class="on gall"|cond="$mi->default_style=='gallery'">
+			<a class="bubble tooltip" href="{getUrl('listStyle','gallery','act','','document_srl','')}" title="갤러리"><span class="material-symbols-sharp">imagesmode</span></a>
+			<ul cond="$mi->default_style=='gallery'" class="date2">
+				<li class="on"|cond="$mi->view_cell=='all'">
+					<a class="bubble tooltip" href="{getUrl('onlyimg','all','act','','document_srl','')}" title="썸네일 + 제목">A</a>
+				</li>
+				<li class="on"|cond="$mi->view_cell=='thum'">
+					<a class="bubble tooltip" href="{getUrl('onlyimg','thum','act','','document_srl','')}" title="썸네일">T</a>
+				</li>
+				<li class="on"|cond="$mi->view_cell=='sum'">
+					<a class="bubble tooltip" href="{getUrl('onlyimg','sum','act','','document_srl','')}" title="제목">C</a>
+				</li>
+			</ul>			
+		</li>
+	</ul>
+	<ul cond="$mi->theme_use == 'use'" class="cate1" style="display:none">
+		<li><a onclick="setThemeDark()" class="viewDark "><i class='bx bxs-moon'></i></a></li>
+		<li><a onclick="setThemeLight()" class="viewLight "><i class='bx bxs-sun' ></i></a> </li>
+		<li><a onclick="setTheme_color('white');" class=""><i class='bx bxs-palette default' ></i></a> </li>
+		<li><a onclick="setTheme_color('orange');" class=""><i class='bx bxs-palette orange' ></i></a> </li>
+		<li><a onclick="setTheme_color('blue');" class=""><i class='bx bxs-palette blue' ></i></a> </li>
+		<li><a onclick="setTheme_color('green');" class=""><i class='bx bxs-palette green' ></i></a></li>
+		<li><a onclick="setTheme_color('red');" class=""><i class='bx bxs-palette red' ></i></a></li>
+	</ul>
+
+	<script>			
+	$(function(){
+	   $(".tooltip").tooltip({
+		delay:0,
+		opacity:1,
+		position: { my: "left center", at: "right center" }
+	   });
+	   
+	});	
+	$(".view_opt").click(function(){
+		$(this).parent().find('ul').slideUp(200);
+		if(!$(this).parent().find('ul').is(":visible")){
+			$(this).parent().find('ul').slideDown(200);
+		}
+	});	
+	</script>		
+</div>
+

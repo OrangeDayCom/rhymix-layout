@@ -1,0 +1,23 @@
+<!-- ////////////////////////
+
+	글쓰기, 관리, 어드민 버튼
+
+ ////////////////////////-->
+<div class="btnBox" cond="$grant->write_document">
+	<ul>
+		<li>			
+			<!--@if($mi->default_style=='gallery')-->
+			<a href="{getUrl('act','dispBoardWrite','document_srl','','listStyle','galleryView')}" class="obtn primary"><i class='bx bxs-pencil'></i> 글쓰기</a>
+			<!--@else-->
+			<a href="{getUrl('act','dispBoardWrite','document_srl','')}" class="obtn primary"><i class='bx bxs-pencil'></i> 글쓰기</a>
+			<!--@end-->			
+			<span cond="$grant->manager" class="obtn"><input type="checkbox" onclick="XE.checkboxToggleAll({ doClick:true });" title="Check All" /></span>
+			<a cond="$grant->manager" href="{getUrl('','module','document','act','dispDocumentManageDocument')}"  class="obtn" onclick="popopen(this.href,'manageDocument'); return false;"><i class='bx bx-select-multiple'></i>게시글 관리</a>
+		 	<a cond="$grant->manager" href="{getUrl('act','dispBoardAdminBoardInfo')}" class="obtn"><i class='bx bx-slider'></i> 설정</a>			
+		</li>
+	</ul>
+</div>
+<style>
+span.obtn + .obtn { margin-left:0; border-radius: 0 calc(var(--oday_btnHeight) / 6) calc(var(--oday_btnHeight) / 6) 0; border-left-style: dashed !important;}
+span.obtn {border-radius: calc(var(--oday_btnHeight) / 6) 0 0 calc(var(--oday_btnHeight) / 6); padding:0 10px; border-right-style: dashed !important; }
+</style>

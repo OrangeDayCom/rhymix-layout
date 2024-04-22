@@ -1,0 +1,69 @@
+{@ 
+$lang->well_reveived = "문의주셔서 감사합니다.";
+$lang->send = "문의등록하기"
+}
+<div class="ap_result">
+
+	<!--// 헤더 : 전송 확인 메시지 -->
+	<div class="ap_text_wrapper">
+		<h3>문의주셔서 감사합니다.</h3>
+		<p>
+			문의주신 내용은<br />
+			해당 담당자 확인후 빠르게 연락드리겠습니다.
+		</p>
+	</div>
+
+	
+	<!--// 기본 정보 -->
+	<h3>기본 정보</h3>
+	<section class="ap_basic">
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->title}</div>
+			<div class="ap_result_basic_td" rel="title"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->name}</div>
+			<div class="ap_result_basic_td" rel="nick_name"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->email}</div>
+			<div class="ap_result_basic_td" rel="email_address"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->phone}</div>
+			<div class="ap_result_basic_td" rel="phone_number"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->category}</div>
+			<div class="ap_result_basic_td" rel="category_title"></div>
+		</div>
+	</section>
+	<h3>{$wi->option_title}</h3>
+	<!--// 확장변수 -->
+	<section cond="$wi->has_extra">
+		<table class="ap_result_extra">
+			<tr loop="$wi->target_extra_list => $key, $val">
+				<th>{$val->name}</th>
+				<td rel="extra_vars{$val->idx}"></td>
+			</tr>
+		</table>
+	</section>
+
+	<!--// 내용 -->
+	<section>
+		<div class="ap_result_content">
+			<div class="ap_result_content_th"><h3>{$lang->content}</h3></div>
+			<div class="ap_result_content_td ap_textarea" rel="message">
+			</div>
+		</div>
+		<div class="ap_result_content ap_pass">
+			<div class="ap_result_content_th">{$lang->password}</div>
+			<div class="ap_result_content_td" rel="password"></div>
+		</div>
+	</section>
+	<br /><br />
+	<div class="apbtn-box">
+		<div class="ap_result_footer"><a href="{getUrl('', 'mid', $wi->target_mid)}" class="obtn">{$lang->cmd_to_board}</a></div>
+	</div>
+	<br /><br />
+</div>

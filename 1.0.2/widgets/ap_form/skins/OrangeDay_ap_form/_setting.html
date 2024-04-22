@@ -1,0 +1,22 @@
+<load target="filter/insert.xml" />
+<load target="css/style.css" />
+<load target="js/main.js" />
+<load target="js/submit.js" />
+<load target="js/autosize.min.js" />
+<load target="js/jquery.mask.min.js" />
+{@
+	$is_rx = defined('RX_VERSION') ? true : false;
+	if ( $lang_type == 'ko' ) :
+		$lang->cmd_agree_and_close = '동의하고 닫기';
+		$lang->well_reveived = '잘 도착했습니다!';
+		$lang->msg_reveived = '보내신 메시지가 잘 도착했습니다.';
+		$lang->as_follows ='메시지 내용은 다음과 같습니다.';
+		$lang->cmd_to_board ='게시판 바로가기';
+	else :
+		$lang->cmd_agree_and_close = 'Agree and Close';
+		$lang->well_reveived = 'Well Received!';
+		$lang->msg_reveived = 'Your message was well received.';
+		$lang->as_follows ='The contents are as follows.';
+		$lang->cmd_to_board ='Go to the List';
+	endif;
+}
