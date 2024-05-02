@@ -1,0 +1,113 @@
+<!--@if($oDocument->isEnableComment())-->
+	<!--@if($guest_comment_btn !='N')-->
+	<div class="feedback" id="comment" cond="!$oDocument->getCommentcount()">
+		<h2><i class="xi-comment"></i>&nbsp;{$lang->comment}&nbsp;<em>{$oDocument->getCommentcount()}</em></h2>
+		<div></div>
+	</div>
+	<!--@end-->
+	<div class="feedback" id="comment" cond="$oDocument->getCommentcount()">
+		<h2><i class="xi-comment"></i>&nbsp;{$lang->comment}&nbsp;<em>{$oDocument->getCommentcount()}</em></h2>
+		<ul class="comList">
+			<li loop="$oDocument->getComments()=>$key,$comment" class="fbItem nodepth"|cond="!$comment->get('depth')" class="fbItem indent indent{($comment->get('depth'))}"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}" 
+			<!--@if(Mobile::isMobileCheckByAgent())-->
+				style="padding-left:calc({($comment->get('depth'))}0px * 1.2);"
+			<!--@else-->
+				style="padding-left:calc({($comment->get('depth'))}0px * 2);"
+			<!--@end-->			
+			>
+
+				<ul class="comListSub">
+					<li class="meta<!--@if($comment->get('depth'))--> depth<!--@end-->">
+						<img cond="$comment->getProfileImage()" src="{$comment->getProfileImage()}" alt="Profile" class="profile" />
+						<span cond="!$comment->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>						
+					</li>
+					<li class="comCon">
+						<div class="authorwrap">
+							<a cond="!$comment->member_srl && $comment->homepage" href="{$comment->getHomepageUrl()}" rel="nofollow noopener"  class="author">{$comment->getNickName()}</a>
+							<span cond="!$comment->member_srl && !$comment->homepage" class="author">{$comment->getNickName()}</span>
+							<a cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl} author" onclick="return false">{$comment->getNickName()}</a>
+							<span class="od_ip">({$comment->getIpaddress()})</span>
+							<span class="od_date">{getTimeGap($comment->get('regdate'), "Y.m.d a h:i")}</span> 
+							<span class="od_link"><a href="{$oDocument->getUrl()}#comment_{$comment->comment_srl}" class="copy_comment_url"><i class='bx bx-copy'></i> #comment_{$comment->comment_srl}</a></span>
+
+						</div>
+						<!--@if(!$comment->isAccessible())-->
+						<form action="./" method="get" class="secretForm" onsubmit="return procFilter(this, input_password)">
+							<input type="hidden" name="mid" value="{$mid}" />
+							<input type="hidden" name="page" value="{$page}" />
+							<input type="hidden" name="document_srl" value="{$comment->get('document_srl')}" />
+							<input type="hidden" name="comment_srl" value="{$comment->get('comment_srl')}" />					
+							<div class="utilityMessage">{$lang->msg_is_secret} {$lang->msg_input_password}</div>
+							<div class="formBoxCenter">					
+								<input type="password" name="password" id="cpw_{$comment->comment_srl}" class="iText" />
+								<input type="submit" class="obtn" value="{$lang->cmd_input}" />
+							</div>
+						</form>
+						<!--@else-->
+						{$comment->getContent(false)|noescape}
+						<ul cond="$comment->hasUploadedFiles()" class="fileList">
+							<li loop="$comment->getUploadedFiles()=>$key,$file">
+								<a href="{getUrl('')}{$file->download_url}" rel="nofollow">{$file->source_filename} 
+									<span class="fileSize">{FileHandler::filesize($file->file_size)} / <i class='bx bxs-downvote'></i> {number_format($file->download_count)}</span>
+								</a>
+							</li>
+						</ul>
+						<div class="action">
+								<div>
+									<a class="bd_login" title="{$lang->cmd_vote}"
+									onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}');return false"|cond="$is_logged" 
+									onclick="alert('로그인 후 이용 가능합니다.')"|cond="!$is_logged" 
+									>
+									<span class="material-symbols-sharp fill<!--@if($comment->get('voted_count')!=0)--> active<!--@end-->">favorite</span> {$comment->get('voted_count')?$comment->get('voted_count'):0}</a>
+								</div>
+								
+								<div class="actionpack">
+									<!--@if($guest_comment_btn !='N')-->
+										<a cond="$oDocument->allowComment()" class="re_comment" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" 
+										onclick="<!--@if(!$grant->write_comment || !$oDocument->isEnableComment())-->alert('{$lang->msg_not_permitted}')<!--@else-->
+										reComment({$comment->get('document_srl')},{$comment->get('comment_srl')},
+										'{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}')
+										<!--@end-->;return false;"><i class='bx bx-reply bx-rotate-180' ></i> {$lang->cmd_reply}</a>
+									<!--@else-->
+										<a href="{getUrl('document_srl',$oDocument->document_srl, 'listStyle', $listStyle, '','')}#comment_{$comment->comment_srl}"><i class='bx bx-reply bx-rotate-180' ></i> {$lang->cmd_reply}</a>
+									<!--@end-->
+									
+									<!-- a cond="$oDocument->allowComment()" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" class="reply" rel="nofollow"><i class='bx bx-reply bx-rotate-180' ></i> {$lang->cmd_reply}</a -->
+									<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" class="modify" rel="nofollow"><i class='bx bxs-eraser'></i> {$lang->cmd_modify}</a>
+									<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardDeleteComment','comment_srl',$comment->comment_srl)}" class="delete" rel="nofollow"><i class='bx bxs-trash' ></i> {$lang->cmd_delete}</a>
+									<a cond="$is_logged" class="comment_{$comment->comment_srl} this" href="#popup_menu_area" onclick="return false"><i class='bx bx-check' ></i> {$lang->cmd_comment_do}</a>
+								</div>
+						</div>
+						<!--@end-->					
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<div cond="$oDocument->comment_page_navigation" class="pagination">
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',1)}#comment" class="direction prev"><span></span><span></span><i class='bx bxs-chevron-left' ></i></a> 
+			<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+				<strong cond="$cpage==$page_no">{$page_no}</strong> 
+				<a cond="$cpage!=$page_no" href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$page_no)}#comment">{$page_no}</a>
+			</block>
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$oDocument->comment_page_navigation->last_page)}#comment" class="direction next"><i class='bx bxs-chevron-right'></i><span></span><span></span></a>
+		</div>	
+	</div>
+<!--@else-->
+	<div class="utilityMessage"><i class='bx bxs-message-square-dots' ></i> 댓글 참여가 중지된 글입니다.</div>
+<!--@end-->
+<script>
+$('li.nodepth').prev('li.indent').css({
+	'border-bottom-left-radius' : '10px',
+	'border-bottom-right-radius' : '10px',
+	'border-bottom':'var(--oday_listBorderStress)'
+})
+</script>
+<style>
+#re_cmt {display: none;  position: relative; margin-top:20px;  border: var(--oday_listBorder); padding:0 20px 20px 20px; background-color:var(--oday_listBgColorStress2); border-radius:10px; overflow:hidden}
+/*#re_cmt:after { content: ""; position: absolute; width: 100%; height: 10px; top: 0; left: 0; background: linear-gradient(rgba(0, 0, 0, .05), transparent); }*/
+#re_cmt textarea { overflow: hidden; min-height: 8em; height: 2px; width: 100%;}
+#re_cmt > div { display:flex; padding:20px 0; justify-content: space-between;}
+#re_cmt > div * + * { margin-left:20px}
+#re_cmt > div a.wysiwyg { margin-left:auto;}
+</style>
+

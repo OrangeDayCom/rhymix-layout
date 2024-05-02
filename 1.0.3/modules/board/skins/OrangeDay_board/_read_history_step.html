@@ -1,0 +1,72 @@
+<ul class="header" style="display:flex">
+	<li>
+		<div class="page-t"><a href="{getUrl('document_srl','')}">{$module_info->browser_title}</a></div>
+		<a class="open_catemenu"><span class="material-symbols-sharp sharp">format_indent_increase</span></a>		
+	</li>	
+	<li  cond="$grant->write_document" class="blogbtnbox">
+	<!--@if($document_list || $notice_list)-->
+		<a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn middle"><i class='bx bx-edit'></i> 수정</a>
+		<a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn middle"><i class='bx bx-trash'></i> 삭제</a>	
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<!--@end-->	
+		<a cond="$grant->write_document" href="{getUrl('act','dispBoardWrite','document_srl','')}" class="obtn primary middle"><i class='bx bxs-pencil'></i> 글쓰기</a>				
+		<a cond="$grant->manager" href="{getUrl('act','dispBoardAdminBoardInfo')}" class="obtn middle"><i class='bx bx-slider'></i> 설정</a>		
+	</li>
+	<li class="vp">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<form  action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+			<input type="hidden" name="search_target" value="title_content" />
+			<input type="hidden" name="vid" value="{$vid}" />
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="category" value="{$category}" />
+			<input type="hidden" name="listStyle" value="{$listStyle}" />
+			<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class=" searchBox" placeholder="Search... " />
+			<button type="submit" class=" middle" onclick="xGetElementById('board_search').submit();return false;"><span class="material-symbols-sharp">search</span></button>
+			<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><span class="material-symbols-sharp">restart_alt</span></a>
+			<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn">{$lang->cmd_search_next}</a>
+		</form>
+	</li>
+</ul>		
+
+	<div class="location">
+		<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+			<a href="{geturl('')}" class="gotohome" id="focusin"><i class='bx bxs-home'></i></a> <i class='bx bxs-chevron-right'></i>
+			<a href="{$val1['href']}"><!--@if(!$val1['list'])--><em>{$val1['text']}</em><!--@else--><em>{$val1['text']}</em><!--@end--></a>
+			<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+				<i class='bx bxs-chevron-right'></i><a href="{$val2['href']}"><!--@if(!$val2['list'])--><em> {$val2['text']}</em><!--@else-->{$val2['text']}<!--@end--></a>
+				<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+					<i class='bx bxs-chevron-right'></i><a href="{$val3['href']}"><!--@if(!$val3['list'])--><em> {$val3['text']}</em><!--@else-->{$val3['text']}<!--@end--></a>
+				</block>
+			</block>
+		</block>
+		<block cond="!$GNB->list">
+		<a href="/" class="gotohome"><i class='bx bxs-home'></i></a>
+		</block>
+		<i cond="$oDocument->get('category_srl')" class='bx bxs-arrow-from-left'></i>
+		{$category_list[$oDocument->get('category_srl')]->title}
+	</div>
+{strip_tags($oDocument->getTitle());}
+<ul class="history_step_comment">
+<block loop="$oDocument->getComments()=>$key,$comment">
+	<li>
+		<div>"name" : {$comment->getNickName()}</div>
+		<div>"ip" : {$comment->getIpaddress()}</div>
+		<div>"date" : {getTimeGap($comment->get('regdate'), "Y.m.d a h:i")}</div>
+		<div>	"comment" : #comment_{$comment->comment_srl}</div>
+		<div>	"content" : {$comment->getContent(false)|noescape}</div>
+	</li>
+</block>
+</ul>
+
+		
+<style>
+.header,
+.header * { display:flex}
+.iframe-o { display: flex !important;}
+.iframe-x { display: none !important;}
+</style>		
+
+<style>
+.history_step_comment li { width: 100%; max-width:var(--oday_maxWidth); margin:0 auto; border-radius: var(--oday_listBorderRadius); border: var(--oday_listBorderStress); padding:20px;}
+.history_step_comment li + li { margin-top:20px;}
+</style>		

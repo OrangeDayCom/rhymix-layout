@@ -1,0 +1,135 @@
+<include target="_setting.html" />
+{@ 
+$lang->content = "추가 문의 사항";
+$lang->send = "등록하기"
+}
+<form class="ap_form floating-labels<!--@if($is_rx)--> rx_ajax<!--@end-->" action="./" method="post" onsubmit="return sendMessage(jQuery(this));">
+	<input type="hidden" name="mid" value="{$wi->target_mid}" />
+	<input type="hidden" name="password" value="{$wi->rand_password}" cond="!$is_logged && $wi->use_password != 'O'" />
+	<input type="hidden" name="title" value="" cond="$wi->use_title=='Y'" />
+	<input type="hidden" name="content" value="" />
+	<input type="hidden" name="category_srl" value="{$wi->target_category_srls}"|cond="!$wi->has_category" />
+	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!$wi->has_category" />
+	<input type="hidden" name="comment_status" value="ALLOW" cond="$wi->comment_status == 'A'" />
+	<input type="hidden" name="status" value="{$wi->status}" cond="$wi->status != 'O'" />
+	<input type="hidden" name="redirect" value="{$wi->redirect}" />
+	<input type="hidden" name="redirect_url" value="{$wi->redirect_url}" cond="$wi->redirect == 'U' && $wi->redirect_url" />
+	<div class="require"><i class='bx bx-health'></i> {$lang->is_required}</div>
+	<div class="apbtn-box"  cond="!$grant->write_document">
+		<div>로그인 후 작성하실 수 있습니다.</div>
+	</div>
+	<!--// 기본 정보 -->
+	<h3>기본 정보</h3>
+	<ul class="ap_hidden formlist">
+		<li>
+			<label for="nick_name">{$lang->name}<span class="star">&nbsp;<i class='bx bx-health'></i></span></label>
+			<input type="text" name="nick_name" value="{$logged_info->nick_name}" required="required"|cond="!$is_logged" disabled="disabled"|cond="$is_logged" />
+		</li>
+		<li>
+			<label for="email_address">{$lang->email}<span class="star">&nbsp;<i class='bx bx-health'></i></span></label>
+			<input type="e-mail" name="email_address" value="{$logged_info->email_address}" required="required"|cond="!$is_logged && $wi->use_email != 'O'" disabled="disabled"|cond="$is_logged" />
+		</li>
+		<li>
+			<label for="phone_number" cond="!$wi->international">{$lang->phone}</label>
+			<input type="tel" name="phone_number" class="use_international"|cond="$wi->use_international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone != 'O'" disabled="disabled"|cond="$wi->phone_number" />
+		</li>
+	</ul>
+	
+	<!--// 확장 변수 -->
+	<h3>{$wi->option_title}</h3>
+	<ul class="ap_extra_info formlist" cond="$wi->has_extra">		
+		{@ $is_fixed = array('tel', 'checkbox', 'radio', 'kr_zip'); }
+		<li loop="$wi->target_extra_list => $key, $val">
+			<div class="ap_item ap_extra<!--@if($val->is_required == 'Y')--> is_required<!--@end-->" rel="{$val->type}" data-idx="{$val->idx}">
+				<h4 cond="in_array($val->type, $is_fixed)">{$val->name}<!--@if($val->is_required == 'Y')--><span class="star">&nbsp;<i class='bx bx-health'></i></span><!--@end--></h4>
+				<label for="extra_vars{$val->idx}" cond="!in_array($val->type, $is_fixed)">{$val->name}<!--@if($val->is_required == 'Y')--><span class="star">&nbsp;<i class='bx bx-health'></i></span><!--@end--></label>
+				{$val->getFormHTML()}
+			</div>
+		</li>
+	</ul>
+
+	<!--// 메시지 -->
+	<h3>{$lang->content}<span class="star">&nbsp;<i class='bx bx-health'></i></span></h3>
+	<ul class="ap_message_info formlist" cond="$wi->use_title != 'Y' || $wi->has_category || $wi->use_content != 'Y' || !$is_logged && $wi->use_password == 'O'">
+		<!--// 제목 -->
+		<li class="ap_item ap_message" rel="title" cond="$wi->use_title != 'Y'">
+			<label for="title">{$lang->title}</label>
+			<input type="text" name="title" id="ap_title" required />
+		</li>
+		<!--// 분류 -->
+		<li class="ap_item ap_message" rel="category" cond="$wi->has_category">
+			<label for="category">{$lang->category}<span class="star">&nbsp;<i class='bx bx-health'></i></span></label>
+			<select name="category" required>
+				<option value=""></option>
+				<option loop="$wi->target_category_list => $key, $val" value="{$key}">{$val}</option>
+			</select>
+		</li>
+		<!--// 내용 -->
+		<li class="ap_item ap_message" rel="content" cond="$wi->use_content != 'Y'">
+			<textarea name="message" required style="height:200px"></textarea>
+		</li>
+		<!--// 비밀번호 -->
+		<li class="ap_item ap_message" rel="password" cond="!$is_logged && $wi->use_password == 'O'">
+			<label for="password">{$lang->password}</label>
+			<input type="password" name="password" required />
+		</li>
+	</ul>
+
+	<!--// 개인정보 안내문 -->
+	<ul class="ap_section ap_privacy" cond="$wi->privacy != 'N' && count($wi->privacy_title_arr)">
+		<li class="formlist2" loop="$wi->privacy_title_arr => $key, $val" cond="!empty($val)">
+			<div class="t-box">
+				<input type="checkbox" name="privacy{$key+1}" value="" required />
+				<label for="privacy{$key+1}">{$val}</label>
+				<!-- a href="#open" class="ap_popup_trigger"> ({$lang->content} {$lang->cmd_view})</a -->
+			</div>
+			<div class="ap_privacy_content">
+				<div class="ap_privacy_desc">
+					<!--// 직접 입력한 안내문 -->
+					<block cond="$wi->privacy == 'I'">
+					{$wi->privacy_desc_arr[$key]}
+					</block>
+					<!--// 파일로 연결한 안내문 -->
+					<block cond="$wi->privacy == 'F'">
+					{TemplateHandler::getInstance()->compile(_XE_PATH_ . 'widgets/ap_form/skins/'. $wi->skin .'/privacy/', $wi->privacy_desc_arr[$key])}
+					</block>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	<!--// 댓글 허용 여부
+	<ul class="ap_section formlist3">
+		<li class="ap_section" cond="$wi->comment_status == 'O'">
+			<input type="checkbox" name="comment_status" value="ALLOW" checked="checked" />
+			<label for="comment_status">{$lang->allow_comment}</label>
+		</li>
+		<li cond="$wi->status == 'O'">
+			<input type="radio" name="status" value="PUBLIC" checked="checked" />
+			<label for="PUBLIC">{$lang->public}</label>
+		</li>
+		<li cond="$wi->status == 'O'">
+			<input type="radio" name="status" value="SECRET"  />
+			<label for="SECRET">{$lang->secret}</label>
+		</li>
+	</ul>
+ -->
+	<br /><br /><br />
+	<!--// 보내기 버튼 -->
+	<div class="apbtn-box" cond="$grant->write_document">
+		<input type="submit" value="{$lang->send}" class="obtn big primary">
+	</div>
+	<div class="apbtn-box" cond="!$grant->write_document">
+		<div class="obtn big nouse">로그인 후 작성하실 수 있습니다.</div>
+	</div>
+	<br/><br/>
+</form>
+
+<!--// 현재 페이지 처리시 결과 출력 부분 -->
+<include target="result.html" cond="$wi->redirect == 'N'" />
+<script>
+$(function() {
+	autosize($('textarea'));
+	$("input[type='tel']").mask('000-0000-0000');
+});
+</script>

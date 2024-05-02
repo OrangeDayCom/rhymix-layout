@@ -1,0 +1,83 @@
+<form cond="$grant->write_comment && $oDocument->isEnableComment()" action="./" method="post" onsubmit="return procFilter(this, insert_comment)" id="write_comment"  class="bd_wrt cmt_wrt">
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+	<input type="hidden" name="comment_srl" value="" />
+	<input type="hidden" name="content" value="" />
+
+	<div class="wysiwyg">{$oDocument->getCommentEditor()}</div>
+
+	<ul class="formBox split">
+		<li class="front">
+			<ul cond="!$is_logged" class="namepass">
+				<li>
+					<label for="userName" class="iLabel">{$lang->writer}</label>
+					<input type="text" name="nick_name" id="userName" class="iText userName" />
+				</li>
+				<li>
+					<label for="userPw" class="iLabel">{$lang->password}</label>
+					<input type="password" name="password" id="userPw" class="iText userPw"  autocomplete="new-password"  />
+				</li>
+			</ul>
+		</li>
+		<li class="end">
+			<div cond="$is_logged">
+				<input type="checkbox" name="notify_message" value="Y" id="notify_message" class="iCheck" />
+				<label for="notify_message">{$lang->notify}</label>
+			</div>
+			<div cond="$module_info->secret=='Y'">
+				<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="iCheck" />
+				<label for="is_secret">{$lang->secret}</label>
+			</div>
+			<div>
+				<button type="submit" class="obtn"><i class='bx bxs-message-square-detail' ></i>&nbsp;{$lang->cmd_comment_registration}</button>
+			<div>
+		</li>
+	</ul>
+</form>
+
+<!--// 대댓글 -->
+<div id="re_cmt">
+	<div class="">
+		<strong>{$lang->write_comment}</strong>
+		<a class="wysiwyg vp" href="#"><i class='bx bx-edit' ></i> 에디터 사용하기</a>
+		<a class="close" href="#" onclick="jQuery('#re_cmt').fadeOut().parent().find('.re_comment').focus();return false"><i class='bx bx-x'></i> {$lang->cmd_close}</a>
+	</div>
+	<form action="./" method="post" onsubmit="return procFilter(this,insert_comment)" class="bd_wrt clear">
+		<input type="hidden" name="mid" value="{$mid}" />
+		<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+		<input type="hidden" name="content" value="" />
+		<input type="hidden" name="parent_srl" value="" />
+		<input type="hidden" name="use_html" value="Y" />
+		<div class="simple_wrt">
+			<input type="hidden" id="htm_2" value="n" />
+			<textarea id="editor_2" cols="50" rows="8"></textarea>
+		</div>	
+		<ul class="formBox split">
+			<li class="front">
+				<ul cond="!$is_logged" class="namepass">
+					<li>
+						<label for="userName" class="iLabel">{$lang->writer}</label>
+						<input type="text" name="nick_name" id="userName" class="iText userName" />
+					</li>
+					<li>
+						<label for="userPw" class="iLabel">{$lang->password}</label>
+						<input type="password" name="password" id="userPw" class="iText userPw"  autocomplete="new-password"  />
+					</li>
+				</ul>
+			</li>
+			<li class="end">
+				<div cond="$is_logged">
+					<input type="checkbox" name="notify_message" value="Y" id="notify_message" checked="checked"|cond="@in_array('notify',$mi->wrt_opt ?: [])" />
+					<label for="notify_message">{$lang->notify}</label>
+				</div>
+				<div cond="strpos($mi->use_status, 'SECRET') !== false">
+					<input type="checkbox" name="is_secret" value="Y" id="is_secret" checked="checked"|cond="@in_array('secret',$mi->wrt_opt ?: [])" />
+					<label for="is_secret">{$lang->secret}</label>
+				</div>
+				<div>
+					<button type="submit" class="obtn"><i class='bx bxs-message-square-detail' ></i>&nbsp;{$lang->cmd_comment_registration}</button>
+				<div>
+			</li>
+		</ul>
+	</form>
+</div>

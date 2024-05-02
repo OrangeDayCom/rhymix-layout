@@ -1,0 +1,157 @@
+
+<include target="_header.html" />
+<form action="./" method="post" onsubmit="return procFilter(this, window.insert)" id="writeBox" class="bd-all">
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="content" value="{$oDocument->getContentText()}" />
+	<input type="hidden" name="document_srl" value="{$document_srl}" />
+	<div class="write_header">
+		<div class="writeLocation">
+			<div>
+				<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+					<a href="/"><i class='bx bxs-home'></i></a> <i class='bx bxs-chevron-right'></i>
+					<a href="{$val1['href']}"><!--@if(!$val1['list'])--><em>{$val1['text']}</em><!--@else--><em>{$val1['text']}</em><!--@end--></a>
+					<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+						<i class='bx bxs-chevron-right'></i><a href="{$val2['href']}"><!--@if(!$val2['list'])--><em> {$val2['text']}</em><!--@else-->{$val2['text']}<!--@end--></a>
+						<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+							<i class='bx bxs-chevron-right'></i><a href="{$val3['href']}"><!--@if(!$val3['list'])--><em> {$val3['text']}</em><!--@else-->{$val3['text']}<!--@end--></a>
+						</block>
+					</block>
+				</block>
+				<block cond="!$GNB->list">
+				<a href="/" class="gotohome"><i class='bx bxs-home'></i></a>
+				</block>
+			</div>
+			<div class="require"><i class='bx bx-health'></i> {$lang->is_required}</div>
+		</div>
+		<table>
+			<tr cond="$grant->manager" class="notice">
+				<th scope="row">{$lang->notice}</th>
+				<td>
+					<input type="radio" name="is_notice" value="N" class="iCheck" checked="checked"|cond="$oDocument->get('is_notice') === 'N'" id="is_noticeN" /><label for="is_noticeN">{$lang->not_notice}</label>
+					<input type="radio" name="is_notice" value="Y" class="iCheck" checked="checked"|cond="$oDocument->get('is_notice') === 'Y'" id="is_noticeY" /><label for="is_noticeY">{$lang->notice}</label>
+					<input type="radio" name="is_notice" value="A" class="iCheck" checked="checked"|cond="$oDocument->get('is_notice') === 'A'" id="is_noticeA" /><label for="is_noticeA">{$lang->notice_all}</label>
+				</td>
+			</tr>
+			<tr cond="$module_info->use_category=='Y'">
+				<th scope="row">{$lang->category}</th>
+				<td>
+					<select name="category_srl">
+						<option value="">{$lang->category}</option>
+						<option loop="$category_list => $val" disabled="disabled"|cond="!$val->grant" value="{$val->category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->category_srl==$oDocument->get('category_srl')">
+							{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
+						</option>
+					</select>
+					<script>
+						$(document).ready(function() { $('select').niceSelect(); });
+					</script>					
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">{$lang->title}</th>
+				<td>
+					<input cond="$oDocument->getTitleText()" type="text" name="title" class="iText" title="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" />
+					<input cond="!$oDocument->getTitleText()" type="text" name="title" class="iText" title="{$lang->title}" />				
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="exForm" cond="count($extra_keys)">		
+		<table cond="count($extra_keys)" summary="Extra Form">			
+			<tr loop="$extra_keys=>$key,$val">
+				<th scope="row">{$val->name} <i cond="$val->is_required=='Y'" class='bx bx-health'></i></th>
+				<td>{$val->getFormHTML()|noescape}</td>
+			</tr>
+		</table>		
+	</div>
+
+	<ul class="formBox<!--@if(!$oDocument->isExists() || $oDocument->get('status') == 'TEMP')--> split<!--@end-->">
+		<li class="front">
+			<button class="obtn" type="button" onclick="history.go(-1);" ><span class="material-symbols-sharp">line_start_arrow</span> BACK</button>
+			<block cond="!$oDocument->isExists() || $oDocument->get('status') == 'TEMP'">
+				<button cond="$is_logged" class="obtn" type="button" onclick="doDocumentSave(this);"><span class="material-symbols-sharp">cloud_upload</span> {$lang->cmd_temp_save}</button>
+				<button cond="$is_logged" class="obtn" type="button" onclick="doDocumentLoad(this);"><span class="material-symbols-sharp">cloud_download</span> {$lang->cmd_load}</button>
+			</block>
+		</li>
+		<li class="end">
+			<button type="submit" class="obtn primary"><span class="material-symbols-sharp">done</span> {$lang->cmd_registration}</button>
+		</li>
+	</ul>
+
+	<div class="write_editor">
+		{$oDocument->getEditor()|noescape}
+	</div>
+	<div class="tag">
+		<label for="tags" class="iLabel">{$lang->tag}: {$lang->about_tag}</label>
+		<input type="text" name="tags" id="tags" value="{escape($oDocument->get('tags') ?? '', false)}" title="Tag" />
+	</div>
+	<ul class="formBox split">
+		<li class="front">
+			<block cond="$grant->manager">
+				<div>
+					<input type="checkbox" name="title_bold" id="title_bold" class="iCheck" value="Y" checked="checked"|cond="$oDocument->get('title_bold')=='Y'" />
+					<label for="title_bold">{$lang->title_bold}</label>
+				</div>
+			</block>
+			<div>
+				<input type="checkbox" name="comment_status" class="iCheck" value="ALLOW" checked="checked"|cond="$oDocument->allowComment()" id="comment_status" />
+				<label for="comment_status">{$lang->allow_comment}</label>
+			</div>
+			<div>
+				<input type="checkbox" name="allow_trackback" class="iCheck" value="Y" checked="checked"|cond="$oDocument->allowTrackback()" id="allow_trackback" />
+				<label for="allow_trackback">{$lang->allow_trackback}</label>
+			</div>
+
+			<block cond="$is_logged">
+			<div>
+				<input type="checkbox" name="notify_message" class="iCheck" value="Y" checked="checked"|cond="$oDocument->useNotify()" id="notify_message" />
+				<label for="notify_message">{$lang->notify}</label>
+			</div>
+			</block>
+			<!--@if(is_array($status_list))-->
+				<!--@foreach($status_list AS $key=>$value)-->
+				<div>
+					<input type="radio" name="status" value="{$key}" id="{$key}" <!--@if($oDocument->get('status') == $key || ($key == 'PUBLIC' && !$document_srl))-->checked="checked"<!--@end--> /> 
+					<label for="{$key}">{$value}</label>
+				</div>
+				<!--@end-->
+			<!--@end-->
+		</li>
+		<li class="end" cond="!$is_logged">
+			<ul cond="!$is_logged" class="namepass">
+				<li>
+					<label for="userName" class="iLabel">{$lang->writer}</label>
+					<input type="text" name="nick_name" id="userName" class="iText userName" value="{htmlspecialchars($oDocument->get('nick_name'))}" />
+				</li>
+				<li>
+					<label for="userPw" class="iLabel">{$lang->password}</label>
+					<input type="password" name="password" id="userPw" class="iText userPw" autocomplete="new-password" />
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<ul class="formBox<!--@if(!$oDocument->isExists() || $oDocument->get('status') == 'TEMP')--> split<!--@end-->">
+		<li class="front">
+			<button class="obtn" type="button" onclick="history.go(-1);" ><span class="material-symbols-sharp">line_start_arrow</span> BACK</button>
+			<block cond="!$oDocument->isExists() || $oDocument->get('status') == 'TEMP'">
+				<button cond="$is_logged" class="obtn" type="button" onclick="doDocumentSave(this);"><span class="material-symbols-sharp">cloud_upload</span> {$lang->cmd_temp_save}</button>
+				<button cond="$is_logged" class="obtn" type="button" onclick="doDocumentLoad(this);"><span class="material-symbols-sharp">cloud_download</span> {$lang->cmd_load}</button>
+			</block>
+		</li>
+		<li class="end">
+			<button type="submit" class="obtn primary"><span class="material-symbols-sharp">done</span> {$lang->cmd_registration}</button>
+		</li>
+	</ul>
+
+</form>
+<style>
+	.pagelocation { display:none}
+</style>
+<load target="asset/autosize.min.js" />
+<script>
+$(function() {
+	autosize($('textarea'));
+	$( ".hasDatepicker" ).attr("readonly", true); 
+});
+</script>
+<include target="_footer.html" />
