@@ -1,0 +1,199 @@
+{@
+// 1. 이전 주소 가져오기
+$previousUrl = $_SERVER['HTTP_REFERER'];
+// 2. get 방식으로 전달된 값을 제외하고 도메인 다음 주소만 출력한다.
+$url = parse_url($previousUrl);
+$domain = $url['scheme'] . '://' . $url['host']; // 도메인 추출
+$path = $url['path']; // 경로 추출
+// 3. 출력된 값이 index.php 일 경우 get 방식으로 전달된 값 중 mid 를 찾아 그 값을 출력 한다.
+if ($path === '/index.php') :
+    parse_str($url['query'], $queryParams);
+    if (isset($queryParams['mid'])) :
+       // $word = $queryParams['mid'];
+	   $word ='';
+    endif;
+else :
+    $word = ltrim($path, '/');
+endif;
+}
+
+<!--@if($word == $mid)-->
+<!--@if($mi->default_style=='guest')-->
+<script>
+$(function(){
+	var currentURL = window.location.href;
+	var fragment = currentURL.split('#')[1];
+	if (fragment) {
+		var commentID = fragment.split('_')[1];
+		var t = "/index.php?mid={$mid}&document_srl={$oDocument->document_srl}&act=dispBoardReplyComment&comment_srl="+commentID;
+		var o = jQuery('#re_cmt').eq(0);
+		o.find('input[name=mid]').val(current_mid);
+		o.appendTo(jQuery('#comment_'+commentID)).fadeIn().find('input[name=parent_srl]').val(commentID);
+		o.find('a.wysiwyg').attr('href',t);
+		setTimeout(function() { 
+			o.find('textarea').focus();
+		}, 1000);	
+	}
+});
+</script>
+<!--@end-->
+<!--@end-->
+
+
+		<ul class="formBox" cond="$grant->write_document">
+			<li>
+			</li>
+			<li>
+				<a href="{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle, '','')}" class="obtn">
+					<i class="xi-message"></i> 댓글 참여 하기
+				</a>
+			</li>
+		</ul>
+		
+		
+		<script>
+		if(default_style=='guest'){		
+			if(bd.find('form>div.wysiwyg').length){
+				if($('#re_cmt').length) editorStartTextarea(2,'content','comment_srl');
+			} else {
+				$.getScript("modules/editor/tpl/js/editor_common.min.js",function(){
+					if($('#re_cmt').length) editorStartTextarea(2,'content','comment_srl');
+					var cmtWrt = bd.find('form.cmt_wrt textarea');
+					if(bd.find('form.bd_wrt_main textarea').length){
+						$.getScript('files/cache/js_filter_compiled/35d29adbe4b14641f9eac243af40093b.'+lang_type+'.compiled.js');
+						editorStartTextarea(1,'content','document_srl');
+					};
+					cmtWrt.each(function(){
+						editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+					});
+				});
+			};
+		}
+		
+		
+		// Read Page Only
+		if(bd.find('#readBox').length){		
+			if(bd.find('form.bd_wrt').length){
+				if(bd.find('form>div.wysiwyg').length){
+					editorStartTextarea(2,'content','comment_srl');
+				} else {
+					$.getScript(request_uri+'modules/editor/tpl/js/editor_common.min.js',function(){
+						editorStartTextarea(2,'content','comment_srl');
+						var cmtWrt = bd.find('form.cmt_wrt textarea');
+						if(default_style=='blog'){
+							cmtWrt.each(function(){
+								editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+							});
+						} else {
+							editorStartTextarea(cmtWrt.attr('id').split('_')[1],'content','comment_srl');
+						};
+					});
+				};
+			};
+		};
+		
+		
+						if(default_style=='blog'){
+							cmtWrt.each(function(){
+								editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+							});
+						} else {
+							editorStartTextarea(cmtWrt.attr('id').split('_')[1],'content','comment_srl');
+						};	
+						
+						
+						
+						
+						
+						
+// Board
+function board(bdObj){
+	
+	(function($){
+		var bd = $(bdObj);
+		var default_style = bd.attr('data-default_style');
+
+		if(default_style=='guest'){
+			if(bd.find('#list_guest').length){		
+				if(bd.find('form>div.wysiwyg').length){
+					if($('#re_cmt').length) editorStartTextarea(2,'content','comment_srl');
+						if(bd.find('form.bd_wrt_main textarea').length){
+							//$.getScript('files/cache/js_filter_compiled/35d29adbe4b14641f9eac243af40093b.'+lang_type+'.compiled.js');
+							editorStartTextarea(1,'content','document_srl');
+						};					
+				} else {
+					$.getScript("modules/editor/tpl/js/editor_common.min.js",function(){
+						if($('#re_cmt').length) editorStartTextarea(2,'content','comment_srl');
+						var cmtWrt = bd.find('form.cmt_wrt textarea');
+						if(bd.find('form.bd_wrt_main textarea').length){
+							//$.getScript('files/cache/js_filter_compiled/35d29adbe4b14641f9eac243af40093b.'+lang_type+'.compiled.js');
+							editorStartTextarea(1,'content','document_srl');
+						};
+						cmtWrt.each(function(){
+							editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+						});
+					});
+				};
+			}
+		}
+		
+		// Read Page Only
+		if(bd.find('#readBox').length){		
+			if(bd.find('form.bd_wrt').length){
+				if(bd.find('form>div.wysiwyg').length){
+					editorStartTextarea(2,'content','comment_srl');
+				} else {
+					$.getScript(request_uri+'modules/editor/tpl/js/editor_common.min.js',function(){
+						editorStartTextarea(2,'content','comment_srl');
+						var cmtWrt = bd.find('form.cmt_wrt textarea');
+						cmtWrt.each(function(){
+							editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+						});
+					});
+				};
+			};
+		};	
+		
+		
+	})(jQuery)
+}		
+
+
+
+function board(bdObj){
+	
+	(function($){
+		var bd = $(bdObj);
+		var default_style = bd.attr('data-default_style');
+		if(bd.find('#list_guest').length){	
+			if(bd.find('form>div.simple_wrt').length){
+				$.getScript("modules/editor/tpl/js/editor_common.min.js",function(){
+					if($('#re_cmt').length) editorStartTextarea(2,'content','comment_srl');
+					editorStartTextarea(1,'content','document_srl');
+					var cmtWrt = bd.find('form.cmt_wrt textarea');
+					cmtWrt.each(function(){
+						editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+					});
+				});
+			} 
+		}
+		// Read Page Only
+		if(bd.find('#readBox').length){		
+			if(bd.find('form.bd_wrt').length){
+				if(bd.find('form>div.wysiwyg').length){
+					editorStartTextarea(2,'content','comment_srl');
+				} else {
+					$.getScript(request_uri+'modules/editor/tpl/js/editor_common.min.js',function(){
+						editorStartTextarea(2,'content','comment_srl');
+						var cmtWrt = bd.find('form.cmt_wrt textarea');
+						cmtWrt.each(function(){
+							editorStartTextarea($(this).attr('id').split('_')[1],'content','comment_srl');
+						});
+					});
+				};
+			};
+		};	
+		
+		
+	})(jQuery)
+}

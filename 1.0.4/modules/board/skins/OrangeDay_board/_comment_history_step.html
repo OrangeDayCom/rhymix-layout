@@ -1,0 +1,15 @@
+<ul class="history_step_comment">
+<block loop="$oDocument->getComments()=>$key,$comment">
+	<li>
+		<div>"name" : {$comment->getNickName()}</div>
+		<div>"ip" : {$comment->getIpaddress()}</div>
+		<div>"date" : {getTimeGap($comment->get('regdate'), "Y.m.d a h:i")}</div>
+		<div>	"comment" : #comment_{$comment->comment_srl}</div>
+		<div>	"content" : {$comment->getContent(false)|noescape}</div>
+	</li>
+</block>
+</ul>
+<style>
+.history_step_comment li { width: 100%; max-width:var(--oday_maxWidth); margin:0 auto; border-radius: var(--oday_listBorderRadius); border: var(--oday_listBorderStress); padding:20px;}
+.history_step_comment li + li { margin-top:20px;}
+</style>

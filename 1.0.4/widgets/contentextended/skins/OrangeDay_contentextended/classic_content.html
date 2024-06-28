@@ -1,0 +1,68 @@
+<ul class="classic_content_extend contentExtend contents">
+	<li class="cell-sizer"></li>
+	<!--@foreach($widget_info->content_items as $key => $item)-->
+	{@
+		$time_make =  zDate($item->get('regdate'), "YmdHis");
+		$time_up =   zDate($item->get('last_update'), "YmdHis");
+		$time_gap = (int)(1000000);
+		$time_now = date("YmdHis");
+		$ntime =  (int)($time_now - $time_make);
+		$utime =  (int)($time_now - $time_up);
+	}
+	
+	<li class="cell-item">
+		<!--@if($item->getThumbnail())-->
+		<div class="thum">			
+			<a href="{$item->getLink()}"  target="_blank"|cond="$widget_info->new_window">
+				<img src="{$item->getThumbnail()}" class="thumb" />
+			</a>
+		</div>
+		<!--@end-->
+		<div class="con">
+			<div class="opt_brow">
+				<i class='bx bxs-category-alt'></i>
+				<a href="<!--@if($item->contents_link)-->{$item->contents_link}<!--@else-->{getSiteUrl($item->domain, '', 'mid', $item->get('mid'))}<!--@end-->" class="board" target="_blank"|cond="$widget_info->new_window">{$item->getBrowserTitle()}</a>
+				<!--@if($widget_info->show_category=='Y' && $item->get('category_srl') )-->
+				<i class='bx bxs-arrow-from-left' ></i><a href="{getSiteUrl($item->domain,'','mid',$item->get('mid'),'category',$item->get('category_srl'))}" target="_blank"|cond="$widget_info->new_window">{$item->getCategory()}</a>
+				<!--@end-->
+			</div>
+			<div class="title">
+				<a href="{$item->getLink()}" target="_blank"|cond="$widget_info->new_window">{$item->getTitle($widget_info->subject_cut_size)}</a>		
+				<!--@if($time_gap > $ntime)--><span class="widget_newicon new">N</span><!--@end-->
+				<!--@if($time_gap > $utime && $time_gap < $ntime)--><span class="widget_newicon update">U</span><!--@end-->
+			</div>
+			<p class="text" cond="$item->getContent()">
+			{$item->getContent()}
+			</p>
+			<div class="opt_meta">
+				<a 
+				<!--@if($item->getMemberSrl())-->
+					href="#" onclick="return false;" class="author member_{$item->getMemberSrl()}"
+				<!--@elseif($item->getAuthorSite())-->
+					href="{$item->getAuthorSite()}"  target="_blank" rel="noopener" class="author member"
+				<!--@else-->
+					href="#" onclick="return false;" class="author member"
+				<!--@end-->
+				>
+					{$item->getNickName($widget_info->nickname_cut_size)}
+				</a>
+				<span class="date">{getTimeGap($item->getRegdate(), "Y.m.d - H:i")}</span>
+				<span class="countbox">
+					<!--@if($widget_info->show_comment_count=='Y' && $item->getCommentCount())-->
+					<a href="{$item->getLink()}#comment" class="st" target="_blank"|cond="$widget_info->new_window"><i class='bx bxs-message-rounded-dots'></i>{$item->getCommentCount()}</a>
+					<!--@end-->
+					<!--@if($widget_info->show_trackback_count=='Y' && $item->getTrackbackCount())-->
+					<a href="{$item->getLink()}#trackback" class="st" target="_blank"|cond="$widget_info->new_window">{$item->getTrackbackCount()}</a>
+					<!--@end-->
+					
+					<!--@if($item->getReadedCount())--><span class="st"><i class='bx bxs-show' ></i>{$item->getReadedCount()}</span><!--@end-->
+					<!--@if($item->getVotedCount())--><span class="st"><i class='bx bxs-heart'></i>{$item->getVotedCount()}</span><!--@end-->		
+				</span>
+			</div>
+		</div>
+	</li>
+	<!--@end-->
+</ul>
+
+
+

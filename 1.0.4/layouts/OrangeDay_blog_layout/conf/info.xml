@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">OrangeDay 블로그 레이아웃 1.0.2</title>
+    <description xml:lang="ko">블로그 형태의 커뮤니티용 레이아웃</description>
+    <version>1.0.2</version>
+    <date>2024-04-22</date>
+    <author email_address="yabssabi@gmail.com" link="https://www.orangeday.com">
+        <name xml:lang="ko">Yabi 夜飛</name>
+    </author>
+    <menus>
+        <menu name="GNB" maxdepth="2" default="true">
+            <title xml:lang="ko">주 메뉴</title>
+        </menu>
+		<menu name="LNB" maxdepth="1" default="true">
+            <title xml:lang="ko">하단 서브 메뉴</title>
+        </menu>
+    </menus>
+	<extra_vars>
+		<group>
+			<title xml:lang="ko">테마</title>
+			<var name="site_sign_meta" type="radio">
+				<title xml:lang="ko">서명 사용</title>
+				<description xml:lang="ko">로그인 / 회원가입 보이기</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>			
+			<var name="gnb_width" type="text" default="180">
+				<title xml:lang="ko">메뉴-가로폭</title>
+				<description xml:lang="ko">메뉴-가로폭를 정할수 있습니다.(디폴트 : 180px)</description>
+			</var>
+			
+			<var name="no_mean1" type="checkbox">
+				<title xml:lang="ko">GNB ||||||||||||||||||||||||||||</title>
+				<description xml:lang="ko">------------------------------------------------------ 단락 구분을 위한 의미없는 옵션입니다.</description>
+				<options value="a">
+					<title xml:lang="ko"></title>
+				</options>
+			</var>			
+			<var name="use_gnb" type="radio">
+				<title xml:lang="ko">GNB 옵션 사용자 제어</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>			
+			<var name="use_gnb_allways_open" type="radio">
+				<title xml:lang="ko">GNB 항상 열기</title>
+				<description xml:lang="ko">2차 이상 메뉴가 항상 활성화 됩니다.</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_gnb_max_height" type="radio">
+				<title xml:lang="ko">GNB 높이 최대치</title>
+				<description xml:lang="ko">GNB를 포함하는 왼쪽 창 전체가 스크롤 됩니다.</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			
+			<var name="no_mean2" type="checkbox">
+				<title xml:lang="ko">컬러테마 ||||||||||||||||||||||||||||</title>
+				<description xml:lang="ko">------------------------------------------------------ 단락 구분을 위한 의미없는 옵션입니다.</description>
+				<options value="a">
+					<title xml:lang="ko"></title>
+				</options>
+			</var>			
+			<var name="use_darkMode" type="radio">
+				<title xml:lang="ko">다크모드 사용자 제어</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_darkMode_set" type="radio">
+				<title xml:lang="ko">다크모드 고정</title>
+				<description xml:lang="ko">다크모드 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="dark">
+					<title xml:lang="ko">다크</title>
+				</options>
+				<options value="light">
+					<title xml:lang="ko">라이트</title>
+				</options>
+			</var>
+			
+			<var name="use_colorTheme" type="radio">
+				<title xml:lang="ko">컬러테마 사용자 제어</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_colorTheme_set" type="radio">
+				<title xml:lang="ko">컬러테마 고정</title>
+				<description xml:lang="ko">컬러테마 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="white">
+					<title xml:lang="ko">화이트</title>
+				</options>
+				<options value="gray">
+					<title xml:lang="ko">그레이</title>
+				</options>
+				<options value="orange">
+					<title xml:lang="ko">오렌지</title>
+				</options>
+				<options value="blue">
+					<title xml:lang="ko">블루</title>
+				</options>
+				<options value="green">
+					<title xml:lang="ko">그린</title>
+				</options>
+				<options value="red">
+					<title xml:lang="ko">레드</title>
+				</options>
+			</var>
+			<var name="use_brightTheme_set" type="radio">
+				<title xml:lang="ko">밝기 고정</title>
+				<description xml:lang="ko">컬러테마 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="d1">
+					<title xml:lang="ko">저대비</title>
+				</options>
+				<options value="d2">
+					<title xml:lang="ko">중대비</title>
+				</options>
+				<options value="d3">
+					<title xml:lang="ko">고대비</title>
+				</options>
+			</var>
+			
+			<var name="no_mean3" type="checkbox">
+				<title xml:lang="ko">외부옵션 ||||||||||||||||||||||||||||</title>
+				<description xml:lang="ko">------------------------------------------------------ 단락 구분을 위한 의미없는 옵션입니다.</description>
+				<options value="a">
+					<title xml:lang="ko"></title>
+				</options>
+			</var>
+			
+			<var name="googleSearch" type="text">
+				<title xml:lang="ko">구글 검색</title>
+				<description xml:lang="ko">검색엔진ID 값 입력</description>
+			</var>
+			
+			<var name="use_kakao_layout" type="text">
+				<title xml:lang="ko">카카오톡 추가</title>
+				<description xml:lang="ko">카카오 앱키(JavaScript) 값을 입력</description>
+			</var>
+			
+			<var name="cafe24Traffic" type="text">
+				<title xml:lang="ko">카페24 트래픽</title>
+				<description xml:lang="ko">카페24제공 '도메인/throttle-me' 입력</description>
+			</var>
+			<var name="cafe24Disk" type="text">
+				<title xml:lang="ko">카페24 하드</title>
+				<description xml:lang="ko">카페24 서버 하드량(MB)</description>
+			</var>
+		</group>
+		
+		<group>
+			<title xml:lang="ko">타이틀 영역</title>
+
+			<var name="site_birthday" type="text">
+				<title xml:lang="ko">사이트 시작일</title>
+			</var>
+			<var name="lgo_box_padding" type="text">
+				<title xml:lang="ko">로고 박스 아래위 여백</title>
+				<description xml:lang="ko">로고 2줄 사용시 줄 간격 (기본 0px)</description>
+			</var>
+			
+			
+			<var name="lgo_view_img" type="radio">
+				<title xml:lang="ko">로고이미지 보기</title>
+				<options value="yes">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="lgo_view_text" type="radio">
+				<title xml:lang="ko">로고텍스트 보기</title>
+				<options value="yes">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>			
+			<!-- var name="site_title_lang" type="radio">
+				<title xml:lang="ko">사이트명 한/영</title>
+				<description xml:lang="ko">한,영 혼합일 경우 국문으로 체크해 주세요.</description>
+				<options value="eng">
+					<title xml:lang="ko">영문</title>
+				</options>
+				<options value="kor">
+					<title xml:lang="ko">국문</title>
+				</options>
+			</var -->
+		
+			<var name="lgo_font_size" type="text">
+				<title xml:lang="ko">로고 폰트 사이즈</title>
+				<description xml:lang="ko">기본 20px</description>
+			</var>
+			<var name="lgo_font_height" type="text">
+				<title xml:lang="ko">로고 줄 행간</title>
+				<description xml:lang="ko">로고 2줄 사용시 줄 간격 (기본 0px)</description>
+			</var>
+			
+			<var name="logo_img" type="image">
+				<title xml:lang="ko">로고 이미지</title>
+				<description xml:lang="ko">로고 이미지가 사이트명 보다 우선으로 적용됩니다. (배경이 없는 png, svg 사용 추천) </description>
+			</var>
+			<var name="logo_img_width" type="text">
+				<title xml:lang="ko">로고 이미지 크기(%)</title>
+				<description xml:lang="ko">메뉴 폭 대비 로고 크기 비율(기본 : 80%)</description>
+			</var>
+			<var name="logo_img_round" type="text">
+				<title xml:lang="ko">이미지 라운드(px)</title>
+				<description xml:lang="ko">로고 이미지에 라운드를 줍니다. 기본 0px</description>
+			</var>			
+		
+			<var name="site_title1" type="text">
+				<title xml:lang="ko">사이트명 상</title>
+			</var>
+			<var name="site_title2" type="text">
+				<title xml:lang="ko">사이트명 하</title>
+				<description xml:lang="ko">사이트명이 길면 상하로 나누어서 입력할 수 있습니다.</description>
+			</var>
+			<var name="site_title3" type="textarea">
+				<title xml:lang="ko">사이트명 설명</title>
+				<description xml:lang="ko">로고 아래에 간단하게 설명글을 남길 수 있습니다.</description>
+			</var>
+
+						
+		</group>
+		
+		<group>
+			<title xml:lang="ko">푸터(왼쪽 사이드, 메인하단 공통)</title>
+			<var name="site_company_name" type="text">
+				<title xml:lang="ko">사이트명 or 회사이름</title>
+			</var>
+			<var name="site_address" type="text">
+				<title xml:lang="ko">주소1</title>
+			</var>
+			<var name="site_address2" type="text">
+				<title xml:lang="ko">주소2</title>
+			</var>
+			<var name="site_copyright" type="text">
+				<title xml:lang="ko">카피라이트 주체</title>
+				<description xml:lang="ko">위치 : (C) 'OOO' all rights reserved.</description>
+			</var>
+			<var name="site_badge" type="radio">
+				<title xml:lang="ko">오렌지데이 뱃지</title>
+				<description xml:lang="ko">사이트 하단의 오렌지데이 바로 가기 배너</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>					
+		</group>		
+		
+		
+		<group>
+			<title xml:lang="ko">메인 (콘텐츠 영역)</title>
+			
+			<var name="use_index" type="radio">
+				<title xml:lang="ko">메인사용</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">메인 사용 여부 설정</description>
+			</var>
+			<var name="index_style" type="radio">
+				<title xml:lang="ko">메인 스타일</title>
+				<options value="basic">
+					<title xml:lang="ko">베이직</title>
+				</options>
+				<options value="classic">
+					<title xml:lang="ko">클랙식</title>
+				</options>
+				<description xml:lang="ko">메인 페이지 스타일을 지정할 수 있습니다.</description>
+			</var>
+			
+			<var name="layout_align" type="radio">
+				<title xml:lang="ko">메인 정렬</title>
+				<options value="full">
+					<title xml:lang="ko">꽉찬화면</title>
+				</options>
+				<options value="left">
+					<title xml:lang="ko">왼쪽 정렬</title>
+				</options>
+				<options value="center">
+					<title xml:lang="ko">센터 정렬</title>
+				</options>
+				<description xml:lang="ko">메인 페이지 스타일을 지정할 수 있습니다.  왼쪽, 센터 정렬시 게시판에서 설정한 정렬 값은 무시됩니다.</description>
+			</var>
+			<var name="layout_width" type="text">
+				<title xml:lang="ko">화면 사이즈</title>
+				<description xml:lang="ko">왼쪽 GNB 영역을 포함한 사이즈입니다. 메인 정렬 값이 왼쪽 정렬일때 적용됩니다. 왼쪽, 센터 정렬시 게시판에서 설정한 사이즈 값은 무시됩니다.</description>
+			</var>
+			<var name="use_visitor" type="radio">
+				<title xml:lang="ko">방문자 카운트</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">방문자 카운트 사용 여부 설정</description>
+			</var>			
+		</group>		
+		
+		
+		<!-- group>
+			<title xml:lang="ko">메인 베이직 - 상단 이미지</title>	
+			<var name="use_main_img" type="radio">
+				<title xml:lang="ko">메인 이미지 박스 사용</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">메인 이미지 사용 여부 설정</description>
+			</var>
+			<var name="site_bg" type="image">
+				<title xml:lang="ko">상단 배경</title>
+				<description xml:lang="ko">상단 박스 배경 이미지</description>
+			</var>			
+			<var name="use_main_text" type="radio">
+				<title xml:lang="ko">이미지 내부 사이트 명</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">메인 이미지 내부 사이트 제목 사용 여부 설정</description>
+			</var>
+			<var name="site_dec" type="textarea">
+				<title xml:lang="ko">사이트 설명</title>
+				<description xml:lang="ko">사이트 간단 설명</description>
+			</var>			
+		</group -->		
+		
+		<group>
+			<title xml:lang="ko">메인 공통 - 새글</title>
+	
+			<var name="site_banner" type="text">
+				<title xml:lang="ko">슬라이드 배너 게시판</title>
+				<description xml:lang="ko">관리자만 볼 수 있는 전용 게시판 생성 후 srl 입력, 사용법 참고. </description>
+			</var>
+			<var name="site_banner_num" type="text">
+				<title xml:lang="ko">슬라이드 배너 목록 수</title>
+				<description xml:lang="ko">기본 3개</description>
+			</var>	
+			
+			<var name="site_new_con" type="text">
+				<title xml:lang="ko">최신 글 게시판</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_con_num" type="radio">
+				<title xml:lang="ko">최신 글 목록 수</title>
+				<options value="12">
+					<title xml:lang="ko">12</title>
+				</options>
+				<options value="18">
+					<title xml:lang="ko">18</title>
+				</options>
+				<options value="24">
+					<title xml:lang="ko">24</title>
+				</options>
+				<description xml:lang="ko">최신글 목록 수</description>
+			</var>			
+	
+			<var name="site_new_com" type="text">
+				<title xml:lang="ko">최신 댓글 게시판</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용 </description>
+			</var>
+			<var name="site_new_com_num" type="text">
+				<title xml:lang="ko">최신 댓글 목록 수</title>
+				<description xml:lang="ko">기본 20개</description>
+			</var>
+			
+			<var name="site_new_gall" type="text">
+				<title xml:lang="ko">최신 이미지 게시판</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능, 사진만 올리는 게시판 추천 </description>
+			</var>
+			<var name="site_new_gall_num" type="text">
+				<title xml:lang="ko">최신 이미지 목록 수</title>
+				<description xml:lang="ko">기본 10개</description>
+			</var>
+			<var name="site_notice" type="text">
+				<title xml:lang="ko">공지사항 게시판</title>
+				<description xml:lang="ko">공지 게시판 생성 후 srl 입력. </description>
+			</var>
+			<var name="site_notice_num" type="text">
+				<title xml:lang="ko">공지사항 목록 수</title>
+				<description xml:lang="ko">기본 3개, 최다조회, 최다추천, 랜덤 글 공통 적용 </description>
+			</var>
+
+		
+			
+		</group>
+
+	</extra_vars>
+</layout>

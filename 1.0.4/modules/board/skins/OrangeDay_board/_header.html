@@ -1,0 +1,372 @@
+{@ Context::addMetaTag('viewport', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');}
+{@ $mi = $module_info; }
+<!--@if($order_type == "desc")-->
+{@ $order_type = "asc"; }
+<!--@else-->
+{@ $order_type = "desc"; }
+<!--@end-->
+{@ 
+	$mi->detect_iframe = 'N';
+	$mi->duration_new = 24;
+	if(!$mi->font_size) $mi->font_size = "13";
+	if(!$mi->preview) $mi->preview = "use_no";
+	if(!$mi->theme_use) $mi->theme_use = "use_no";
+	if(!$mi->search_sticky) $mi->search_sticky = 0;
+	if(!$mi->list_in_read) $mi->list_in_read = "use_no";	
+	if(!$mi->normal_list_height) $mi->normal_list_height = 60;
+	if(!$mi->bg_use) $mi->bg_use = "yes";
+	if(!$mi->page_align) $mi->page_align = "full";
+	if(!$mi->page_width) $mi->page_width = "1000";	
+	
+	if(!$mi->read_meta) $mi->read_meta = "use";
+	if(!$mi->read_meta_ip) $mi->read_meta_ip = "use";
+	if(!$mi->read_vote) $mi->read_vote = "use";
+	if(!$mi->read_tag) $mi->read_tag = "use";
+	if(!$mi->read_download) $mi->read_download = "use";
+	if(!$mi->read_utility) $mi->read_utility = "use";
+	if(!$mi->read_sns) $mi->read_sns = "use";
+	if(!$mi->read_sign) $mi->read_sign = "use";
+	if(!$mi->read_bnavi) $mi->read_bnavi = "use";
+	if(!$mi->site_badge) $mi->site_badge = "use";
+	if(!$mi->con_bg_type) $mi->con_bg_type = "black";
+	
+	if(!$mi->comment_style) $mi->comment_style = "default";
+	if(!$mi->comment_count) $mi->comment_count = "4";
+
+	if(!$mi->use_darkMode) $mi->use_darkMode = 'yes';
+	if(!$mi->use_darkMode_set) $mi->use_darkMode_set = 'dark';
+	
+	if(!$mi->use_colorTheme) $mi->use_colorTheme = 'yes';
+	if(!$mi->use_colorTheme_set) $mi->use_colorTheme_set = 'orange';
+	if(!$mi->use_colorTheme_set) $mi->use_brightTheme_set = 'd2';
+	
+	$oday_srl = $layout_info->author[0];	
+}
+{@
+	if(!$mi->cmt_wrt) $mi->cmt_wrt = "simple";
+	if(isset($_COOKIE['bd_editor'])) $mi->cmt_wrt = $_COOKIE['bd_editor'];
+}
+<!--@if($onlyimg=='all')-->
+{@ $mi->view_cell = 'all'}
+<!--@elseif($onlyimg=='thum')-->
+{@ $mi->view_cell = 'thum'}
+<!--@elseif($onlyimg=='sum')-->
+{@ $mi->view_cell = 'sum'}
+<!--@elseif(!in_array($mi->view_cell,array('all','thum','sum')))-->
+{@ $mi->view_cell = 'all'}
+<!--@end-->
+
+<!--@if($listStyle=='list')-->
+{@ $mi->default_style = 'list'}
+<!--@elseif($listStyle=='listtable')-->
+{@ $mi->default_style = 'listtable'}
+<!--@elseif($listStyle=='gallery')-->
+{@ $mi->default_style = 'gallery'}
+<!--@elseif($listStyle=='galleryView')-->
+{@ $mi->default_style = 'galleryView'}
+<!--@elseif($listStyle=='webzine')-->
+{@ $mi->default_style = 'webzine'}
+<!--@elseif($listStyle=='webzinelist')-->
+{@ $mi->default_style = 'webzinelist'}
+<!--@elseif($listStyle=='bookmark')-->
+{@ $mi->default_style = 'bookmark'}
+<!--@elseif($listStyle=='guest')-->
+{@ $mi->default_style = 'guest'}
+<!--@elseif($listStyle=='guestView')-->
+{@ $mi->default_style = 'guestView'}
+<!--@elseif($listStyle=='inputform')-->
+{@ $mi->default_style = 'inputform'}
+<!--@elseif($listStyle=='blog')-->
+{@ $mi->default_style = 'blog'}
+<!--@elseif($listStyle=='history')-->
+{@ $mi->default_style = 'history'}
+<!--@elseif($listStyle=='youtube')-->
+{@ $mi->default_style = 'youtube'}
+<!--@elseif($listStyle=='history_step')-->
+{@ $mi->default_style = 'history_step'}
+<!--@elseif(!in_array($mi->default_style,array('list','listtable','gallery','webzine','webzinelist','bookmark','guest','inputform','blog','history','youtube','history_step')))-->
+{@ $mi->default_style = 'list'}
+<!--@end-->
+
+<!--@if($oday_srl->homepage!='https://www.orangeday.com')-->
+<include target="__set_jscss.html" />
+<!--@end-->
+
+<load target="../../../editor/skins/xpresseditor/js/xe_textarea.min.js" type="body" />
+<load target="asset/board.js" type="body" />
+<load target="asset/autosize.min.js" type="body" />
+<load target="css/default.css" />
+
+<script>
+var lang_type = "{$lang_type}";
+$(function(){
+	autosize($('textarea'));
+	board('#bd_{$mi->module_srl}_{$oDocument->document_srl}');
+});
+</script>
+<style>
+/* 레이아웃 정렬 */
+<!--@if($layout_info->layout_align=='left' || $layout_info->layout_align=='center')-->
+	:root {
+		--oday_listHeight:{$mi->normal_list_height}px !important;
+		--oday_maxWidth: 100%;
+	}
+	<!--@if($mi->default_style=='gallery' || $mi->default_style=='blog')-->
+		.pagelocation,
+		footer,
+		.od-bord { max-width:100%; margin-left:0; margin-right:0}
+		.od-bord #writeBox {margin-left:10px; margin-right:10px; max-width: -webkit-fill-available;}
+	<!--@end-->	
+<!--@else-->
+	:root {
+		--oday_listHeight:{$mi->normal_list_height}px !important;
+		--oday_maxWidth: {$mi->page_width}px;
+	}
+	<!--@if($mi->default_style=='gallery' || $mi->default_style=='blog')-->
+		.pagelocation,
+		footer,
+		.od-bord { max-width:100%; margin-left:0; margin-right:0}
+		.od-bord #writeBox {margin-left:10px; margin-right:10px; max-width: -webkit-fill-available;}
+	<!--@end-->
+	/* 페이지 정렬 */
+	<!--@if($mi->page_align=='center')-->
+
+	<!--@elseif($mi->page_align=='left')-->
+		.pagelocation,
+		footer,
+		.od-bord { max-width:var(--oday_maxWidth); margin-left:10px; margin-right:10px}
+		<!--@if($mi->default_style=='gallery' || $mi->default_style=='blog')-->
+			.pagelocation,
+			footer,
+			.od-bord { max-width:100%; margin-left:0; margin-right:0}
+		<!--@elseif($mi->default_style=='galleryView')-->
+			.od-bord { max-width:var(--oday_maxWidth); }
+		<!--@elseif($mi->default_style=='webzine')-->
+			.od-bord { max-width:var(--oday_maxWidth);  width:var(--oday_maxWidth); }
+		<!--@end-->
+	<!--@elseif($mi->page_align=='full')-->
+		<!--@if($mi->default_style=='gallery')-->
+			:root {
+				--oday_maxWidth: 1000px;
+			}
+		<!--@else-->
+			:root {
+				--oday_maxWidth: 100%;
+			}	
+		<!--@end-->
+	<!--@end-->
+<!--@end-->
+
+
+/* 상단 검색박스 위치 */
+<!--@if($mi->search_stick)-->
+.stickyTopBox { top:{$mi->search_sticky}px; } 
+<!--@else-->
+.stickyTopBox { top:-10px; } 
+<!--@end-->
+
+@media screen and (max-width:768px){
+	:root {
+		--oday_maxWidth:100%;
+	}
+	.stickyTopBox { top:0px; }
+	.pagelocation,
+	footer,
+	.od-bord { max-width:calc(100vw - 10px); margin-left:5px; margin-right:0}	
+}
+</style>
+
+<!--@if($mi->bg_use=='no')-->
+	<style>
+	:root {
+		--oday_bodyBgColor: rgb(250 250 250);
+	}
+	:is(.color_scheme_dark), :root[color-theme='dark'] {
+		--oday_bodyBgColor: rgb(28,28,28);
+	}
+	.widthSideNavi:not(.ifrm) #readBox ,
+	#writeBox,
+	#list_inputform,
+	.widthSideNavi:not(.ifrm) .naviBoxSide ul { background-color:transparent; border:none; box-shadow:none }
+	#readBox:not(.ifrm) .feedback h2  {background-color:var(--oday_bodyBgColor);}
+	#list-bd-table table.tbl_board,
+	#list-bd.list-bd-ul,
+	#list-webzinelist,
+	.comList,
+	.widthSideNavi:not(.ifrm) #readBox .naviBtn,
+	#list_inputform .ap_privacy {background-color:transparent; }
+	.widthSideNavi:not(.ifrm) #readBox  .sign li {background-color: var(--oday_listBgColorStress2);}
+	</style>
+<!--@end-->
+
+<!--@if($mi->con_bg || $mi->con_bg_dr)-->
+	<load target="asset/parallax.js" type="body" />
+	<div class="insideTopBg" data-parallax="scroll" data-position="center" data-bleed="0" data-image-src="
+	<!--@if($mi->con_bg)-->
+	{$mi->con_bg}
+	<!--@else-->
+	{$mi->con_bg_dr}
+	<!--@end-->
+	" data-natural-width="2400"></div>
+	<style>
+	.parallax-mirror:after { content:"";position:absolute; top: 0; left: 0; width: 100%; height: 100%;}
+	<!--@if($mi->default_style=='history')-->
+		
+		.pagelocation {display:none; }
+		<!--@if($mi->con_bg_type=='black')-->
+			.insideTopBg { position:absolute; top: 0; left: 0; width: 100%; height: 500px; margin: 0 0 50px 0; z-index: -1;  } 
+			.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #fff, transparent 100%) 50%, var(--oday_bodyBgColor)); }
+			.greetinginpage .since { color:#fff}
+			.greetinginpage .since span { color:var(--oday_mainColorLight)}
+			.greetinginpage .title { color:#fff}
+			.greetinginpage .sum { color:#fff; opacity:.8; font-weight:400}		
+			:is(.color_scheme_dark),
+			:root[color-theme='dark'] {
+				.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #000, transparent 100%) 70%, var(--oday_bodyBgColor) ); }
+				.greetinginpage .since { color:#fff}
+				.greetinginpage .since span { color:var(--oday_mainColorLight)}
+				.greetinginpage .title { color:#fff}
+				.greetinginpage .sum { color:#fff; opacity:.8; font-weight:400}					
+			}
+		<!--@else-->
+			.insideTopBg { position:absolute; top: 0; left: 0; width: 100%; height: 400px; margin: 0 0 50px 0; z-index: -1;  } 
+			.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #fff, transparent 30%), var(--oday_bodyBgColor) ); }
+			.greetinginpage .since { color:#000}
+			.greetinginpage .since span { color:var(--oday_mainColor)}
+			.greetinginpage .title { color:#000}
+			.greetinginpage .sum { color:#000; opacity:.8}
+			:is(.color_scheme_dark),
+			:root[color-theme='dark'] {
+				.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #000, transparent 40%), var(--oday_bodyBgColor) ); }
+				.greetinginpage .since { color:#fff}
+				.greetinginpage .since span { color:var(--oday_mainColorLight)}
+				.greetinginpage .title { color:#fff}
+				.greetinginpage .sum { color:#fff; opacity:.8; font-weight:300}				
+			}		
+		<!--@end-->
+	<!--@else-->
+
+		.insideTopBg { position:absolute; top: 0; left: 0; width: 100%; height: 250px; margin: 0 0 50px 0; z-index: -1;  }
+		<!--@if($mi->con_bg_type=='black')-->
+			.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #000, transparent 50%) 80%, var(--oday_bodyBgColor) ); }
+			.pagelocation * {color:#fff !important}
+			.pagelocation > *:last-child:after {background-color:var(--oday_mainColorOpt)}
+		<!--@else-->
+			.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, #fff, transparent 40%) 80%, var(--oday_bodyBgColor) ); }
+			.pagelocation * {color:#000 !important}
+			.pagelocation > *:last-child:after {background-color:var(--oday_mainColorOpt)}
+			:is(.color_scheme_dark),
+			:root[color-theme='dark'] {
+				.parallax-mirror:after { background:linear-gradient( color-mix(in srgb, var(--oday_bodyBgColor), transparent 30%) 80%, var(--oday_bodyBgColor) ); }
+				.pagelocation * {color:#fff !important}
+			}				
+		<!--@end-->
+	<!--@end-->
+
+	</style>
+<!--@end-->
+
+<div cond="$grant->manager" class="bd_num vp" 
+style="z-index:3; position: fixed; top:0;
+font-weight:700; font-size:1em; clip-path: polygon(50% 0, 100% 0, 100% 80%, 50% 100%, 0 80%, 0 0); 
+background-color: var(--oday_mainColor); color:var(--oday_primaryBtnColor); 
+padding:5px 10px 10px 10px;">{$mi->module_srl} </div>
+
+<div cond="$mi->preview=='use' || $mi->theme_use == 'use'" class="preview_btn">
+	<a class="view_opt"><i class='bx bx-cog' ></i></a>
+	<ul class="cate1" cond="$mi->preview=='use'" style="display:none">
+		<li class="on"|cond="$mi->default_style=='listtable'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','listtable','act','','document_srl','')}" title="기본-table"><i class='bx bx-table' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='list'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','list','act','','document_srl','')}" title="기본-ul"><i class='bx bx-menu' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='guest'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','guest','act','','document_srl','')}" title="방명록"><i class='bx bxs-user' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='webzine'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','webzine','act','','document_srl','')}" title="웹진"><i class='bx bxs-grid' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='webzinelist'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','webzinelist','act','','document_srl','')}" title="웹진리스트"><i class='bx bx-list-ul' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='bookmark'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','bookmark','act','','document_srl','')}" title="북마크"><i class='bx bxs-star' ></i></a>
+		</li>	
+		<li class="on"|cond="$mi->default_style=='inputform'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','inputform','act','','document_srl','')}" title="입력폼"><i class='bx bx-edit' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='blog'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','blog','act','','document_srl','')}" title="블로그(매뉴얼/강좌)"><i class='bx bx-file' ></i></a>
+		</li>			
+		<li class="on"|cond="$mi->default_style=='history'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','history','act','','document_srl','')}" title="히스토리"><i class='bx bx-history' ></i></a>
+		</li>
+		<li class="on"|cond="$mi->default_style=='youtube'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','youtube','act','','document_srl','')}" title="유튜브"><i class='bx bxl-youtube'></i></a>
+		</li>
+		<li class="on gall"|cond="$mi->default_style=='gallery'">
+			<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','gallery','act','','document_srl','')}" title="갤러리"><i class='bx bx-image-alt' ></i></a>
+			<ul cond="$mi->default_style=='gallery'" class="date2">
+				<li class="on"|cond="$mi->view_cell=='all'">
+					<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','all','act','','document_srl','')}" title="썸네일 + 제목">A</a>
+				</li>
+				<li class="on"|cond="$mi->view_cell=='thum'">
+					<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','thum','act','','document_srl','')}" title="썸네일">T</a>
+				</li>
+				<li class="on"|cond="$mi->view_cell=='sum'">
+					<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','sum','act','','document_srl','')}" title="제목">C</a>
+				</li>
+			</ul>			
+		</li>
+	</ul>
+	
+<!--@if($oday_srl->homepage!='https://www.orangeday.com')-->
+	<ul cond="$mi->theme_use == 'use'" class="cate1" style="display:none">
+	<!--@if($mi->use_darkMode == 'yes')-->
+		<li><a onclick="setThemeDark()" class="viewDark "><i class='bx bxs-moon'></i></a></li>
+		<li><a onclick="setThemeLight()" class="viewLight "><i class='bx bxs-sun' ></i></a> </li>
+	<!--@end-->
+	<!--@if($mi->use_colorTheme == 'yes')-->
+		<li class="titlecon mod-theme color">
+			<div>
+				<a onclick="setTheme_color('white');"><i class='bx bxs-palette white' ></i></a> 
+				<a onclick="setTheme_color('gray');"><i class='bx bxs-palette gray' ></i></a>
+				<a onclick="setTheme_color('orange');"><i class='bx bxs-palette orange' ></i></a> 
+				<a onclick="setTheme_color('blue');"><i class='bx bxs-palette blue' ></i></a> 
+				<a onclick="setTheme_color('green');"><i class='bx bxs-palette green' ></i></a>
+				<a onclick="setTheme_color('red');"><i class='bx bxs-palette red' ></i></a>
+			</div>
+		</li>
+		<li class="titlecon mod-theme bright">
+			<div>
+				<a onclick="setTheme_bright('d1');"><i class='bx bx-signal-1 d1' ></i></a> 
+				<a onclick="setTheme_bright('d2');"><i class='bx bx-signal-3 d2' ></i></a> 
+				<a onclick="setTheme_bright('d3');"><i class='bx bx-signal-5 d3' ></i></a>
+			</div>
+		</li>
+	<!--@end-->
+	</ul>
+<!--@end-->
+	
+<script>		
+
+$(function(){
+   $(".tooltipTheme").tooltip({
+	delay:0,
+	opacity:1,
+	position: { my: "left center", at: "right center" }
+   });	   
+});	
+$(".view_opt").click(function(){
+	$(this).parent().find('ul').slideUp(200);
+	if(!$(this).parent().find('ul').is(":visible")){
+		$(this).parent().find('ul').slideDown(200);
+	}
+});
+if (window.self != window.top) {
+	$(".bd_num").hide();
+} 
+</script>
+</div>
+<div class="od-bord" id="bd_{$mi->module_srl}_{$oDocument->document_srl}" data-default_style="{$mi->default_style}">

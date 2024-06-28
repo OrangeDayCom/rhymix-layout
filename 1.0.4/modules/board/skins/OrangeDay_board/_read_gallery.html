@@ -1,0 +1,92 @@
+{@ if($_SERVER['HTTP_SEC_FETCH_DEST']!="document") Context::set('layout','none');}
+{@
+	$layout_apply_width = $layout_info->layout_width - $layout_info->gnb_width;
+}
+<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']!='document')-->
+	<include target="__set_jscss.html" />
+<!--@end-->
+
+<article id="readBox" style="font-size:{$mi->font_size}px">
+	<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+		<include target="opt_read/_read_opt_secret.html" />
+		<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+	<!--@else--><!-- 비밀글 분기 -->
+		<include target="opt_read/_read_opt_title.html" />	
+		<include target="opt_read/_read_opt_meta.html" cond="$mi->read_meta == 'use'"/>
+		<div class="rMain">
+		{$oDocument->getContent(false)|noescape}
+		</div>
+		<include target="opt_read/_read_opt_extravar.html" />
+		<include target="opt_read/_read_opt_vote.html" cond="$mi->read_vote == 'use'" />
+		<include target="opt_read/_read_opt_tags.html" cond="$mi->read_tag == 'use'" />
+		<include target="opt_read/_read_opt_download.html" cond="$mi->read_download == 'use'" />
+		<include target="opt_read/_read_opt_doNsns.html" cond="$mi->read_utility == 'use' || $mi->read_sns == 'use'"/>
+		<include target="opt_read/_read_opt_sign.html" cond="$mi->read_sign == 'use'" />
+		<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+		<include target="_comment.html" />
+		<include target="_comment_write.html" />
+	<!--@end-->
+	<include target="opt_read/_read_opt_btnbox.html" />
+	<!-- include target="opt_read/_read_opt_urlinfo.html" / -->
+</article>
+<include target="opt_read/_read_opt_navi_side.html" />
+<style>
+<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']!='document')-->
+	body {background-color:transparent}
+	.preview_btn { display: none; }
+	.iframeBg4Click { display:block !important; }	
+	<!--@if($layout_info->layout_align=='left')-->
+		.od-bord { width:{$layout_apply_width}px; margin:0 auto; }
+	<!--@end-->
+
+<!--@else-->
+	body {background-color:var(--oday_bodyBgColor)}
+<!--@end-->
+</style>
+<script>
+	/** 배경 설정 **/
+	$(function() {
+		if (window.self != window.top) {
+			$("body").css('background-color','transparent');
+			$('.iframeBg4Click').click(function(){ golistPage(); });
+			backControl(callbackFunction);
+		} else {
+			$("body").css('background-color','var(--oday_bodyBgColor)');
+		}		
+	});
+		//parent.history.pushState({}, '{$oDocument->getTitle()}', '{$oDocument->getPermanentUrl()}?listStyle=galleryView');
+		//history.pushState({}, '{$oDocument->getTitle()}', '{$oDocument->getPermanentUrl()}');
+	$(function() {
+		$('.iframeBg4Click').click(function(){ golistPage(); });
+		backControl(callbackFunction);
+	});
+	/* 브라우저 백 버튼 감지 */
+	var backControl = function(callbackFunction) {
+		 window.innerDoc = false; 		
+		 window.addEventListener('mouseover', function(event) {    
+			window.innerDoc = true;
+		 }); 
+		 window.addEventListener('mouseout', function(event) {                
+			window.innerDoc = false;
+		 });
+		// history.pushState({}, '', '');
+		// parent.history.replaceState({}, '{$oDocument->getTitle()}', '{$oDocument->getPermanentUrl()}?listStyle=galleryView');
+		parent.history.pushState({page:"child"}, '{$oDocument->getTitle()}', '{$oDocument->getPermanentUrl()}');
+		history.pushState({page:"child"}, '{$oDocument->getTitle()}', '{$oDocument->getPermanentUrl()}');
+		window.addEventListener('popstate', function(event) { 
+			event.preventDefault();
+			if (!window.innerDoc) { 
+				callbackFunction();
+			} 
+		});
+	}
+	var callbackFunction = function() {
+		golistPage();
+	}
+	function golistPage() {
+		//history.go(-1);
+		parent.closeCon();
+	}
+
+</script>
+

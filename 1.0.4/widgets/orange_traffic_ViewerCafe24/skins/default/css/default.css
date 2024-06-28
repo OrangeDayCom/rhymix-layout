@@ -1,0 +1,51 @@
+@charset "utf-8";
+.tviewer { position:relative; padding:5px 0;  /*border:var(--oday_listBorder); box-shadow:var(--oday_listShadow); border-radius:4px;*/}
+
+.tviewer .graph {width:100%; height:2px; border-radius:2px; overflow:hidden; background-color: var(--oday_listBgColorStress2); /*color-mix( in srgb, var(--oday_mainColor), #000 90%); /*border:var(--oday_listBorder); box-shadow:var(--oday_listShadow); */}
+.tviewer .graph div { height:100%; background-color:var(--oday_mainColor); }
+.tviewer .dec { font-size:10px; font-weight:300; }
+.tviewer .graph + .graph { margin-top:2px}
+.tviewer .graph + .dec { margin-top:5px}
+.tviewer .dec + .graph { margin-top:10px}
+.tviewer .pop {  font-size:10px; color:#666; line-height:1.2; font-weight:500;  padding:10px; z-index:20; top:10px; white-space: nowrap;  border-radius:10px; background-color:var(--oday_listBgColor); box-shadow:var(--oday_listShadowStress); border:var(--oday_listBorder); width:100%;
+	transition: 0.3s ease; pointer-events: none; 
+	position:absolute;
+
+	/**/
+	visibility: hidden; 
+	opacity:0;
+	transform: translateY(0px) ;
+	
+}
+.tviewer .pop:before {
+	position:absolute; 
+	top:-9px; left:20px;
+	content:"";
+	display:block;
+	width:15px;
+	height:15px;
+	 -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg);
+	background-color:var(--oday_listBgColor); 
+	border:var(--oday_listBorder);
+	border-right:none; border-bottom:none;
+}
+/*
+.tviewer .pop .tipArrow {
+	position:absolute;
+	top:10px; left:-5px; width:15px; height:15px; 	
+	border:var(--oday_listBorder); border-right:none; border-bottom:none;
+	background-color:var(--oday_listBgColorStress1);
+	z-index:1; 
+	transform: rotate( 45deg );
+}*/
+.tviewer:hover .pop { 
+	visibility: visible;
+	opacity:1;
+	transform: translateY(5px) ;
+}
+.tviewer .pop .tr-title { font-weight:600; color:var(--oday_mainColor)}
+.tviewer .pop .tr-title.step2 { margin-top:10px}
+.tviewer .pop .main {font-size:20px}
+.tviewer .pop .main span { font-weight:900; font-size:30px; color:var(--oday_mainColor);}
+
+#logo li.traffic .xe-widget-wrapper  { overflow:visible !important}

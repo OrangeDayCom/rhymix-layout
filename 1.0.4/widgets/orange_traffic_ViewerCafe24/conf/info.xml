@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget version="1.0">
+    <title xml:lang="ko">ORANGE Cafe24전용 트래픽 /하드 뷰어</title>
+    <author email_address="" link="http://www.orangeday.com" date="2008">
+        <name xml:lang="ko">야비</name>
+        <description xml:lang="ko">Cafe24 전용 트래픽 사용량 출력 위젯입니다.</description>
+    </author>
+    <extra_vars>
+        <var id="trafficview_url">
+            <name xml:lang="ko">본인 트래픽이 보여지는 주소</name>
+            <type>text</type>
+            <description xml:lang="ko">본인 트래픽보는 페이지에서 오른클릭후 속성보시면 주소를 보실수 있습니다.</description>
+        </var>
+
+        <var id="user_space">
+            <name xml:lang="ko">HDD 할당량(MB)</name>
+            <type>text</type>
+            <description xml:lang="ko">할당 받은 HDD 용량(MB)을 입력하세요. 기본 500 MB</description>
+        </var>
+    </extra_vars>
+</widget>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin version="1.0">
+    <title xml:lang="ko">ORANGE Cafe24전용 트래픽 사용량 출력</title>
+    <maker email_address="" link="http://www.orangeday.com" date="2008">
+        <name xml:lang="ko">야비</name>
+        <description xml:lang="ko">ORANGE Cafe24전용 트래픽 사용량 출력</description>
+    </maker>
+  <colorset>
+    <color name="orange">
+      <title xml:lang="ko">오렌지</title>
+    </color>
+    <color name="purple">
+      <title xml:lang="ko">퍼플</title>
+    </color>
+    <color name="red">
+      <title xml:lang="ko">레드</title>
+    </color>
+    <color name="black">
+      <title xml:lang="ko">블랙</title>
+    </color>
+    <color name="gray">
+      <title xml:lang="ko">그레이</title>
+    </color>
+    <color name="cyan">
+      <title xml:lang="ko">시안</title>
+    </color>
+    <color name="blue">
+      <title xml:lang="ko">블루</title>
+    </color>
+    <color name="white">
+      <title xml:lang="ko">화이트</title>
+    </color>
+  </colorset>
+</skin>

@@ -1,0 +1,189 @@
+		<!--@if(!$_is_indexmodule)-->
+		<div class="pagelocation">
+			<a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a>
+			<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+						<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+							<a href="{$val4['href']}">{$val4['text']}</a>
+						</block>
+					</block>
+				</block>
+			</block>
+			<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+					</block>
+				</block>
+			</block>
+		</div>
+		<!--@end-->
+		<!--@if($_is_indexmodule && $oi->use_index == 'no')-->
+		<div class="pagelocation">
+			<a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a>
+			<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+						<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+							<a href="{$val4['href']}">{$val4['text']}</a>
+						</block>
+					</block>
+				</block>
+			</block>
+			<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+				<a href="{$val1['href']}">{$val1['text']}</a>
+				<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+					<a href="{$val2['href']}">{$val2['text']}</a>
+					<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+						<a href="{$val3['href']}">{$val3['text']}</a>
+					</block>
+				</block>
+			</block>
+		</div>
+		<!--@end-->
+		
+		<div class="pagelocation" cond="$act == 'IS'"><a href="{getUrl('document_srl','')}">{$module_info->browser_title}<block cond="$act == 'IS'">통합검색</block></a></div>
+		
+		
+		<!--@if($_is_indexmodule && $oi->use_index == 'yes')-->
+			<!--@if($act != 'IS')-->
+				<include target="home.html" />
+			<!--@end-->
+		<!--@end-->
+		
+		
+		<!--@if($module_info->default_style || $_is_indexmodule)-->
+			<div class="templatepage">
+			{$content}
+			</div>
+		<!--@else-->
+			<div class="templatepage">
+			{$content}
+			</div>
+		<!--@end-->
+		
+		
+		<!--@if($_is_indexmodule)-->
+			<!--@if($oi->use_index == 'yes' && $act == 'IS')-->
+				<include target="pagetitle.html" />
+				<div class="templatepage">{$content}</div>			
+			<!--@elseif(!$module_info)-->
+				{$content}
+			<!--@else-->
+				<include target="home.html" />
+			<!--@end-->
+		<!--@else-->
+			<include target="pagetitle.html" />
+			<div class="templatepage">{$content}</div>
+		<!--@end-->		
+		
+		
+		
+				<!--@if($_is_indexmodule && $oi->use_index == 'yes' && $act != 'IS' && $module_info)-->
+			<include target="home.html" />
+		<!--@elseif($module_info)-->
+			<include target="pagetitle.html" />
+			<div class="templatepage">
+			{$content}
+			</div>
+		<!--@else-->
+			{$content}
+		<!--@end-->
+		
+		
+<!--@if($oi->use_darkMode == 'yes')-->
+<load target="/_asset/_Oday_script.js" />
+<script>
+/*다크모드*/
+	setColorScheme("light");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').removeClass("color_scheme_dark");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').addClass("color_scheme_light");
+	document.documentElement.setAttribute('color-theme', 'light');
+/*라이트모드*/
+	setColorScheme("light");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').removeClass("color_scheme_dark");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').addClass("color_scheme_light");
+	document.documentElement.setAttribute('color-theme', 'light');
+	
+/*컬러테마*/	
+	 $('body').removeClass("color_theme_white, color_theme_orange, color_theme_blue, color_theme_green, color_theme_red"); 
+	$('body').addClass("color_theme_"+tColor);
+</script>		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<load target="/_assets/js/owl.carousel.min.js" />
+<load target="/_assets/css/owl.theme.default.min.css" />
+<load target="css/home.css" />
+<!--@if($oi->use_main_img == 'yes')-->
+<!--@if($oi->site_bg)-->
+<load target="asset/parallax.js" type="body" />
+<!--@end-->
+<!--@end-->
+<article>
+	<!--@if($oi->use_main_img == 'yes')-->
+	<!--@if($oi->site_bg)-->
+	<ul class="sectionIdx intro cover" data-parallax="scroll" data-position="center" data-bleed="0" data-speed="0.5" data-image-src="{$oi->site_bg}" data-natural-width="1920" >
+	<!--@else-->
+	<ul class="sectionIdx intro">
+	<!--@end-->
+		<li>
+			<!--@if($oi->use_main_text == 'yes')-->
+				<h1 class="<!--@if($oi->site_title_lang == 'kor')--> korean<!--@end-->">
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+					<!--@if($oi->site_title1)-->
+					<span>{$oi->site_title1}</span>
+					<!--@end-->
+					<!--@if($oi->site_title2)-->
+					<br class="vm" />
+					<span>{$oi->site_title2}</span>
+					<!--@end-->
+				<!--@else-->
+					<span>
+					<!--@if($oi->site_title1)-->
+					{$oi->site_title1}
+					<!--@end-->
+					<!--@if($oi->site_title2)-->
+					{$oi->site_title2}
+					<!--@end-->
+					</span>
+				<!--@end-->
+					<!--@if(!$oi->site_title1 && !$oi->site_title2)-->
+					<span>사이트명을<br />설정해 주세요.</span>
+					<!--@end-->
+				</h1>
+			<!--@end-->
+			<p cond="$oi->site_dec">
+				{nl2br($oi->site_dec)}
+			</p>
+			<!--@if($oi->use_visitor == 'yes')-->
+			<img class="zbxe_widget_output" widget="counter_status" skin="OrangeDay_counter_status" />
+			<!--@end-->
+		</li>
+	</ul>
+	<!--@end-->
