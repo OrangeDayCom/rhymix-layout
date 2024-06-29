@@ -46,7 +46,7 @@
 				>
 					{$item->getNickName($widget_info->nickname_cut_size)}
 				</a>
-				<span class="date">{getTimeGap($item->getRegdate(), "Y.m.d - H:i")}</span>
+				<span class="date">{$item->getRegdate("Y.m.d")}</span>
 				<span class="countbox">
 					<!--@if($widget_info->show_comment_count=='Y' && $item->getCommentCount())-->
 					<a href="{$item->getLink()}#comment" class="st" target="_blank"|cond="$widget_info->new_window"><i class='bx bxs-message-rounded-dots'></i>{$item->getCommentCount()}</a>
