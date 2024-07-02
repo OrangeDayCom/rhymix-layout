@@ -1,0 +1,46 @@
+{@
+ if($layout_info->use_kakao_layout) :
+	$kakaoID = $layout_info->use_kakao_layout;
+else :
+	$kakaoID = $mi->use_kakao;
+endif;
+}
+<ul class="doNsns">
+	<li class="to_sns" cond="$mi->read_sns == 'use'">
+		<a  onClick="share_fb();" class="sns_fb"><i class='bx bxl-facebook'></i></a>
+		<a onClick="share_tw();" class="sns_tw"><i class='bx bxl-twitter' ></i></a>
+		<!--@if($kakaoID)-->
+		<a id="kakaotalk-sharing-btn" href="javascript:;"><i class='bx bxs-message-rounded'></i></a>
+		<!--@end-->
+
+		<script>
+		/* SNS공유 공통페이지 */
+		var linkUrlcom = encodeURIComponent(window.location.href);
+		function share_fb() { 
+			window.open( 'http://www.facebook.com/sharer.php?u=' + linkUrlcom, '페이스북 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600' );
+		}
+		function share_tw() {
+			var sendText = document.title;
+			window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + linkUrlcom,  '트위터 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600');
+		}
+		</script>
+		<!--@if($kakaoID)-->
+		<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
+		<script>Kakao.init('{$kakaoID}');</script>
+		<script>
+			Kakao.Share.createDefaultButton({
+				container: '#kakaotalk-sharing-btn',
+				objectType: 'text',
+				text: '{$Contitle}',
+				link: {
+					mobileWebUrl: '{$oDocument->getUrl()}',
+					webUrl: '{$oDocument->getUrl()}',
+				},
+			});
+		</script>
+		<!--@end-->
+	</li>
+	<li cond="$mi->read_utility == 'use'">
+		<a class="document_{$oDocument->document_srl} action" href="#popup_menu_area" onclick="return false">{$lang->cmd_document_do}..</a>
+	</li>	
+</ul>

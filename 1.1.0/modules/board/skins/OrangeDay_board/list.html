@@ -1,0 +1,169 @@
+<include target="_header.html" />
+<block cond="$oDocument->isExists()">
+	<include target="read.html" />
+	<!--@if($mi->list_in_read == 'use')-->
+	<br /><br /><br />
+	<style>.btnBox {position: relative;} .posi-chk-gototop{ height:50px;}</style>
+	<!--@end-->
+	<!--@if($mi->default_style=='list' && $mi->list_in_read == 'use')-->
+	<include target="_list_normal.html" />
+	<!--@elseif($mi->default_style=='listtable' && $mi->list_in_read == 'use')-->
+	<include target="_list_normal_table.html" />
+	<!--@elseif($mi->default_style=='webzine' && $mi->list_in_read == 'use')-->
+	<include target="_list_webzine.html" />
+	<!--@elseif($mi->default_style=='webzinelist' && $mi->list_in_read == 'use')-->
+	<include target="_list_webzinelist.html" />
+	<!--@elseif($mi->default_style=='history_step' && $mi->list_in_read == 'use')-->
+	<include target="_list_history_step.html" />
+	<!--@end-->
+</block>
+<block cond="!$oDocument->isExists()">
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		<!--@if($module_info->mobile_header_text)-->
+		<div class="board-message header_text">
+			{$module_info->mobile_header_text}
+		</div>	
+		<!--@elseif(!$module_info->mobile_header_text && $module_info->header_text)-->
+		<div class="board-message header_text">
+			{$module_info->header_text}
+		</div>	
+		<!--@end-->
+	<!--@else-->
+		<!--@if($module_info->header_text)-->
+		<div class="board-message header_text">
+			{$module_info->header_text}
+		</div>	
+		<!--@end-->
+	<!--@end-->
+	<!-- ////////////////////////
+
+		보드 스타일
+
+	 ////////////////////////-->
+	<!--@if($mi->default_style=='list')-->
+	<include target="_list_normal.html" />
+	<!--@elseif($mi->default_style=='listtable')-->
+	<include target="_list_normal_table.html" />
+	<!--@elseif($mi->default_style=='gallery')-->
+	<include target="_list_gallery.html" />
+	<!--@elseif($mi->default_style=='webzine')-->
+	<include target="_list_webzine.html" />
+	<!--@elseif($mi->default_style=='webzinelist')-->
+	<include target="_list_webzinelist.html" />
+	<!--@elseif($mi->default_style=='bookmark')-->
+	<include target="_list_bookmark.html" />
+	<!--@elseif($mi->default_style=='guest')-->
+	<include target="_list_guest.html" />
+	<!--@elseif($mi->default_style=='inputform')-->
+	<include target="_list_inputform.html" />
+	<!--@elseif($mi->default_style=='history')-->
+	<include target="_list_history.html" />
+	<!--@elseif($mi->default_style=='youtube')-->
+	<include target="_list_youtube.html" />
+	<!--@elseif($mi->default_style=='history_step')-->
+	<include target="_list_history_step.html" />
+	<!--@elseif($mi->default_style=='blog')-->
+	
+		<!--@if($notice_list)-->
+		<block loop="$notice_list=>$no,$oDocument">
+			<!--@if($oDocument->document_srl)-->
+			<script>location.href = "{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle)}";</script>
+			<!--@else-->
+			<include target="_read_blog.html" />
+			<!--@end-->
+			<style>footer, .pagelocation, .board-message { display:none}</style>
+		</block>	
+		<!--@elseif($document_list)-->
+		<block loop="$document_list=>$no,$oDocument" cond="$no == number_format($total_count)">
+			<!--@if($oDocument->document_srl)-->
+			<script>location.href = "{getUrl('document_srl',$oDocument->document_srl,'listStyle',$listStyle)}";</script>
+			<!--@else-->
+			<include target="_read_blog.html" />
+			<!--@end-->	
+			<style>footer, .pagelocation, .board-message { display:none}</style>
+		</block>
+		<!--@else-->
+		<include target="_read_blog.html" />
+		<style>footer, .pagelocation, .board-message { display:none}</style>
+		<!--@end-->
+		
+	<!--@else-->
+	<include target="_list_normal_table.html" />
+	<!--@end-->
+
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		<!--@if($module_info->mobile_footer_text)-->
+		<div class="board-message footer_text">
+			{$module_info->mobile_footer_text}
+		</div>
+		<!--@elseif(!$module_info->mobile_footer_text && $module_info->footer_text)-->
+		<div class="board-message footer_text">
+			{$module_info->footer_text}
+		</div>	
+		<!--@end-->
+	<!--@else-->
+		<!--@if($module_info->footer_text)-->
+		<div class="board-message footer_text">
+			{$module_info->footer_text}
+		</div>	
+		<!--@end-->
+	<!--@end-->
+
+	<div class="gototopboard" style="display:none;"><a><i class='bx bx-chevron-up'></i></a></div>
+	<style>
+		.gototopboard {position: fixed; bottom:5px; right:5px; z-index:3 }
+		.gototopboard a {display:flex; align-items: center; justify-content: center; height:40px; width:40px; background-color:var(--oday_mainColorDark); color:var(--oday_primaryBtnColor); font-size:2em; transition: 0.3s; border-radius:100%}
+		.gototopboard a:hover {background-color:var(--oday_mainColor); ; color:var(--oday_primaryBtnColor); }
+	</style>
+	<script>
+		$(".gototopboard").click(function(){
+			$('html, body').animate({scrollTop: 0}, 500);
+		});
+		$(window).scroll(function () {
+			$(".gototop.layout").removeClass("layout");
+			Yposition2 = $(this).scrollTop();
+			if (Yposition2 >= 100) {
+				$(".gototopboard").fadeIn();
+			}else {
+				$(".gototopboard").fadeOut();
+			}
+		});
+	</script>	
+</block>
+<style>.gototop.layout { display:none !important}</style>
+<script>
+$(".down_onoff").click(function(){
+	if(!$(this).next().is(":visible")){
+		$(this).next().slideDown();
+		$(this).html("Attached file <i class='bx bxs-minus-square' ></i>");
+	} else {
+		$(this).next().slideUp();
+		$(this).html("Attached file <i class='bx bxs-plus-square' ></i>");		
+	}
+});
+
+$(function(){
+	$(".tooltipimg").tooltip({
+		delay:0,
+		opacity:1,
+		items:'[data-photo]',
+		content:function(){
+			var photo = $(this).data('photo');
+			return '<img src="'+photo+'" style="max-width:200px; " />';
+		},		
+		position: { 
+			my: "center bottom-20", at: "center top+10",
+			using: function( position, feedback ) {
+				$( this ).css( position );
+				$( "<div>" )
+				.addClass( "ui-tooltip-arrow" )
+				.addClass( feedback.vertical )
+				.addClass( feedback.horizontal )
+				.appendTo( this );
+			}		
+		}
+	});	   
+});
+</script>
+<include target="_footer.html" />
+

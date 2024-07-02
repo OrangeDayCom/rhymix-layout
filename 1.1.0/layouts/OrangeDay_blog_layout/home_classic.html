@@ -1,0 +1,223 @@
+<load target="css/home_classic.css" index="1000000" />
+<load target="/_assets/js/masonry.pkgd.min.js" />
+<load target="/_assets/js/owl.carousel.min.js" />
+<load target="/_assets/css/owl.theme.default.min.css" />
+{@
+	if(!$oi->site_notice_num) $oi->site_notice_num = 3;
+	if(!$oi->site_banner_num) $oi->site_banner_num = 5;
+	if(!$oi->site_new_con_num) $oi->site_new_con_num = 18;
+	if(!$oi->site_new_com_num) $oi->site_new_com_num = 20;	
+	if(!$oi->site_new_gall_num) $oi->site_new_gall_num = 10;	
+}
+<ul class="main_con">
+	<li class="grid-sizer"></li>
+	<li class="grid-item main_banner">
+		<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="document" list_type="classic_top_banner" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail,content" show_browser_title="N" show_comment_count="N" show_trackback_count="N" show_category="N" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="raito" thumbnail_width="2000" thumbnail_height="1000" extravar_name="exvar_title" extravar2_name="exvar_url" extravar3_name="exvar_target"  extravar4_name="exvar_con"  view_secret_document="not_show" 
+		module_srls="{$oi->site_banner}"
+		list_count="{$oi->site_banner_num}" 
+		/>
+	</li>
+	<li class="grid-item con_topic">
+		<ul class="topic">
+		<!--@if(Mobile::isMobileCheckByAgent())-->
+			<li>
+				<h2><i class='bx bxs-microphone' ></i> NOTICE</h2>
+				<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="document" list_type="classic_comment" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="N" show_comment_count="Y" show_trackback_count="Y" show_category="N" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="none" thumbnail_width="" thumbnail_height="" content_cut_size="300" show_read_count="N" show_all_meta="N"  view_secret_document="not_show" comment_document_secret="Y"
+				module_srls="{$oi->site_notice}"
+				list_count="{$oi->site_notice_num}" 
+				/>
+			</li>
+		<!--@end-->
+			<li>
+				<h2><i class='bx bxs-show' ></i> TOP VIEW</h2>
+				<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" widget_sequence="2351" widget_cache="0m" content_type="document" use_limit="readed_count_upper" limit_number="50" order_target="readed_count" order_type="asc" list_type="classic_comment" option_view="title,regdate,nickname,readed_count" page_count="1" markup_type="table" title_target="title" nickname_target="nickname" show_browser_title="N" show_content_title="N" show_comment_count="N" show_trackback_count="Y" show_category="Y" show_icon="Y" show_point_level="N" show_always_new="N" show_nocomment_document="N" tab_type="none" tab_order="module_order" tab_showtype="module" tab_move_type="mouseover" category_range="all" hyperlink="Y" hyperlink_src="article" view_secret_document="all_user"  thumbnail_type="none"  show_vote_count="N" 
+				list_count="{$oi->site_notice_num}"
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				show_all_meta="N"
+				<!--@else-->
+				show_all_meta="Y"
+				<!--@end-->
+				/>
+			</li>
+			<li>
+				<h2><i class='bx bxs-heart'></i> TOP SUGGEST</h2>
+				<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" widget_sequence="2351" widget_cache="0m" content_type="document" use_limit="voted_count_upper" limit_number="1" order_target="voted_count" order_type="asc" list_type="classic_comment" option_view="title,regdate,nickname,voted_count" page_count="1" markup_type="table" title_target="title" nickname_target="nickname" show_browser_title="N" show_content_title="N" show_comment_count="N" show_trackback_count="Y" show_category="Y" show_icon="Y" show_point_level="N" show_always_new="N" show_nocomment_document="N" tab_type="none" tab_order="module_order" tab_showtype="module" tab_move_type="mouseover" category_range="all" hyperlink="Y" hyperlink_src="article" view_secret_document="all_user" thumbnail_type="none"  show_read_count="N"
+				list_count="{$oi->site_notice_num}"
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				show_all_meta="N"
+				<!--@else-->
+				show_all_meta="Y"
+				<!--@end-->
+				/>
+			</li>
+			<li>
+				<h2><i class='bx bxs-dice-5'></i> RANDOM</h2>
+				<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" widget_sequence="2351" widget_cache="0m" content_type="document" use_limit="voted_count_upper" limit_number="1" order_target="rand()" order_type="desc" list_type="classic_comment" option_view="title,regdate,nickname" page_count="1" markup_type="table" title_target="title" nickname_target="nickname" show_browser_title="N" show_content_title="N" show_comment_count="N" show_trackback_count="Y" show_category="Y" show_icon="Y" show_point_level="N" show_always_new="N" show_nocomment_document="N" tab_type="none" tab_order="module_order" tab_showtype="module" tab_move_type="mouseover" category_range="all" hyperlink="Y" hyperlink_src="article" view_secret_document="all_user" thumbnail_type="none"  show_read_count="N" show_vote_count="N"
+				list_count="{$oi->site_notice_num}"
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				show_all_meta="N"
+				<!--@else-->
+				show_all_meta="Y"
+				<!--@end-->
+				/>
+			</li>
+		</ul>
+
+	</li>
+	<li class="grid-item con_new">
+		<h2><i class='bx bxs-detail' ></i> CONTENTS</h2>
+		<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="document" list_type="classic_content" tab_type="none" tab_order="module_order"  markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="Y" show_comment_count="Y" show_trackback_count="Y" show_category="Y" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="raito" thumbnail_width="130" thumbnail_height="100" cols_list_count="1" content_cut_size="300"  view_secret_document="not_show"
+		module_srls="{$oi->site_new_con}"
+		<!--@if(Mobile::isMobileCheckByAgent())-->
+		list_count="8" 
+		<!--@else-->
+		list_count="{$oi->site_new_con_num}" 
+		<!--@end-->
+		/>
+	</li>
+	<!--@if(!Mobile::isMobileCheckByAgent())-->
+		<li class="grid-item con_noti sideWing">
+			<h2><i class='bx bxs-microphone' ></i> NOTICE</h2>
+			<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="document" list_type="classic_comment" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="N" show_comment_count="Y" show_trackback_count="Y" show_category="N" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="none" thumbnail_width="" thumbnail_height="" content_cut_size="300" show_read_count="N" show_all_meta="N"  view_secret_document="not_show" comment_document_secret="Y"
+			module_srls="{$oi->site_notice}"
+			list_count="{$oi->site_notice_num}"
+			/>
+		</li>
+	<!--@end-->
+	<!--@if($oi->use_visitor == 'yes')-->
+	<li class="grid-item con_count sideWing">
+		<img class="zbxe_widget_output" widget="counter_status" skin="OrangeDay_counter_status_classic" />
+	</li>
+	<!--@end-->
+	<li class="grid-item con_gall sideWing">
+		<h2><i class='bx bxs-image'></i> GALLERY</h2>
+		<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="document" list_type="classic_gallery" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="Y" show_comment_count="Y" show_trackback_count="Y" show_category="Y" show_icon="Y"  duration_new="24" order_target="list_order" order_type="desc" thumbnail_type="raito" thumbnail_width="400" thumbnail_height="400" content_cut_size="300" view_secret_document="not_show" 
+		module_srls="{$oi->site_new_gall}"
+		list_count="{$oi->site_new_gall_num}"
+		/>
+	</li>
+	<li class="grid-item con_com sideWing">
+		<h2><i class='bx bxs-message-rounded' ></i> COMMENTS</h2>
+		<img class="zbxe_widget_output" widget="contentextended" skin="OrangeDay_contentextended" content_type="comment" list_type="classic_comment" tab_type="none" markup_type="list" page_count="1" subject_cut_size="40" option_view="title,regdate,nickname,thumbnail" show_browser_title="Y" show_comment_count="Y" show_trackback_count="Y" show_category="Y" show_icon="Y"  duration_new="24" order_target="update_order" order_type="desc" thumbnail_type="raito" thumbnail_width="100" thumbnail_height="100" content_cut_size="300" view_secret_document="not_show" 
+		module_srls="{$oi->site_new_com}"
+		list_count="{$oi->site_new_com_num}"
+		/>
+	</li>
+</ul>
+
+<style>
+:root {
+	--tab_gap : 40px;
+}
+.grid-item,
+.grid-sizer {width:5%}
+
+.contents li div.con > * + * { margin-top:4px;}
+.contents li div.con p { margin-top:10px;}
+
+.contents li .title a {  font-size:1.4em; font-weight:500; line-height:1.4; }
+.contents li .opt_meta > * { margin-top:5px;}
+	
+<!--@if($oi->layout_align=='full')-->
+	.main_con { width:calc(100% - 40px); max-width:calc(1920px - {$oi->gnb_width}px); margin:0 auto;}
+	.classic_top_banner_extend li { height:300px; transition:.3s}
+	.main_banner {width:80%; margin-bottom:50px !important; } 
+	.con_topic {width:80%; margin-bottom:100px !important; } 
+	.con_topic { padding-right:40px; }
+	.con_topic .topic { display:flex; flex-wrap: wrap; justify-content: space-between;}
+	.con_topic .topic > li { width: 32%; }
+	.con_new  {width:80%;   }
+	.sideWing {width:20%; padding-left:30px; margin-top:30px;}
+	.con_noti { margin-top:20px}
+	@media screen and (max-width:1800px){
+		.main_banner {width:80%}
+		.con_new  {width:80% }
+		.sideWing {width:20%}	
+	}
+	@media screen and (max-width:1400px){
+		.main_banner {width:100%}
+		.con_topic { width: 100%; padding-right:0;}
+		.classic_top_banner_extend li { height:250px}
+		.con_new  {width:75% }
+		.sideWing {width:25%}	
+		.con_noti { margin-top:0px}
+	}
+	@media screen and (max-width:1200px){
+		.con_new  {width:65% }
+		.sideWing {width:35%}	
+	}
+	@media screen and (max-width:1000px){
+		.con_new  {width:60% }
+		.sideWing {width:40%}	
+	}
+	
+	.contents li .thumb {width:130px; height:100px;  border-radius:20px;  margin-right:10px }
+	.contents > li { width:calc((100% / 3) - 40px);  margin-right:40px; }
+	.contents > li:nth-child(n+5) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+	@media screen and (max-width:1600px){
+		.contents li { width:calc((100% / 2) - 40px); }
+		.contents > li:nth-child(n+4) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+	}
+	@media screen and (max-width:1200px){
+		.contents li { width:90%; margin-right:0;  }
+		.contents > li:nth-child(n+3) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+	}
+
+<!--@else-->
+	.main_con { width:calc(100% - 40px);  margin:0 auto;}
+	.main_banner {width:100%; margin-bottom:50px !important; } 
+	.con_topic {width:100%; margin-bottom:50px !important; } 
+	.con_topic .topic { display:flex; flex-wrap: wrap; justify-content: space-between;}
+	.con_topic .topic > li { width: 32%; }	
+	.con_new  {width:80%;   }
+	.sideWing {width:20%; margin-top:30px;}
+	.con_noti { margin-top:0px}
+	
+	.contents li .thumb {width:100px; height:77px;  border-radius:10px;  margin-right:10px }
+	.contents > li { width:calc((100% / 2) - 40px);  margin-right:40px; }
+	.contents > li:nth-child(n+4) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+	@media screen and (max-width:1000px){
+		.contents li { width:90%; margin-right:0;  }
+		.contents > li:nth-child(n+3) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+	}
+<!--@end-->
+@media screen and (max-width:768px){
+	.main_con { width:calc(100% - 30px); }
+	.classic_top_banner_extend li { height:45vw}
+	.con_topic { margin-bottom:20px !important; } 
+	.con_topic .topic > li { width: 49%; margin-bottom:30px }
+
+	.con_new,
+	.sideWing {width:100%; padding-left:0; border:none}	
+	.con_noti,
+	.con_com { margin-top:30px;}	
+	
+	
+		.contents li {align-items: center; width:100%}
+		.contents > li:nth-child(n+3) { margin-top:20px; padding-top:20px; border-top:var(--oday_listBorder); border-style:dashed }
+		.contents li div.con { padding-top:0;}
+		.contents li div.con > * + * { margin-top:5px;}
+		.contents li div.thum .thumb {width:120px; height:93px;  border-radius:20px; }
+		.contents li div.con p { 
+			-webkit-line-clamp: 1;
+		}	
+		
+}
+
+</style>
+<script>
+$(function(){
+	$('.classic_content_extend, .classic_content').masonry({
+		// options
+		itemSelector: '.cell-item',
+		columnWidth: '.cell-sizer',
+		percentPosition: true
+	});		
+	$('.main_con').masonry({
+		// options
+		itemSelector: '.grid-item',
+		columnWidth: '.grid-sizer',
+		percentPosition: true
+	});
+});
+</script>

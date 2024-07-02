@@ -1,0 +1,157 @@
+{@
+$oModel = getModel('elkhabook'); // for ajax
+$elkhabook_config = $oModel->getConfig(); // for ajax
+$board = $board ?? ''; // for ajax
+
+$output = [];
+$module_srl = 0;
+$page = isset($page)? (INT)$page : 0;
+$cpage = isset($cpage)? (INT)$cpage : 0;
+$epage = isset($epage)? (INT)$epage : 0;
+$_module_info = NULL;
+
+if($board != ''):
+	$oModuleModel = getModel('module'); // for ajax
+	$_module_info = $oModuleModel->getModuleInfoByMid($board);
+	$match = FALSE;
+	foreach($elkhabook_config->doc_list as $regex => $val):
+		if(preg_match($regex, $board)):
+			$match = TRUE;
+			break;
+		endif;
+	endforeach;
+	if(!$match):
+		$board = '';
+	endif;
+	if($match && is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+		if(!(INT)$cpage)
+			$output['document'] = [
+				'<a href="'.getUrl('','mid',$_module_info->mid).'">'.$oModel->getBrowserTitle($_module_info->module_srl).'</a>'
+				,$oModel->getDocList($_member_info->member_srl, (INT)$page, $_module_info->module_srl)
+				,'page'
+			];
+
+		if(!(INT)$page)
+			$output['comment'] = [
+				'<a href="'.getUrl('','mid',$_module_info->mid).'">'.$oModel->getBrowserTitle($_module_info->module_srl).'</a> - ' . $lang->comment
+				,$oModel->getCmtList($_member_info->member_srl, (INT)$cpage, $_module_info->module_srl)
+				,'cpage'
+			];
+
+		$module_srl = $_module_info->module_srl;
+	endif;
+endif;
+
+if(!count($output)):
+	if(!(INT)$cpage && !(INT)$epage)
+		$output['document'] = [
+			$lang->document
+			,$oModel->getDocList($_member_info->member_srl, (INT)$page)
+			,'page'
+		];
+	if(!(INT)$page && !(INT)$epage)
+		$output['comment'] = [
+			$lang->comment
+			,$oModel->getCmtList($_member_info->member_srl, (INT)$cpage)
+			,'cpage'
+		];
+
+	if(!(INT)$cpage && !(INT)$page && count($elkhabook_config->elkhatalk_rooms))
+		$output['chat'] = [
+			'채팅'
+			,$oModel->getChatList($_member_info->member_srl, (INT)$epage)
+			,'epage'
+		];
+endif;
+}
+<aside loop="$output=>$_class,$_output" class="docs icon-{$_class}">
+	<h3 class="hx">{$_output[0]} ({$_output[1]->page_navigation->total_count})</h3>
+	<div class="docs-ajax">
+		<!--@if(is_array($_output[1]->data) && count($_output[1]->data))-->
+		{@
+		$regdate = 0;
+		$regdate2= 0;
+		}
+		<ul>
+			<!--@foreach($_output[1]->data as $obj)-->
+			<li class="{$regdate==$obj->getRegdate('Y-m-d')?'line':'circle'}{$regdate2==$obj->getRegdate('ymdhi')?' time_hide':''}{$obj->get('valid')=='N'? ' valid_N':''}">
+				<div class="doc" cond="$cond = $oModel->isAccessible($obj)">
+					<!--@if(method_exists($obj, 'getTitleText'))-->
+					<h4 class="hx">
+						<block cond="$board!=$oModel->getMid($obj->get('module_srl') ?: 0)"><a href="{getUrl('','mid',$oModel->getMid($obj->get('module_srl') ?: 0))}"><i class='bx bxs-category' ></i> {@ echo $oModel->getBrowserTitle($obj->get('module_srl')); }</a></block>
+						<a href="{$obj->getPermanentUrl()}">{$obj->getTitleText()}</a>
+					</h4>
+					<p class="p">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</p>
+					<!--@else if(isset($obj->elkhatalk))-->
+					<h4 class="hx">
+						<block cond="$obj->get('valid')!='N'">
+							{@ if($obj->roomName()) echo sprintf('<span class="room_name">[%s]</span> ', $obj->roomName()); }
+							{$obj->getContent2()}
+							<a cond="$obj->isGranted()" href="javascript:;" onclick="return procElkhatalk3Delete('{$lang->confirm_delete}', {$logged_info->member_srl}, {$obj->get('pk')});" class="delete">{$lang->cmd_delete}</a>
+						</block>
+						<block cond="$obj->get('valid')=='N'">{$obj->getContent2()}</block>
+					</h4>
+					<span class="p"></span>
+					<!--@else-->
+					<p class="p">
+						<a href="{getUrl('','mid',$oModel->getMid($obj->oDocument->get('module_srl') ?: 0))}"><i class='bx bxs-category' ></i> {@
+						echo $oModel->getBrowserTitle($obj->get('module_srl'));
+						}<br /></a> <a href="{$obj->oDocument->getPermanentUrl()}">{$s = $obj->oDocument->getTitleText(100,'...')}{@ if(!strlen(trim($s))) echo '-'; }</a>
+					</p>
+					<h4 class="hx">
+						<a href="{$obj->getPermanentUrl()}">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</a>
+					</h4>
+					<!--@endif-->
+					<div class="left">
+						<div class="regdate">{$regdate = $obj->getRegdate('Y-m-d')} {$obj->getRegdate('H:i')}</div>
+					</div>
+				</div>
+				<div class="doc" cond="!$cond">
+					<h4 class="hx"><span>{$lang->msg_not_permitted}</span></h4>
+					<p class="p">-</p>
+				</div>
+				{@
+				$regdate2 = $obj->getRegdate('ymdhi');
+				}
+			</li>
+			<!--@endforeach-->
+		</ul>
+		<!--@end-->
+	</div>
+	<div class="more">
+		{@
+		$page_name = $_output[2];
+		}
+		<!--@if($_output[1]->page_navigation->cur_page >= 3)-->
+			<span>
+				{@
+				$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl');
+				if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+					$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+				endif;
+				$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+				$url .= ($_output[1]->page_navigation->cur_page -1);
+				}
+				<a href="{$url}" class="getElkhabookList"><i class='bx bxs-chevron-left' ></i></a>
+			</span>
+		<!--@else-->
+			<span style="opacity:.2"><i class='bx bxs-chevron-left' ></i></span>
+		<!--@end-->
+		<strong> <a href="javascript:;" onclick="return window.go_to_page('{$page_name}', {$_output[1]->page_navigation->cur_page}, '{$lang->elkhabook_go_to_page}');">{$_output[1]->page_navigation->cur_page}</a></strong>
+		<!--@if($_output[1]->page_navigation->cur_page < $_output[1]->page_navigation->last_page)-->
+			<span>
+				{@
+				$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl');
+				if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+					$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+				endif;
+				$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+				$url .= ($_output[1]->page_navigation->cur_page + 1);
+				}
+				<a href="{$url}" class="getElkhabookList"><i class='bx bxs-chevron-right' ></i></a>
+			</span>
+		<!--@else-->
+			<span style="opacity:.2"><i class='bx bxs-chevron-right' ></i></span>
+		<!--@end-->
+	</div>
+</aside>

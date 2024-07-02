@@ -1,0 +1,41 @@
+<!--%import("css/default.css")-->
+<div class="tviewer">
+	<div class="graph">
+		<div style="width:{$widget_info->percent}%;"></div>
+	</div>
+	<!--@if($widget_info->traffic_description == 'Y')-->
+	<div class="dec">
+		Traffic : {$widget_info->sent} MB / {$widget_info->limit} MB ( {$widget_info->percent} % ) <br />
+		Hit : {$widget_info->hit} / Hit per send : {$widget_info->hitpersend} MB <br />	
+	</div>
+	<!--@end-->
+	<div class="graph">
+		<div style="width:{$obj->percentage_hdd}%;"></div>
+	</div>
+	<!--@if($widget_info->traffic_description == 'Y')-->
+	<div class="dec">
+		HDD : {$obj->used_space} MB / {$obj->user_space} MB{$obj->du_m} ( {$obj->percentage_hdd} % ) <br />
+	</div>
+	<!--@end-->
+	<ul class="pop">
+		<li class="tipArrow"></li>
+		<li class="tr-title">TRAFFIC</li>
+		<li class="main">
+			<span>{$widget_info->percent}</span> % 
+		</li>
+		<li>
+		{$widget_info->sent} MB / {$widget_info->limit} MB <br />
+		Hit : {$widget_info->hit} (1h : {$widget_info->hitpersend} MB)<br />	
+		</li>
+		<li class="tr-title step2">HDD</li>
+		<li class="main">
+			<span>{$obj->percentage_hdd}</span> %
+		</li>
+		<li>
+		{$obj->used_space} MB / {$obj->user_space} MB <br />
+		</li>
+	</ul>
+</div>
+
+
+

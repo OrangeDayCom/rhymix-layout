@@ -1,0 +1,23 @@
+<load target="./js/content_widget.js" cond="$widget_info->page_count || count($widget_info->tab)" />
+<load target="./css/widget.css" />
+
+<div class="widgetContainer">
+<!--@if($widget_info->list_type == "gallery")-->
+    <include target="gallery.html" />
+<!--@elseif($widget_info->list_type == "image_title")-->
+    <include target="image_title.html" />
+<!--@elseif($widget_info->list_type == "image_title_content")-->
+    <include target="image_title_content.html" />
+<!--@elseif($widget_info->list_type == "title_content")-->
+    <include target="title_content.html" />
+<!--@elseif($widget_info->list_type == "classic_content")-->
+    <include target="classic_content.html" />        
+<!--@elseif($widget_info->list_type == "classic_comment")-->
+    <include target="classic_comment.html" />        
+<!--@elseif($widget_info->list_type == "classic_top_banner")-->
+    <include target="classic_top_banner.html" />    
+<!--@else-->
+    <include target="normal.html" />
+<!--@end-->
+
+</div>

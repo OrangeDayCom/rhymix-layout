@@ -1,0 +1,112 @@
+
+<div class="voteVsList">
+	추천인
+	<block loop="$vote_member_info => $val">
+		{@
+			$oMemberModel = getModel('member');
+			$profile_info = $oMemberModel->getProfileImage($val->member_srl);
+		}	
+		<a href="#popup_menu_area" class="votelog member_{$val->member_srl}" onclick="return false">
+		<!--@if($profile_info->src)-->
+		<img src="{$profile_info->src}" title="{$val->nick_name}" class="profile metatooltip">
+		<!--@else-->
+		<span title="{$val->nick_name}" class="profile metatooltip"><i class='bx bxs-ghost'></i></span>						
+		<!--@end-->
+		</a>
+	</block>
+	비추천인
+	<block loop="$blame_member_info => $val">
+		{@
+			$oMemberModel = getModel('member');
+			$profile_info = $oMemberModel->getProfileImage($val->member_srl);
+		}	
+		<a href="#popup_menu_area" class="votelog member_{$val->member_srl}" onclick="return false">
+		<!--@if($profile_info->src)-->
+		<img src="{$profile_info->src}" title="{$val->nick_name}" class="profile metatooltip">
+		<!--@else-->
+		<span title="{$val->nick_name}" class="profile metatooltip"><i class='bx bxs-ghost'></i></span>						
+		<!--@end-->
+		</a>
+	</block>
+</div>
+</div>
+<style>
+.voteVsTitle { text-align:center; padding:10px 0; font-size:11px; font-weight:600 }
+.voteVsTitle i { font-size:1.4em}
+
+.voteVsList { display:flex; align-items: center; justify-content: center; padding: var(--oday_sideGapLR); margin-bottom:2em; flex-wrap: wrap; max-width:var(--oday_maxWidth)} 
+.voteVsList a { margin-bottom:2px}
+.voteVsList a + a { margin-left:2px;}
+.voteVsList a .profile { width: var(--oday_metaIconSize); height: var(--oday_metaIconSize);  display:flex; align-items: center; justify-content: center; border-radius:100%;
+border: var(--oday_listBorder);
+background-color: var(--oday_listBgColorStress1);
+font-size:calc(var(--oday_metaIconSize) * .5);
+color:var(--oday_fontColor)
+}
+
+</style>
+<style>
+.ui-tooltip, .arrow:after {
+    background-color: var(--oday_bodyBgColor) !important; border:var(--oday_btnBorder) !important; box-shadow:var(--oday_listShadowStress) !important;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+  }
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 30px;
+    top: -6px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -6px;
+    top: auto;
+  }
+</style>
+<script>
+$(function(){
+	$(".metatooltip").tooltip({
+		delay:0,
+		opacity:1,
+		position: { 
+			my: "center bottom-20", at: "center top+10",
+			using: function( position, feedback ) {
+				$( this ).css( position );
+				$( "<div>" )
+				.addClass( "arrow" )
+				.addClass( feedback.vertical )
+				.addClass( feedback.horizontal )
+				.appendTo( this );
+			}		
+		}
+	});	   
+});
+
+</script>	

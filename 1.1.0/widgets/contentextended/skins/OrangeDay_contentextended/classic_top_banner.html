@@ -1,0 +1,39 @@
+
+
+<ul class="classic_top_banner_extend owl-carousel">
+
+    <li loop="$widget_info->content_items =>$key,$item" class="withThum"|cond="$item->getThumbnail()" >
+		<div>
+		
+			<!--@if($item->getThumbnail())-->
+				<div class="bg_con" style="background-image:url('{$item->getThumbnail()}');"></div>
+			<!--@else-->
+			     <div class="bg_con noimg"></div>
+			<!--@end-->
+			<div class="newconbox">
+				<span class="title">{$item->getTitle($widget_info->subject_cut_size)|noescape}</span>
+				<span class="text" cond="$item->getExtraVar4()">
+					 {nl2br($item->getExtraVar4())}
+				</span>
+				<a cond="$item->getExtraVar()" href="{$item->getExtraVar2()}" class="" target="_blank"|cond="$item->getExtraVar3()">{$item->getExtraVar()} +</a>
+			</div>
+		
+		</div>
+    </li>
+
+</ul>
+<script>
+$(document).ready(function(){
+  $(".classic_top_banner_extend").owlCarousel({
+	items:1,
+	nav:true,
+	autoplay:true,
+	center:true,
+	autoplayTimeout:5000,
+	margin:5,
+	loop:true,
+	autoplayHoverPause:true,
+	animateOut: 'fadeOut'
+  });
+});
+</script>

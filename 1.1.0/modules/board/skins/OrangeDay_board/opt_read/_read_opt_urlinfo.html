@@ -1,0 +1,224 @@
+<!-- style>
+.win_urlInfo {
+	position:fixed; 
+	z-index:9999999;
+	width:100vw;
+	height:500px;
+	bottom:0; 
+	left:0;
+	border:10px solid #000; 
+	overflow-y:auto;
+	background-color:var(--oday_listBgColor)
+}
+</style -->
+<div class="win_urlInfo">
+<pre cond="$grant->manager" class="urlInfo">
+no
+
+module_title
+
+title
+
+nick_name
+user_name
+user_id
+
+comment_count
+comment_status
+
+readed_count
+voted_count
+blamed_count
+
+thumbnail
+summary
+
+
+regdate
+last_update
+last_post
+
+extra_vars1
+</pre>
+<pre cond="$grant->manager" class="urlInfo">
+{print_r($comment)}
+</pre>
+<div cond="$grant->manager" class="urlInfo">
+	<h3>레이아웃 정보</h3>
+	<table>
+		<tr>
+			<th>print_r($layout_info)</th>
+		</tr>
+		<tr>
+			<td style="white-space:pre">{print_r($layout_info)}</td>
+		</tr>
+	</table>
+	<h3>글 정보</h3>
+	<table>
+		<tr>
+			<td>브라우저</td>
+			<th>$module_info->browser_title</th>			
+			<td>{$module_info->browser_title}</td>
+		</tr>
+		<tr>
+			<td>브라우저</td>
+			<th>Context::getBrowserTitle()</th>			
+			<td>{Context::getBrowserTitle()}</td>
+		</tr>		
+		<tr>
+			<td>제목</td>
+			<th>$oDocument->getTitle()</th>			
+			<td>{$oDocument->getTitle()}</td>
+		</tr>
+		<tr>
+			<td>카테고리</td>
+			<th>$category_list[$oDocument->get('category_srl')]->title</th>			
+			<td>{$category_list[$oDocument->get('category_srl')]->title}</td>
+		</tr>
+	</table>
+	<h3>링크관련</h3>
+	<table>
+		<tr>
+			<th>$mid</th>
+			<td>{$mid}</td>
+		</tr>
+		<tr>
+			<th>$mi->module_srl</th>
+			<td>{$mi->module_srl}</td>
+		</tr>
+		<tr>
+			<th>$page</th>
+			<td>{$page}</td>
+		</tr>
+		<tr>
+			<th>$no</th>
+			<td>{$no}</td>
+		</tr>
+		<tr>
+			<th>$oDocument->document_srl</th>
+			<td>{$oDocument->document_srl}</td>
+		</tr>
+		<tr>
+			<th>$oDocument->getPermanentUrl()</th>
+			<td>{$oDocument->getPermanentUrl()}</td>
+		</tr>
+		<tr>
+			<th>$oDocument->getUrl()</th>
+			<td>{$oDocument->getUrl()}</td>
+		</tr>
+		<tr>
+			<th>getUrl('document_srl','')</th>
+			<td>{getUrl('document_srl','')}</td>
+		</tr>
+		<tr>
+			<th>getUrl('document_srl',$oDocument->document_srl, 'listStyle', $listStyle, 'cpage','')</th>
+			<td>{getUrl('document_srl',$oDocument->document_srl, 'listStyle', $listStyle, 'cpage','')}</td>
+		</tr>
+		<tr>
+			<th>getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'page', $page, 'cpage','')</th>
+			<td>{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'page', $page, 'cpage','')}</td>
+		</tr>
+		<tr>
+			<th>cpage</th>
+			<td>설명 : 코멘트 주소}</td>
+		</tr>
+		<tr>
+			<th>/index.php?mid={$ mid}&page={$ page}</th>
+			<td>/index.php?mid={$mid}&page={$page}</td>
+		</tr>
+		<tr>
+			<th>getenv('HTTP_HOST')</th>
+			<td>{getenv('HTTP_HOST')}</td>
+		</tr>
+		<tr>
+			<th>getenv('REQUEST_URI')</th>
+			<td>{getenv('REQUEST_URI')}</td>
+		</tr>
+		<tr>
+			<th>getUrl('L.document_srl','')</th>
+			<td>{$oDocument->document_srl}</td>
+		</tr>
+		<tr>
+			<th>$oDocument->getHashtags()</th>
+			<td>{$oDocument->getHashtags()}
+			{print_r($oDocument->getHashtags)}
+			</td>
+		</tr>
+		<tr>
+			<th>$_SERVER['HTTP_SEC_FETCH_DEST'] > document, iframe</th>
+			<td>{$_SERVER['HTTP_SEC_FETCH_DEST']}</td>
+		</tr>
+		<tr>
+			<th>$_SERVER['HTTP_REFERER'] > document, iframe</th>
+			<td>{$_SERVER['HTTP_REFERER']}</td>
+		</tr>
+	</table>
+	<h3>글 정보</h3>
+	<table>
+		<tr>
+			<th>$oDocument
+print_r($oDocument-)</th>
+		</tr>
+		<tr>
+			<td style="white-space:pre">{print_r($oDocument)}</td>
+		</tr>
+	</table>	
+{@
+  $MemberModel = &getModel('member');
+  $member_info = $MemberModel->getMemberInfoByMemberSrl($oDocument->get('member_srl'));
+  $module_info->module_srl;
+}	
+	<h3>모듈 정보</h3>
+	<table>
+		<tr>
+			<th>$module_info->module_srl
+print_r($module_info)</th>
+		</tr>
+		<tr>
+			<td style="white-space:pre">{print_r($module_info)}</td>
+		</tr>
+	</table>	
+
+{@
+	$oPointModel = getModel('point');
+
+	$oModuleModel = &getModel('module');
+	$config = $oModuleModel->getModuleConfig('point');
+	$point = $oPointModel->getPoint($oDocument->get('member_srl'));
+	$level = $oPointModel->getLevel($point, $config->level_step);
+	$nextpoint = $config->level_step[$level+1];
+	$prepoint = $config->level_step[$level];
+	$percent = round(($point-$prepoint)/($nextpoint-$prepoint)*100);
+   }
+   	<h3>작성자 포인트 레벨</h3>
+	<table>
+		<tr>
+			<th>$oPointModel = getModel('point');
+$oModuleModel = &getModel('module');
+$config = $oModuleModel->getModuleConfig('point');
+$point = $oPointModel->getPoint($oDocument->get('member_srl'));
+$level = $oPointModel->getLevel($point, $config->level_step);
+$nextpoint = $config->level_step[$level+1];
+$prepoint = $config->level_step[$level];
+$percent = round(($point-$prepoint)/($nextpoint-$prepoint)*100);</th>
+		</tr>
+		<tr>
+			<td>
+				$level {$level} / $point {$point} / $nextpoint {$nextpoint} / $prepoint {$prepoint} / $percent {$percent}
+			</td>
+		</tr>
+	</table>
+	<h3>작성자 정보</h3>
+	<table>
+		<tr>
+			<th>$MemberModel = &getModel('member');
+$member_info = $MemberModel->getMemberInfoByMemberSrl($oDocument->get('member_srl'));
+print_r($member_info)
+3단 사용 $member_info->group_mark->src</th>
+		</tr>
+		<tr>
+			<td style="white-space:pre">{print_r($member_info)}</td>
+		</tr>
+	</table>
+</div>
+</div>
