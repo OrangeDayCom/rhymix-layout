@@ -102,6 +102,25 @@ endif;
 						<a href="{$obj->getPermanentUrl()}">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</a>
 					</h4>
 					<!--@endif-->
+					{@
+					if(!isset($obj->elkhatalk)):
+						$info_arr = [
+							'voted_count' => $obj->get('voted_count') ?: 0,
+							'blamed_count' => abs($obj->get('blamed_count') ?: 0),
+							'comment_count' => $obj->get('comment_count') ?: 0,
+							'readed_count' => $obj->get('readed_count') ?: 0,
+						];
+						if(array_sum($info_arr)):
+							echo '<p class="p info">';
+								foreach($info_arr as $info_arr_key => $info_arr_val):
+									if(!$info_arr_val)
+										continue;
+									echo sprintf('<span class="tooltip %s"><span class="label">%s: </span>%s</span> ', $info_arr_key, \Context::getLang($info_arr_key), number_format($info_arr_val));
+								endforeach;
+							echo '</p>';
+						endif;
+					endif;
+					}
 					<div class="left">
 						<div class="regdate">{$regdate = $obj->getRegdate('Y-m-d')} {$obj->getRegdate('H:i')}</div>
 					</div>
