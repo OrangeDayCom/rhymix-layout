@@ -1,9 +1,0 @@
-@charset "utf-8";
-/* Widget Counter */
-.widgetCounter{  font-size:1.5em;  font-family:"Montserrat Alternates"; font-weight:700; display:flex; justify-content: center; color:var(--oday_mainColorDark)}
-.widgetCounter li:nth-child(2) { font-weight:500; opacity:.6}
-.widgetCounter li:nth-child(3) { font-weight:300; opacity:.4}
-.widgetCounter li + li { margin-left:10px}
-@media screen and (max-width:768px){
-	.widgetCounter{  font-size:1.5em;}
-}
