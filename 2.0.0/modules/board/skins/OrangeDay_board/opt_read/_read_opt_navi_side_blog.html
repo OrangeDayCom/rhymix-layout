@@ -1,0 +1,43 @@
+
+<div class="naviBoxSide"> 
+	<!--@if($grant->write_document)-->
+	<ul>		
+		<li cond="$oDocument->isEditable()" class="btngrant gap"><div class="red">수정</div><a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" target="_top"><i class='bx bx-edit'></i></a></li>
+		<li cond="$oDocument->isEditable()" class="btngrant"><div class="red">삭제</div><a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}"><i class='bx bx-trash'></i></a></li>
+	</ul>
+	<!--@end-->
+	<div cond="$oDocument->getCommentCount()" class="naviadd gotoComInNavi"><a class="comcount"><i class='bx bxs-message-rounded' ></i><div>{$oDocument->getCommentCount()}</div></a></div>
+	<div class="naviadd gotoTopInNavi hiddengo"><a><i class='bx bxs-chevron-up' ></i></a></div>
+</div>
+<style>
+.naviBoxSide > ul { margin-top:20px}
+.naviBoxSide .naviadd.gotoTopInNavi { margin-top:20px}
+.naviBoxSide * + .naviadd.gotoTopInNavi { margin-top:5px}
+.hiddengo a { background-color: var(--oday_mainColor); color: var(--oday_primaryBtnColor); border:none; width:var(--oday_sideNaviBtnWidth); height:var(--oday_sideNaviBtnWidth);}
+.hiddengo a:hover { background-color: var(--oday_mainColorDark);}
+@media screen and (max-width:768px){
+	.naviBoxSide.is-pinned { border-radius:20px 20px 0 0; padding:5px; box-shadow:0px -1px 10px 0px rgba(0,0,0,.4);  background-color: var(--oday_listBgColor); }
+	.naviBoxSide.is-pinned ul { box-shadow:unset;  background-color:unset;} 
+	.naviBoxSide .naviadd.gotoTopInNavi { margin-top:5px}
+	.gotoTopInNavi { order:2; margin-left:auto !important;}
+	.naviBoxSide .naviadd.gotoListNavi { }
+
+}
+</style>
+<script>
+
+	$(".gotoComInNavi").click(function(){
+		$posiCom = $("#comment").offset().top - 100;
+		$('html, body').animate({scrollTop: $posiCom}, 400);
+	});
+	$(".gotoTopInNavi").click(function(){$('html, body').animate({scrollTop: 0}, 400);});
+	$(function() {
+		const el = document.querySelector(".naviBoxSide");
+		const observer = new IntersectionObserver( 
+		  ([e]) => e.target.classList.toggle("is-pinned", e.intersectionRatio < 1),
+		  { threshold: [1] }
+		);
+		observer.observe(el);
+	});
+
+</script>
