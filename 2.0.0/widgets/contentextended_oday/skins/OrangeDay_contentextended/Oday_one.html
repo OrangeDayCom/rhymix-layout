@@ -1,0 +1,74 @@
+<load target="./js/owl.carousel.js" />
+<load target="./css/owl.theme.default.min.css" />
+{@
+	$sHeight = $widget_info->thumbnail_height / 2;
+}
+<ul class="contentsOne owl-carousel">
+<!--@foreach($widget_info->content_items as $key => $item)-->
+
+    <li style="background-image:url('{$item->getThumbnail()}'); height:{$sHeight}px" >
+		<a href="{$item->getLink()}" class="thumb" target="_blank"|cond="$widget_info->new_window">
+		<!--@if($item->getThumbnail())-->
+		<!--@else-->
+		    <i class='bx bx-camera-off'></i>
+		<!--@end-->
+		</a>		
+		<div class="newconbox">
+			<div class="category">
+				<!--@if($widget_info->show_browser_title=='Y' && $item->getBrowserTitle())-->
+				<a href="{getSiteUrl($item->domain, '', 'mid', $item->get('mid'))}" target="_blank"|cond="$widget_info->new_window">{$item->getBrowserTitle()}</a>
+				<!--@end-->
+				
+				<!--@if($widget_info->show_category=='Y' && $item->get('category_srl') )-->
+				<i class='bx bxs-chevron-right'></i>
+				<a href="{getSiteUrl($item->domain,'','mid',$item->get('mid'),'category',$item->get('category_srl'))}" target="_blank"|cond="$widget_info->new_window">{$item->getCategory()}</a>
+				<!--@end-->    
+			</div>
+			<a href="{$item->getLink()}" class="title" target="_blank"|cond="$widget_info->new_window">{$item->getTitle($widget_info->subject_cut_size)|noescape}</a>
+
+			<p class="summary"><a href="{$item->getLink()}">{$item->getContent()|noescape}</a></p>
+			<div style="">
+				<!--@if($widget_info->option_view_arr[$j+1]=='regdate')-->
+				<span class="date">{$item->getRegdate("Y. m. d")}</span>
+				<!--@end-->
+			</div>
+		</div>
+    </li>
+<!--@end-->
+</ul>
+<style>
+.contentsOne li { height:500px;}
+</style>
+<script>
+$(document).ready(function(){
+  $(".contentsOne").owlCarousel({
+	responsive : {
+	    0 : {
+			items:2
+	    },
+	    600 : {
+		  items:3
+	    },
+	    900 : {
+		  items:4
+	    },
+	     1200 : {
+		  items:5
+	   },
+	     1500 : {
+		  items:6
+	    },
+	     1700 : {
+		  items:7
+	    }
+	},
+	nav:true,
+	autoplay:true,
+	center:true,
+	autoplayTimeout:5000,
+	margin:0,
+	loop:true,
+	autoplayHoverPause:true
+  });
+});
+</script>

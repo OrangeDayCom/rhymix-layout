@@ -1,0 +1,27 @@
+				<div class="pagelocation">
+					<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+						<a href="{$val1['href']}">{$val1['text']}</a>
+						<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+							<a href="{$val2['href']}">{$val2['text']}</a>
+							<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+								<a href="{$val3['href']}">{$val3['text']}</a>
+								<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+									<a href="{$val4['href']}">{$val4['text']}</a>
+									<block loop="$val4['list']=>$key5,$val5" cond="$val5['selected']">
+										<a href="{$val5['href']}">{$val5['text']}</a>
+									</block>
+								</block>
+							</block>
+						</block>
+					</block>
+					<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+						<a href="{$val1['href']}">{$val1['text']}</a>
+						<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+							<a href="{$val2['href']}">{$val2['text']}</a>
+							<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+								<a href="{$val3['href']}">{$val3['text']}</a>
+							</block>
+						</block>
+					</block>
+					<a href="{getUrl('document_srl','')}" cond="$act == 'IS'">통합검색</a>
+				</div>

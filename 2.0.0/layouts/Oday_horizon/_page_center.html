@@ -1,0 +1,32 @@
+{@
+	if(!$oi->site_banner_num) $oi->site_banner_num = 3;
+	if(!$oi->site_new_gall_num) $oi->site_new_gall_num = 10;	
+	if(!$oi->site_new_con_num) $oi->site_new_con_num = 20;
+	if(!$oi->site_sp_banner_num) $oi->site_sp_banner_num = 10;	
+}
+
+<!--@if($oi->site_banner)-->
+	<!-- 상단 풀배너 -->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_ce_multi" content_type="document" view_secret_document="not_show" list_type="banner_one" view_mode="1" order_target="update_order" order_type="desc" extravar_name="exvar_title" extravar2_name="exvar_url" extravar3_name="exvar_target" extravar4_name="exvar_con"  show_thumbnail="N" thumbnail_width="1200" thumbnail_height="auto" thumbnail_type="raito" show_browser_title="Y" show_category="N" show_title="Y" show_contents="Y" content_cut_size="300"  show_all_meta="Y" show_nickname="N" show_regdate="N" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+	module_srls="{$oi->site_banner}"
+	list_count="{$oi->site_banner_num}" /> 
+<!--@end-->
+
+<!--@if($oi->site_sp_banner)-->
+	<!-- 새글들 중 강조할 게시판 원형 박스에 새글이 보임 -->	
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_ce_multi" content_type="document" view_secret_document="not_show" list_type="circle" view_mode="1" order_target="update_order" order_type="desc" show_thumbnail="Y" thumbnail_width="40" thumbnail_height="40" thumbnail_type="fill" show_browser_title="Y" show_category="N" show_title="Y" subject_cut_size="30" show_contents="Y" content_cut_size="500" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="N" show_vote_count="N" show_read_count="N" 
+	module_srls="{$oi->site_sp_banner}" 
+	list_count="{$oi->site_sp_banner_num}" /> 
+<!--@end-->
+
+<!-- 새글  -->	
+<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_ce_multi" content_type="document" view_secret_document="not_show" list_type="masonry" view_mode="3" order_target="update_order" order_type="desc" show_thumbnail="Y" thumbnail_width="100" thumbnail_height="100" thumbnail_type="fill" show_browser_title="Y" show_category="Y" show_title="Y" subject_cut_size="" show_contents="Y" content_cut_size="500" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+module_srls="{$oi->site_new_con}" 
+list_count="{$oi->site_new_con_num}" /> 
+
+<!-- 갤러리 -->	
+<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_ce_multi" content_type="document" view_secret_document="not_show" list_type="banner_several" view_mode="1" order_target="update_order" order_type="desc" show_thumbnail="N" thumbnail_width="200" thumbnail_height="300" thumbnail_type="fill" show_browser_title="Y" show_category="N" show_title="Y" show_contents="Y" content_cut_size="300" show_all_meta="Y" show_nickname="Y" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+show_main_title="갤러리" 
+show_main_title_icon="bx bx-image-alt"
+module_srls="{$oi->site_new_gall}" 
+list_count="{$oi->site_new_gall_num}" />

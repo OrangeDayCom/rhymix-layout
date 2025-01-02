@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+    <title xml:lang="ko">Content 확장 위젯 for Oday</title>
+    <title xml:lang="en">Content 확장 위젯 for Oday</title>
+    <description xml:lang="ko">다양한 기능을 적용하여 Content를 출력하는 위젯입니다. Content 위젯에 다양한 기능이 추가되었습니다.</description>
+    <description xml:lang="en">This widget displays Content such as articles, comments, or attached files. Advanced version of the widget Content.</description>
+    <version>2.43</version>
+    <date>2011-10-31</date>
+
+    <author email_address="support@epmakes.com" link="http://epmakes.com">
+        <name xml:lang="ko">EPMakes(원작:NHN)</name>
+    </author>
+
+    <extra_vars>
+        <group>
+            <title xml:lang="ko">추출 대상</title>
+
+			<var id="module_srls">
+				<type>module_srl_list</type>
+				<name xml:lang="ko">대상 모듈</name>
+				<name xml:lang="en">Target Module</name>
+				<description xml:lang="ko">선택하신 모듈에 등록된 글을 대상으로 합니다.</description>
+				<description xml:lang="en">The target articles to be sorted will be the ones submitted in the selected module.</description>
+			</var>
+			<var id="use_limit">
+				<type>select</type>
+				<name xml:lang="ko">컨텐츠 조건 설정</name>
+				<description xml:lang="ko">표시할 컨텐츠에 조건을 설정할 수 있습니다.</description>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">사용 안함</name>
+				</options>
+				<options>
+					<value>voted_count_upper</value>
+					<name xml:lang="ko">추천수(~이상)</name>
+				</options>
+				<options>
+					<value>voted_count_lower</value>
+					<name xml:lang="ko">추천수(~이하)</name>
+				</options>
+				<options>
+					<value>readed_count_upper</value>
+					<name xml:lang="ko">조회수(~이상)</name>
+				</options>
+				<options>
+					<value>readed_count_lower</value>
+					<name xml:lang="ko">조회수(~이하)</name>
+				</options>
+			</var>
+			<var id="limit_number">
+				<type>text</type>
+				<name xml:lang="ko">컨텐츠 조건 범위</name>
+				<description xml:lang="ko">컨텐츠 조건 설정을 했을 경우 지정할 조건 숫자를 입력해 주세요. (예:추천수(~이상)을 선택하고 10을 입력하면 추천수가 10 이상인 컨텐츠만 보여줌)</description>
+			</var>
+			<var id="duration_article">
+				<type>text</type>
+				<name xml:lang="ko">컨텐츠 시간 범위 (hours)</name>
+				<name xml:lang="en">Duration of items</name>
+				<description xml:lang="ko">가져올 컨텐츠의 시간 범위를 정할 수 있습니다. (시간 단위, 0 또는 비워두시면 범위를 지정하지 않음)</description>
+			</var>
+		</group>
+
+
+        <group>
+            <title xml:lang="ko">정렬 방법</title>
+			<var id="order_target">
+				<type>select</type>
+				<name xml:lang="ko">정렬 대상</name>
+				<name xml:lang="en">Target to be sorted</name>
+				<description xml:lang="ko">등록된 순서 또는 변경된 순서로 정렬을 할 수 있습니다.</description>
+				<description xml:lang="en">The list of newewst articles may be sorted by submitted order or modified order.</description>
+				<options>
+					<value>list_order</value>
+					<name xml:lang="ko">최신 등록순</name>
+					<name xml:lang="en">Newest Submitted Order</name>
+				</options>
+				<options>
+					<value>update_order</value>
+					<name xml:lang="ko">최근 변경순(게시글만 가능)</name>
+					<name xml:lang="en">Newest Modified Order(Article Only)</name>
+				</options>
+				<options>
+					<value>regdate</value>
+					<name xml:lang="ko">등록 일자순</name>
+					<name xml:lang="en">Registerd Date Order</name>
+				</options>
+				<options>
+					<value>voted_count</value>
+					<name xml:lang="ko">추천수</name>
+					<name xml:lang="en">Voted Count</name>
+				</options>
+				<options>
+					<value>readed_count</value>
+					<name xml:lang="ko">조회수</name>
+					<name xml:lang="en">Readed Count</name>
+				</options>
+				<options>
+					<value>rand()</value>
+					<name xml:lang="ko">랜덤순</name>
+					<name xml:lang="en">Random Order</name>
+				</options>
+			</var>
+			<var id="order_type">
+				<type>select</type>
+				<name xml:lang="ko">정렬 방법</name>
+				<name xml:lang="en">Sorting Type</name>
+				<description xml:lang="ko">정렬대상을 내림차순 또는 올림차순으로 정렬할 수 있습니다.</description>
+				<description xml:lang="en">You can sort target articles by ascending or descending order.</description>
+				<options>
+					<value>desc</value>
+					<name xml:lang="ko">내림차순</name>
+					<name xml:lang="en">Descending order</name>
+				</options>
+				<options>
+					<value>asc</value>
+					<name xml:lang="ko">올림차순</name>
+					<name xml:lang="en">Ascending order</name>
+				</options>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">내용 표시형태</title>
+			<var id="list_type">
+				<type>select</type>
+				<name xml:lang="ko">내용형태</name>
+				<name xml:lang="en">Content Type</name>
+				<options>
+					<value>normal</value>
+					<name xml:lang="ko">제목</name>
+					<name xml:lang="en">Title</name>
+				</options>
+				<options>
+					<value>image_title</value>
+					<name xml:lang="ko">이미지+제목</name>
+					<name xml:lang="en">Image+Title</name>
+				</options>
+				<options>
+					<value>gallery</value>
+					<name xml:lang="ko">겔러리</name>
+					<name xml:lang="en">Gallery</name>
+				</options>
+				<options>
+					<value>image_title_content</value>
+					<name xml:lang="ko">이미지+제목+내용</name>
+					<name xml:lang="en">Image+Title+Content</name>
+				</options>
+			</var>
+			<var id="option_view">
+				<type>select-multi-order</type>
+				<name xml:lang="ko">표시항목 및 순서</name>
+				<name xml:lang="en">Display Target and Order</name>
+				<options default="false" init="true">
+					<value>title</value>
+					<name xml:lang="ko">제목</name>
+					<name xml:lang="en">Title</name>
+				</options>
+				<options>
+					<value>thumbnail</value>
+					<name xml:lang="ko">섬네일</name>
+					<name xml:lang="en">Thumbnail</name>
+				</options>
+				<options init="true">
+					<value>regdate</value>
+					<name xml:lang="ko">등록일</name>
+					<name xml:lang="en">Regdate</name>
+				</options>
+				<options init="true">
+					<value>nickname</value>
+					<name xml:lang="ko">글쓴이</name>
+					<name xml:lang="en">Author</name>
+				</options>
+				<options>
+					<value>content</value>
+					<name xml:lang="ko">내용</name>
+					<name xml:lang="en">Content</name>
+				</options>
+				<options>
+					<value>voted_count</value>
+					<name xml:lang="ko">추천수</name>
+					<name xml:lang="en">Voted Count</name>
+				</options>
+				<options>
+					<value>readed_count</value>
+					<name xml:lang="ko">조회수</name>
+					<name xml:lang="en">Readed Count</name>
+				</options>
+				<options>
+					<value>extravar</value>
+					<name xml:lang="ko">확장변수1</name>
+					<name xml:lang="en">Extravar1</name>
+				</options>
+				<options>
+					<value>extravar2</value>
+					<name xml:lang="ko">확장변수2</name>
+					<name xml:lang="en">Extravar2</name>
+				</options>
+				<options>
+					<value>extravar3</value>
+					<name xml:lang="ko">확장변수3</name>
+					<name xml:lang="en">Extravar3</name>
+				</options>
+				<options>
+					<value>extravar4</value>
+					<name xml:lang="ko">확장변수4</name>
+					<name xml:lang="en">Extravar4</name>
+				</options>
+				<options>
+					<value>extravar5</value>
+					<name xml:lang="ko">확장변수5</name>
+					<name xml:lang="en">Extravar5</name>
+				</options>
+			</var>
+			<var id="list_count">
+				<type>text</type>
+				<name xml:lang="ko">목록수</name>
+				<name xml:lang="en">The number of list</name>
+				<description xml:lang="ko">출력될 목록의 수를 정하실 수 있습니다. (기본 5개)</description>
+				<description xml:lang="en">You can set the number of articles to be displayed. (default is 5)</description>
+			</var>
+			<var id="page_count">
+				<type>select</type>
+				<name xml:lang="ko">페이지수</name>
+				<name xml:lang="en">Page</name>
+					<options>
+						<value>1</value>
+						<name xml:lang="ko">1</name>
+						<name xml:lang="en">1</name>
+					</options>
+					<options>
+						<value>2</value>
+						<name xml:lang="ko">2</name>
+						<name xml:lang="en">2</name>
+					</options>
+					<options>
+						<value>3</value>
+						<name xml:lang="ko">3</name>
+						<name xml:lang="en">3</name>
+					</options>
+				<description xml:lang="ko">페이지수 2이상일 경우 이전/다음 버튼이 나타납니다.</description>
+				<description xml:lang="en">Prev/Next buttons will appear when there are more than 2 pages.</description>
+			</var>
+			<var id="subject_cut_size">
+				<type>text</type>
+				<name xml:lang="ko">제목 글자수</name>
+				<name xml:lang="en">Length of Subject</name>
+			</var>
+			<var id="content_cut_size">
+				<type>text</type>
+				<name xml:lang="ko">내용 글자수</name>
+				<name xml:lang="en">Content Length</name>
+			</var>
+			<var id="duration_new">
+				<type>text</type>
+				<name xml:lang="ko">new 표시 시간 (hours)</name>
+				<name xml:lang="en">Duration of indication for new item</name>
+				<description xml:lang="ko">새로 등록된 게시물의 new 표시시간을 정할 수 있습니다. (시간 단위)</description>
+				<description xml:lang="en">You may set the duration of indication for fresh item. (unit is hour)</description>
+			</var>
+			<var id="markup_type">
+				<type>select</type>
+				<name xml:lang="ko">HTML 출력 방식</name>
+				<name xml:lang="en">HTML Display Type</name>
+				<description xml:lang="ko">TABLE(표)태그와 UL(목록형) 태그를 선택하여 출력하게 할 수 있습니다. (기본은 TABLE입니다)</description>
+				<description xml:lang="en">You can choose TABLE tag or UL tag to display. (default is TABLE)</description>
+				<options>
+					<value>table</value>
+					<name xml:lang="ko">Table</name>
+					<name xml:lang="en">Table</name>
+				</options>
+				<options>
+					<value>list</value>
+					<name xml:lang="ko">UL (list)</name>
+					<name xml:lang="en">UL (list)</name>
+				</options>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">내용 표시방법</title>
+			<var id="title_target">
+				<type>select</type>
+				<name xml:lang="ko">제목 대상</name>
+				<description xml:lang="ko">어떤 것을 제목(title) 부분에 보이도록 할 지 설정할 수 있습니다.</description>
+				<options>
+					<value>title</value>
+					<name xml:lang="ko">제목</name>
+					<name xml:lang="en">Title</name>
+				</options>
+				<options>
+					<value>nickname</value>
+					<name xml:lang="ko">글쓴이</name>
+					<name xml:lang="en">Author</name>
+				</options>
+				<options>
+					<value>content</value>
+					<name xml:lang="ko">내용</name>
+					<name xml:lang="en">Content</name>
+				</options>
+			</var>
+
+			<var id="nickname_target">
+				<type>select</type>
+				<name xml:lang="ko">글쓴이 대상</name>
+				<description xml:lang="ko">어떤 것을 글쓴이(nickname) 부분에 보이도록 할 지 설정할 수 있습니다.</description>
+				<options>
+					<value>nickname</value>
+					<name xml:lang="ko">닉네임</name>
+					<name xml:lang="en">Nick name</name>
+				</options>
+				<options>
+					<value>userid</value>
+					<name xml:lang="ko">아이디</name>
+					<name xml:lang="en">ID</name>
+				</options>
+				<options>
+					<value>username</value>
+					<name xml:lang="ko">회원명</name>
+					<name xml:lang="en">User name</name>
+				</options>
+			</var>
+
+			<var id="extravar_name">
+				<type>text</type>
+				<name xml:lang="ko">확장변수 1 이름</name>
+				<name xml:lang="en">1st Extravar for Display</name>
+				<description xml:lang="ko">컨텐츠 목록에 표시할 첫번째 확장변수의 이름을 입력해 주세요.</description>
+			</var>
+			<var id="extravar2_name">
+				<type>text</type>
+				<name xml:lang="ko">확장변수 2 이름</name>
+				<name xml:lang="en">2nd Extravar for Display</name>
+				<description xml:lang="ko">컨텐츠 목록에 표시할 두번째 확장변수의 이름을 입력해 주세요.</description>
+			</var>
+			<var id="extravar3_name">
+				<type>text</type>
+				<name xml:lang="ko">확장변수 3 이름</name>
+				<name xml:lang="en">3rd Extravar for Display</name>
+				<description xml:lang="ko">컨텐츠 목록에 표시할 세번째 확장변수의 이름을 입력해 주세요.</description>
+			</var>
+			<var id="extravar4_name">
+				<type>text</type>
+				<name xml:lang="ko">확장변수 4 이름</name>
+				<name xml:lang="en">4th Extravar for Display</name>
+				<description xml:lang="ko">컨텐츠 목록에 표시할 네번째 확장변수의 이름을 입력해 주세요.</description>
+			</var>
+			<var id="extravar5_name">
+				<type>text</type>
+				<name xml:lang="ko">확장변수 5 이름</name>
+				<name xml:lang="en">5th Extravar for Display</name>
+				<description xml:lang="ko">컨텐츠 목록에 표시할 다섯번째 확장변수의 이름을 입력해 주세요.</description>
+			</var>
+
+			<var id="show_browser_title">
+				<type>select</type>
+				<name xml:lang="ko">게시판 이름 표시</name>
+				<name xml:lang="en">Display Article Name</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+			</var>
+			<var id="show_content_title">
+				<type>select</type>
+				<name xml:lang="ko">댓글의 게시글 이름 표시</name>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+			</var>
+
+			<var id="show_comment_count">
+				<type>select</type>
+				<name xml:lang="ko">댓글수 표시</name>
+				<name xml:lang="en">Comment Count</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+			</var>
+
+			<var id="show_trackback_count">
+				<type>select</type>
+				<name xml:lang="ko">엮인글수 표시</name>
+				<name xml:lang="en">Trackback</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+			</var>
+			<var id="show_category">
+				<type>select</type>
+				<name xml:lang="ko">분류 표시</name>
+				<name xml:lang="en">Category</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+			</var>
+			<var id="show_icon">
+				<type>select</type>
+				<name xml:lang="ko">아이콘 표시</name>
+				<name xml:lang="en">Icon</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+			</var>
+			<var id="show_point_level">
+				<type>select</type>
+				<name xml:lang="ko">포인트 레벨 표시</name>
+				<name xml:lang="en">Point Level Icon</name>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+				<description xml:lang="ko">닉네임 옆에 포인트 레벨 아이콘을 표시합니다. 기본적으로, 포인트 레벨 아이콘 표시 애드온을 사용하면 이 기능을 체크하지 않아도 자동으로 닉네임 옆에 포인트 레벨 아이콘이 나타납니다.</description>
+			</var>
+			<var id="show_always_new">
+				<type>select</type>
+				<name xml:lang="ko">새 글 항상 출력</name>
+				<name xml:lang="en">Always Display New Articles</name>
+				<description xml:lang="ko">new 표시 시간 이내의 글은 목록수에 상관없이 항상 출력되도록 설정할 수 있습니다. (문서에만 적용됨)</description>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">Display</name>
+				</options>
+			</var>
+			<var id="show_nocomment_document">
+				<type>select</type>
+				<name xml:lang="ko">댓글 없는 글만 출력하기</name>
+				<name xml:lang="en">Display Articles Without Comments</name>
+				<description xml:lang="ko">댓글이 없는 글만 출력되도록 설정할 수 있습니다. (문서에만 적용됨)</description>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">사용하지 않음</name>
+					<name xml:lang="en">No Display</name>
+				</options>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">사용</name>
+					<name xml:lang="en">Display</name>
+				</options>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">탭 표시방법</title>
+			<var id="tab_type">
+				<type>select</type>
+				<name xml:lang="ko">탭형태</name>
+				<name xml:lang="en">Tab Type</name>
+				<options>
+					<value>none</value>
+					<name xml:lang="ko">없음</name>
+					<name xml:lang="en">None</name>
+				</options>
+				<options>
+					<value>tab_top</value>
+					<name xml:lang="ko">상단 탭형</name>
+					<name xml:lang="en">Upper Tab Type</name>
+				</options>
+				<options>
+					<value>tab_left</value>
+					<name xml:lang="ko">왼쪽 탭형</name>
+					<name xml:lang="en">Left Tab Type</name>
+				</options>
+			</var>
+			<var id="tab_order">
+				<type>select</type>
+				<name xml:lang="ko">탭 정렬순서</name>
+				<description xml:lang="ko">탭을 어떤 방식으로 정렬할 것인지 설정할 수 있습니다.</description>
+				<options>
+					<value>module_order</value>
+					<name xml:lang="ko">대상 모듈순서</name>
+				</options>
+				<options>
+					<value>recent_order</value>
+					<name xml:lang="ko">최근글 등록순서</name>
+				</options>
+			</var>
+			<var id="tab_showtype">
+				<type>select</type>
+				<name xml:lang="ko">탭 정렬형태</name>
+				<description xml:lang="ko">탭을 어떤 기준으로 정렬할 것인지 설정할 수 있습니다. (문서에만 적용됨)</description>
+				<options>
+					<value>module</value>
+					<name xml:lang="ko">모듈</name>
+				</options>
+				<options>
+					<value>category</value>
+					<name xml:lang="ko">카테고리</name>
+				</options>
+			</var>
+			<var id="tab_move_type">
+				<type>select</type>
+				<name xml:lang="ko">탭 이동방식</name>
+				<description xml:lang="ko">탭을 어떤 방식으로 이동되도록 할 지 설정할 수 있습니다. (탭 선택/모듈 이동)</description>
+				<options>
+					<value>mouseover</value>
+					<name xml:lang="ko">마우스 오버/클릭</name>
+				</options>
+				<options>
+					<value>click</value>
+					<name xml:lang="ko">마우스 클릭/2차클릭</name>
+				</options>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">분류(카테고리) 표시방법</title>
+			<var id="category_srl">
+				<type>text</type>
+				<name xml:lang="ko">대상 분류 srl값</name>
+				<description xml:lang="ko">표시하고 싶은 분류만 나타나도록 할 경우 해당 분류 srl값을 입력해 주세요. (콤마(,)로 구분, 비워두시면 모든 분류 대상, 예:1234,1558)</description>
+			</var>
+			<var id="category_range">
+				<type>select</type>
+				<name xml:lang="ko">대상 분류 범위</name>
+				<description xml:lang="ko">전체 분류를 표시할 것인지, 최상위 단계의 분류만 표시할 것인지 설정할 수 있습니다.</description>
+				<options>
+					<value>all</value>
+					<name xml:lang="ko">모든 분류 단계</name>
+				</options>
+				<options>
+					<value>first</value>
+					<name xml:lang="ko">최상위 단계(1단계)</name>
+				</options>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">링크 클릭방법</title>
+			<var id="hyperlink">
+				<type>select</type>
+				<name xml:lang="ko">클릭시 링크이동</name>
+				<description xml:lang="ko">컨텐츠 클릭시 링크 이동 여부를 설정할 수 있습니다.</description>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">설정</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">설정하지 않음</name>
+				</options>
+			</var>
+			<var id="hyperlink_src">
+				<type>select</type>
+				<name xml:lang="ko">클릭시 링크이동 대상</name>
+				<description xml:lang="ko">컨텐츠 클릭시 어떤 링크로 이동시킬 것인지 설정할 수 있습니다.</description>
+				<options>
+					<value>article</value>
+					<name xml:lang="ko">게시글</name>
+				</options>
+				<options>
+					<value>extravar</value>
+					<name xml:lang="ko">확장변수(게시글 전용)</name>
+				</options>
+			</var>
+			<var id="hyperlink_extravar">
+				<type>text</type>
+				<name xml:lang="ko">링크이동 확장변수 이름</name>
+				<description xml:lang="ko">링크 주소로 사용할 확장변수의 이름을 입력해 주세요(게시글 전용).</description>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">내용 표시권한</title>
+			<var id="view_permission">
+				<type>select-multi-order</type>
+				<name xml:lang="ko">표시 권한</name>
+				<name xml:lang="en">Permission</name>
+				<options default="false">
+					<value>list</value>
+					<name xml:lang="ko">목록</name>
+					<name xml:lang="en">List</name>
+				</options>
+				<options>
+					<value>view</value>
+					<name xml:lang="ko">열람</name>
+					<name xml:lang="en">View</name>
+				</options>
+				<options>
+					<value>write_document</value>
+					<name xml:lang="ko">글 작성</name>
+					<name xml:lang="en">Write document</name>
+				</options>
+				<options>
+					<value>write_comment</value>
+					<name xml:lang="ko">댓글 작성</name>
+					<name xml:lang="en">Write comment</name>
+				</options>
+				<description xml:lang="ko">선택하신 권한에 대해 권한있는 방문자만 위젯이 보이게 됩니다. (비워둘 경우 항상 보임)</description>
+				<description xml:lang="en">If a visitor don't have any permission that you selected, the widget will not be shown. (the widget will show all the time if this value is remained blank)</description>
+			</var>
+			<var id="view_secret_document">
+				<type>select</type>
+				<name xml:lang="ko">비밀글 표시 방법</name>
+				<name xml:lang="en">Secret document</name>
+				<options>
+					<value>all_user</value>
+					<name xml:lang="ko">모든 사용자에게 출력</name>
+					<name xml:lang="en">Show to all visitors</name>
+				</options>
+				<options>
+					<value>use_permission</value>
+					<name xml:lang="ko">해당글 권한이 있을때만 출력</name>
+					<name xml:lang="en">Show to visitors who have its permission</name>
+				</options>
+				<options>
+					<value>not_show</value>
+					<name xml:lang="ko">항상 출력하지 않음</name>
+					<name xml:lang="en">Don't show at all times</name>
+				</options>
+				<description xml:lang="ko">비밀글에 대해서 표시할 방법을 선택할 수 있습니다.</description>
+			</var>
+			<var id="comment_document_secret">
+				<type>select</type>
+				<name xml:lang="ko">댓글의 문서가 비밀글일 경우</name>
+				<options>
+					<value>Y</value>
+					<name xml:lang="ko">비밀글로 처리</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">비밀글로 처리하지 않음</name>
+				</options>
+				<description xml:lang="ko">내용 형태가 댓글일 경우 댓글의 문서가 비밀글일 경우 처리할 방식을 선택할 수 있습니다.</description>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">썸네일 이미지</title>
+			<var id="thumbnail_type">
+				<type>select</type>
+				<name xml:lang="ko">썸네일 생성 방법</name>
+				<name xml:lang="en">Thumbnail Type</name>
+				<description xml:lang="ko">썸네일 생성 방법을 선택할 수 있습니다. (crop : 꽉 채우기, ratio : 비율 맞추기)</description>
+				<description xml:lang="en">Thumbnail Type may be set here.</description>
+				<options>
+					<value>crop</value>
+					<name xml:lang="ko">Crop (채우기)</name>
+					<name xml:lang="en">Crop</name>
+				</options>
+				<options>
+					<value>ratio</value>
+					<name xml:lang="ko">Ratio (비율 맞추기)</name>
+					<name xml:lang="en">Ratio</name>
+				</options>
+			</var>
+			<var id="thumbnail_width">
+				<type>text</type>
+				<name xml:lang="ko">이미지 가로크기</name>
+				<name xml:lang="en">Width of Image</name>
+				<description xml:lang="ko">출력될 이미지의 가로크기를 정하실 수 있습니다. (기본 100)</description>
+				<description xml:lang="en">You can set the width of image. (100 as default)</description>
+			</var>
+			<var id="thumbnail_height">
+				<type>text</type>
+				<name xml:lang="ko">이미지 세로크기</name>
+				<name xml:lang="en">Height of Image</name>
+				<description xml:lang="ko">이미지의 세로 크기를 지정할 수 있습니다. (기본 75)</description>
+				<description xml:lang="en">You can set the height of image. (75 as default)</description>
+			</var>
+			<var id="cols_list_count">
+				<type>text</type>
+				<name xml:lang="ko">가로 이미지 수</name>
+				<name xml:lang="en">Number of Images</name>
+				<description xml:lang="ko">출력될 가로 이미지의 수를 정하실 수 있습니다. (기본 5개)</description>
+				<description xml:lang="en">You can set the number of images to display. (5 as default)</description>
+			</var>
+		</group>
+
+    </extra_vars>
+</widget>

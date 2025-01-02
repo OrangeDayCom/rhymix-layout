@@ -1,0 +1,40 @@
+
+{@
+	$sWidth = $widget_info->thumbnail_width * .6;
+	$sHeight = $widget_info->thumbnail_height * .8;
+}
+<ul class="contentsOne owl-carousel">
+	<li loop="$widget_info->content_items =>$key,$item" cond="$item->getThumbnail()" style="width:{$sWidth}px; height:{$sHeight}px">
+		<a href="{$item->getLink()}" class="thumb" target="_blank"|cond="$widget_info->new_window">
+			<div class="newconbox">
+				<!--@if($widget_info->show_browser_title=='Y' && $item->getBrowserTitle())-->
+				<span class="btitle">{$item->getBrowserTitle()}</span>
+				<!--@end-->
+				<span class="title">{$item->getTitle($widget_info->subject_cut_size)|noescape}</span>
+				<!--@if($widget_info->option_view_arr[$j+1]=='regdate')-->
+				<span class="date">{$item->getRegdate("Y. m. d")}</span>
+				<!--@end-->
+				<span>
+					{$item->getNickName($widget_info->nickname_cut_size)}
+				</span>
+			</div>
+		</a>
+		<div class="img_con" style="background-image:url('{$item->getThumbnail()}'); width:{$sWidth}px; height:{$sHeight}px;"></div>
+    </li>
+
+</ul>
+<script>
+$(document).ready(function(){
+  $(".contentsOne").owlCarousel({
+	items:6,
+	nav:true,
+	autoplay:true,
+	center:true,
+	 autoWidth:true,
+	autoplayTimeout:5000,
+	margin:5,
+	loop:true,
+	autoplayHoverPause:true
+  });
+});
+</script>

@@ -1,0 +1,93 @@
+<div class='stickyTopBox'>
+	<include target="opt_list/_list__opt_category.html" />
+	<include target="opt_list/_list__opt_search.html" />
+</div>
+<include target="opt_list/_list__opt_notice.html" />
+<div id="list-bd" class="bd-all list-bd-ul">
+	<!--@if(!$document_list && !$notice_list)-->
+		<div class="no_documents">
+		<!--@if($search_keyword)-->
+			검색된 글이 없습니다.
+		<!--@else-->
+			{$lang->no_documents}
+			<!-- include target="opt_read/_read_opt_urlinfo.html" / -->
+		<!--@end-->
+		</div>
+	<!--@else-->
+	<div loop="$document_list =>$no,$document" class="box<!--@if(isset($document_srl) && $document_srl == $document->document_srl)--> readActive<!--@end-->">
+		<div cond="$list_config['no']->idx" class="number">
+			<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+				<i class='bx bxs-lock'></i>
+			<!--@else-->
+				<block cond="isset($document_srl) && $document_srl == $document->document_srl"><i class='bx bx-play'></i></block>
+				<block cond="!isset($document_srl) || $document_srl != $document->document_srl">{$no}</block>
+			<!--@end-->				
+		</div>
+		<div class="list">
+			<div cond="$category_list[$document->get('category_srl')]->title" class="category">
+				{$category_list[$document->get('category_srl')]->title}
+			</div>
+			<div cond="$list_config['title']->idx" class="title">
+				<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">
+				<!--@if($document->isSecret() && !$document->isGranted())-->
+					{$lang->msg_is_secret} 
+				<!--@elseif($document->isSecret() && $document->isGranted())-->
+					{strip_tags($document->getTitle())}
+				<!--@else-->
+					{strip_tags($document->getTitle())}
+				<!--@end-->
+				</a>
+				<div style="">
+				<block loop="$list_config=>$key,$val">
+					<span cond="$val->idx!=-1 && $document->getExtraValueHTML($val->idx)" class="extra">
+						{@ $extra_vars = "extra_vars".$val->idx; }
+						<!-- a href="{getUrl('search_target',$extra_vars,'search_keyword',$document->getExtraValueHTML($val->idx),'document_srl','')}">{$document->getExtraValueHTML($val->idx)}</a -->
+						{$document->getExtraValueHTML($val->idx)}
+					</span>
+				</block>
+				</div>
+			</div>
+			<span cond="$list_config['comment_count']->idx" cond="$document->getCommentCount()"  class="count vp"><i class='bx bxs-message-rounded-dots com'></i>&nbsp;{$document->getCommentCount()}</span>
+			<span cond="$list_config['voted_count']->idx" cond="$document->get('voted_count')!=0" class="count vp"><i class='bx bxs-heart'></i>&nbsp;{$document->get('voted_count')}</span>
+			
+			<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)--><!--@if($val == 'secret')--> S<!--@end--><!--@if($val == 'new')--> N<!--@end--><!--@if($val == 'update')--> U<!--@end--><!--@if($val == 'file')--> F<!--@end--><!--@end-->">
+				<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+					<block cond="$key == 'new'">N</block>
+					<block cond="$key == 'update'">U</block>
+				</block>
+			</span>
+			<div class="end" style="order:1">
+				<a cond="$document->getMemberSrl()" cond="$list_config['nick_name']->idx"  href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getNickName()}</a>
+				<p cond="!$document->getMemberSrl()" class="author">{$document->getNickName()}</p>
+				<a cond="$document->getMemberSrl()" cond="$list_config['user_id']->idx" href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getUserID()}</a>
+				<a cond="$document->getMemberSrl()" cond="$list_config['user_name']->idx" href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getUserName()}</a>
+				
+				
+				<span cond="$list_config['regdate']->idx" class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+				<span cond="$list_config['last_update']->idx" cond="$document->get('last_update')" class="od_date">{getTimeGap($document->get('last_update'), "Y.m.d - H:i")}</span>
+				<span cond="$list_config['last_post']->idx" cond="(int)($document->get('comment_count'))>0" class="od_date">
+					<block cond="(int)($document->get('comment_count'))>0">
+						<a href="{$document->getUrl()}#comment" title="Last Reply">
+							{getTimeGap($document->get('last_update'), "Y.m.d")}
+							<span cond="$document->getLastUpdater()">
+								<i>by</i> {$document->getLastUpdater()}
+							</span>
+						</a>
+					</block>
+				</span>
+				
+				<span cond="$list_config['readed_count']->idx" class="read" cond="$document->get('readed_count')>0">
+					{$document->get('readed_count')>0?$document->get('readed_count'):'0'}
+				</span>
+				<span cond="$list_config['comment_count']->idx" cond="$document->getCommentCount()"  class="count vm"><i class='bx bxs-message-rounded-dots com'></i>&nbsp;{$document->getCommentCount()}</span>
+				<span cond="$list_config['voted_count']->idx" cond="$document->get('voted_count')!=0" class="count vm"><i class='bx bxs-heart'></i>&nbsp;{$document->get('voted_count')}</span>				
+				<span cond="$grant->manager">
+					<input type="checkbox" name="cart" value="{$document->document_srl}" class="listchk" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+				</span>
+			</div>
+		</div>
+	</div>
+	<!--@end-->
+</div>
+<include target="opt_list/_list__opt_pagenavi.html" />
+<include target="opt_list/_list__opt_btnbox.html" />
