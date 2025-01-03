@@ -1,0 +1,53 @@
+<!--@if($_is_indexmodule && $logged_info->is_admin == 'Y')-->
+<!--@end-->
+{@
+	$url = 'https://raw.githubusercontent.com/OrangeDayCom/rhymix-layout/main/version.txt';
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	$last_version = curl_exec($curl);
+	$http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+	curl_close($curl);
+	if ($http_status_code == 404) :
+		$last_version = 0;
+	endif;
+    
+	$current_version = "2.0.2";
+	$c_ver = preg_replace('/\./', '', $current_version);
+	$l_ver = preg_replace('/\./', '', $last_version);
+	if ( $c_ver < $l_ver ) $updt = "Y";
+}
+	<!--@if($updt=='Y')-->
+		<div class="last_version">
+			<div class="ti">Update</div>
+			<div>{$current_version} <i class='bx bxs-right-arrow' ></i> {$last_version}</div>
+			<div class="down">
+				<a href="https://github.com/OrangeDayCom/rhymix-layout" target="_blank">Github</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="https://xetown.com/download/1817419" target="_blank">xetown</a>
+			</div>
+			<a class="closeupt"  title="기본-table">Close 24h <i class='bx bx-x'></i></a>
+		</div>
+		<style>
+		.last_version { position:fixed; right:10px; bottom:60px; font-size:.9em; z-index:99999; border:var(--oday_listBorder); background-color:var(--oday_mainColorDark); color:#fff !important; padding:10px 20px ; border-radius:6px; text-align:center; display: flex; align-items: center; flex-direction: column;}
+
+		.last_version:after { position:absolute; bottom:-5px; right:20px; content:""; display:block; width:10px; height:10px; transform: rotate(45deg); background-color:var(--oday_mainColorDark); border:var(--oday_listBorder); border-left:none;  border-top:none;}
+		.last_version > * + * { margin-top:5px}
+		.last_version .ti {font-size:.9em; font-weight:600; color:var(--oday_mainColorLight)}
+		.last_version .down {font-size:1em;  font-weight:500; padding:5px 0}
+		.last_version i.bxs-right-arrow { font-size:.5em; margin:0 1em;}
+		.last_version .closeupt { font-weight:300; font-size:10px}
+		.last_version a {color:#fff !important; }
+		</style>
+		<script>
+		$(".closeupt").click(function(){
+			$('.last_version').hide();
+			setCookie( "setUdt", "done" , 1 );
+		});
+		var $getUdt = XE.cookie.get('setUdt');
+		if( $getUdt == "done" ) {
+			$('.last_version').hide();
+		}
+		</script>
+	<!--@end-->
+

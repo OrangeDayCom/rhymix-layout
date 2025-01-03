@@ -1,0 +1,23 @@
+{@
+$oModel = getModel('elkhabook');
+$friend_list = $oModel->get('friend_list')[$friend_type ?? ''] ?? [];
+$friend_more = $oModel->get('friend_more')[$friend_type ?? ''] ?? FALSE;
+}
+<!--@if(count($friend_list))-->
+	<!--@foreach($friend_list as $val)-->
+	{@
+		$oMemberModel = getModel('member');
+		$profile_info = $oMemberModel->getProfileImage($val->member_srl);
+	}
+	<a href="{$oModel->getUrl('dispMemberInfo', $val->member_srl, 'getUrl')}" title="{$val->nick_name}">
+		<!--@if($profile_info->src)-->
+		<img src="{$profile_info->src}" title="{$val->nick_name}" class="profile2 metatooltip">
+		<!--@else-->
+		<span title="{$val->nick_name}" class="profile2 metatooltip"><i class='bx bxs-ghost'></i></span>
+		<!--@end-->
+	</a>
+	<!--@endforeach-->	
+	<!--@if($friend_more)-->
+	<a href="javascript:;" onclick="window.getElkhabookFriendList(this, {(INT)$target_member_srl}, '{$friend_type}', {@ echo $oModel->get('friend_page') + 1; }); return false;" class="profile2 more metatooltip" title="더 보기"><i class='bx bx-plus' ></i></a>
+	<!--@end-->
+<!--@end-->
