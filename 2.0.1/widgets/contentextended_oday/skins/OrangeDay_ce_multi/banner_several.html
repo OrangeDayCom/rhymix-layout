@@ -1,0 +1,38 @@
+<h2 cond="$widget_info->show_main_title" class="main_title gallery">
+	<!--@if($widget_info->show_main_title_icon)-->
+	<i class='{$widget_info->show_main_title_icon}' ></i>
+	<!--@end-->
+	<span>{$widget_info->show_main_title}</span> <a href="{$widget_info->go_url}" cond="$widget_info->go_url"><i class='bx bx-plus'></i></a>
+</h2>
+{@
+	$sWidth = $widget_info->thumbnail_width * 1;
+	$sHeight = $widget_info->thumbnail_height * 1;
+}
+<ul class="banner_several owl-carousel<!--@if($widget_info->view_mode)--> tab{$widget_info->view_mode}<!--@end-->">
+	<li loop="$widget_info->content_items =>$key,$item" cond="$item->getThumbnail()" style="width:{$sWidth}px; height:{$sHeight}px">
+		<a href="{$item->getLink()}" class="thumb" target="_blank"|cond="$widget_info->new_window">
+			<div class="newconbox">
+				<span class="btitle" cond="$widget_info->show_browser_title!='N'">{$item->getBrowserTitle()}</span>
+				<span class="title"  cond="$widget_info->show_title!='N'">{$item->getTitle()}</span>
+				<span class="author" cond="$widget_info->show_nickname!='N'">{$item->getNickName()}</span>
+				<span class="date" cond="$widget_info->show_regdate!='N'">{getTimeGap($item->getRegdate($item->getRegdate('YmdHi')), "Y.m.d")}</span>
+			</div>
+		</a>
+		<div class="img_con" style="background-image:url('{$item->getThumbnail()}'); width:{$sWidth}px; height:{$sHeight}px;"></div>
+    </li>
+
+</ul>
+<script>
+$(document).ready(function(){
+  $(".banner_several").owlCarousel({
+	nav:true,
+	autoplay:true,
+	center:true,
+	autoWidth:true,
+	autoplayTimeout:5000,
+	margin:5,
+	loop:true,
+	autoplayHoverPause:true
+  });
+});
+</script>

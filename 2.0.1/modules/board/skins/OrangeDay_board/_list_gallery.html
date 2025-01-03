@@ -1,0 +1,634 @@
+{@
+	$oi = $layout_info;
+	if($oi->gnb_width) : 
+		$mi->layout_gap  = $oi->gnb_width;
+	elseif(!$oi->gnb_width) :
+		if(!$mi->layout_gap) $mi->layout_gap = 0;
+	endif;
+	if(!$mi->gall_cell_gap) $mi->gall_cell_gap = 2;
+	if(!$mi->view_cell_sum) $mi->view_cell_sum = 'summ';	
+	if(!$mi->infinity_use) $mi->infinity_use  = "no";	
+	$page_tno = $page ;
+	$page_no = $page + 1;
+}
+<!--@if($oi->layout =='Oday_horizon')-->
+{@
+	$oi = $layout_info;
+	
+	if(!$oi->layout_align) $oi->layout_align= 'num'; 
+	if(!$oi->site_width) $oi->site_width = '1200';
+	if(!$oi->site_wing_width) $oi->site_wing_width = '280';
+	if(!$oi->site_wing_gap) $oi->site_wing_gap = '20';
+	if(!$oi->site_column_c1) $oi->site_column_c1 = 'no';
+	if(!$oi->site_column_c3) $oi->site_column_c3 = 'no';
+			
+	$side = $oi->site_column_c1.$oi->site_column_c3;
+	$force = $oi->use_sub_page.$oi->use_snb_force;
+	$cnd = 'P'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+	$cnd2 = 'LhzP'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+
+	if($cnd == 'PyesyesFnonoPyes' || $cnd == 'PyesnoFnonoPyes' ||  $cnd=='PnonoFyesyesPno') :
+		$gallWidthMinus = '0';
+		$gallWidth = $oi->site_width;
+		$checkwidth_wide = $oi->site_width;
+		$checkwidth = $oi->site_width;
+	endif;	
+	if($cnd=='PnonoFnoyesPno') :
+		$gallWidthMinus = '0';
+		$gallWidth = $oi->site_width;
+		$checkwidth_wide = $oi->site_width;
+		$checkwidth = $oi->site_width - ($oi->site_wing_width  + $oi->site_wing_gap);
+	endif;
+	if($cnd == 'PyesyesFyesnoPyes' || $cnd == 'PyesyesFyesyesPyes') :
+		$gallWidthMinus =($oi->site_wing_width * 2) + ($oi->site_wing_gap * 2);
+		$gallWidth = $oi->site_width - $gallWidthMinus;
+		$checkwidth_wide = $oi->site_width;
+		$checkwidth = $oi->site_width - ($oi->site_wing_width  + $oi->site_wing_gap);
+	endif;
+	if($cnd == 'PnoyesFyesnoPyes' || $cnd == 'PyesnoFyesnoPyes' || $cnd == 'PyesnoFnoyesPyes' || $cnd == 'PyesnoFyesyesPyes' || $cnd=='PnonoFyesyesPyes' || $cnd=='PyesyesFnoyesPyes') : 
+		$gallWidthMinus =$oi->site_wing_width + $oi->site_wing_gap;
+		$gallWidth = $oi->site_width - $gallWidthMinus;
+		$checkwidth_wide = $oi->site_width;
+		$checkwidth = $oi->site_width - ($oi->site_wing_width  + $oi->site_wing_gap);
+	endif;
+
+	
+	$cellnum2 = $gallWidth / 300;
+	$cellnum = round($gallWidth / 300);
+	if($cellnum < 2) $cellnum = 2;
+	
+	$layougap = '20';
+	$bodyscroll = '20';
+	$cell3 = 3;$cell4 = 4;$cell5 = 5;$cell6 = 6;$cell7 = 7;$cell8 = 8;$cell9 = 9;
+	if($gallWidthMinus > 300) :
+		$cell3 = 3;$cell4 = 4;$cell5 = 3;$cell6 = 4;$cell7 = 5;$cell8 = 6;$cell9 = 7;
+	endif;
+	if($gallWidthMinus < 301) :
+		$cell3 = 3;$cell4 = 4;$cell5 = 4;$cell6 = 5;$cell7 = 6;$cell8 = 7;$cell9 = 8;
+	endif;
+}
+<!--@elseif($oi->layout =='Oday_blog')-->
+{@
+	$oi = $layout_info;
+	if(!$oi->gnb_width) $oi->gnb_width = '180';
+	if(!$oi->site_width) $oi->site_width = '1200';
+	if($oi->layout_align =='full') :
+		$gallWidthMinus = $oi->gnb_width;
+	endif;
+	if($oi->layout_align !='full') :
+		if($oi->gnb_width) $gallWidth = $oi->site_width - $oi->gnb_width;
+		$gallWidthMinus = $oi->gnb_width + 20;
+		$checkwidth = '768';
+	endif;
+	$checkwidth_wide = $oi->site_width;
+	$cellnum2 = $gallWidth / 300;
+	$cellnum = round($gallWidth / 300);
+	if($cellnum < 2) $cellnum = 2;
+	
+	$layougap = '0';
+	$bodyscroll = '20';
+	$cell3 = 2;$cell4 = 3;$cell5 = 4;$cell6 = 5;$cell7 = 6;$cell8 = 7;$cell9 = 8;
+	
+	$cnd = 'P'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+	$cnd2 = 'LbgP'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+}	
+<!--@else-->
+{@
+
+	if($mi->page_align!='full') $gallWidth = $mi->page_width;
+	$gallWidthMinus = '0';
+	$checkwidth = $gallWidth;
+	$checkwidth_wide = $mi->page_width;
+	$cellnum2 = $gallWidth / 300;
+	$cellnum = round($gallWidth / 300);
+	if($cellnum < 2) $cellnum = 2;
+	
+	$layougap = '0';
+	$bodyscroll = '10';
+	$cell3 = 3;$cell4 = 4;$cell5 = 5;$cell6 = 6;$cell7 = 7;$cell8 = 8;$cell9 = 9;
+	
+	$cnd = 'P'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+	$cnd2 = 'LnoP'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force.'P'.$mi->use_sidewing;
+
+}
+<!--@end-->
+<load target="/_assets/js/infinite-scroll.pkgd.min.js" />
+<load target="/_assets/js/masonry.pkgd.min.js" />
+<div class='stickyTopBox'>
+	<include target="opt_list/_list__opt_category.html" />
+	<include target="opt_list/_list__opt_search.html" />
+</div>
+<include target="opt_list/_list__opt_notice_pop.html" cond="$notice_list" />
+<!--@if(!$document_list && !$notice_list)-->
+	<div class="no_documents">
+	<!--@if($search_keyword)-->
+		검색된 글이 없습니다.
+	<!--@else-->
+		{$lang->no_documents}
+	<!--@end-->
+	</div>
+<!--@else-->
+
+<div class="ttdiv" cond="$grant->manager">hint code : {$cnd} / {$cnd2} / checkwidth_wide  {$checkwidth_wide } / checkwidth {$checkwidth} / gallWidth {$gallWidth}  / gallWidthMinus {$gallWidthMinus} / use_sidewing {$mi->use_sidewing} / cellnum {$cellnum} / cellnum2 {$cellnum2}</div>
+<div cond="$page > 1" class="infinitiNotice">전체 <span>{$page_navigation->last_page}</span>페이지 중 <span>{$page}</span>번째 페이지부터 시작되었습니다.<br class="vm" /> 첫 페이지 부터 보시려면 <a href="{getUrl('listStyle',$mi->default_style,'page','','','')}">여기</a>를 클릭해 주세요.</div>
+<div id="list-gall" class="wrapGall" style="margin:0 auto; overflow:hidden; font-size:{$mi->font_size}px">
+	<div class="boxsize"></div>
+	<div loop="$document_list =>$no,$document" class="box boxsize<!--@if($mi->view_cell=='thum')--> titleIn<!--@end-->">
+		<input cond="$grant->manager" type="checkbox" name="cart" id="chk_{$document->document_srl}" value="{$document->document_srl}" class="listchk<!--@if($mi->view_cell=='sum')--> sum<!--@end-->" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+		<block cond="$mi->view_cell=='all' || $mi->view_cell=='thum'">
+			<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon
+				<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)-->
+				<!--@if($val == 'secret')-->S<!--@end-->
+				<!--@if($val == 'new')--> Fbox N<!--@end-->
+				<!--@if($val == 'update')--> Fbox U<!--@end-->
+				<!--@if($val == 'file')-->F<!--@end-->
+				<!--@end-->
+			">
+			<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+				<block cond="$key == 'new'">N</block>
+				<block cond="$key == 'update'">U</block>
+			</block>
+			</span>
+				<!--@if($document->isSecret())-->
+					<span class="newicon Fbox secret"><i class='bx bxs-lock'></i></span>
+				<!--@end-->
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" class="">
+				<!--@else-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon('{strip_tags($document->getTitle())}','{getUrl('document_srl',$document->document_srl,'listStyle','galleryView')}');" target="viewgall">
+				<!--@end-->
+				<!--@if($document->isSecret() && !$document->isGranted())-->
+					<img src="img/secret.png" alt="{$document->getTitle()}" class="thum" />
+				<!--@elseif($document->isSecret() && $document->isGranted())-->
+					<!--@if($document->thumbnailExists())-->
+						<img src='{$document->getThumbnail($mi->thumbnail_width, $mi->thumbnail_height, $mi->thumbnail_type)}' alt="{$document->getTitle()}" class="thum viewthum" />
+					<!--@else-->
+						<img src="img/noimg.png" alt="{$document->getTitle()}" class="thum" />
+					<!--@end--> 
+				<!--@else-->
+					<!--@if($document->thumbnailExists())-->
+						<img src='{$document->getThumbnail($mi->thumbnail_width, $mi->thumbnail_height, $mi->thumbnail_type)}' alt="{$document->getTitle()}" class="thum viewthum" />
+					<!--@else-->
+						<img src="img/noimg.png" alt="{$document->getTitle()}" class="thum" />
+					<!--@end--> 
+				<!--@end-->
+				<ul cond="$mi->view_cell=='thum'" class="titlebox titleInbox">
+					<li class="columns">
+						<div class="category">{$category_list[$document->get('category_srl')]->title}</div>
+					</li>
+					<li class="title">
+						<!--@if($document->isSecret() && !$document->isGranted())-->
+							{$lang->msg_is_secret} 
+						<!--@elseif($document->isSecret() && $document->isGranted())-->
+							{strip_tags($document->getTitle())}
+						<!--@else-->
+							{strip_tags($document->getTitle())}
+						<!--@end-->
+					</li>
+					<li class="columns middle">
+						<div class="meta">
+							<img cond="$document->getProfileImage()" src="{$document->getProfileImage()}" alt="Profile" class="profile" />
+							<span cond="!$document->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+							<span class="uname">{$document->getNickName()}</span>
+						</div>
+						<div class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</div>					
+					</li>
+					<li class="columns bottom">
+						<span class="read"><i class='bx bxs-show' ></i>&nbsp;{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+						<span cond="$document->getCommentCount()" class="count"><i class='bx bxs-message-rounded-dots'></i>&nbsp;{$document->getCommentCount()}</span>
+						<span class="count" cond="$document->get('voted_count')!=0"><i class='bx bxs-heart'></i>&nbsp;{$document->get('voted_count')}</span>
+					</li>
+				</ul>                   
+			</a>
+		</block>
+		<ul cond="$mi->view_cell=='all' || $mi->view_cell=='sum'" class="titlebox">
+			<li class="columns">
+				<div class="category" onclick="showUpdateExtraModal(this, {$document->document_srl}, {$document->get('category_srl')}, 'category')"|cond="$grant->manager && $use_category_update">{$category_list[$document->get('category_srl')]->title}</div>
+			</li>
+			<li class="title">
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" class="">
+				<!--@else-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon('{strip_tags($document->getTitle())}','{getUrl('document_srl',$document->document_srl,'listStyle','galleryView')}');" target="viewgall">
+				<!--@end-->
+				<!--@if($document->isSecret() && !$document->isGranted())-->
+					{$lang->msg_is_secret} 
+				<!--@elseif($document->isSecret() && $document->isGranted())-->
+					{strip_tags($document->getTitle())}
+				<!--@else-->
+					{strip_tags($document->getTitle())}
+				<!--@end-->
+				</a>
+			</li>
+			<!--@if($mi->view_cell_sum=='summ')-->
+			<li class="summary">{$document->getSummary(300)}</li>
+			<!--@else-->
+			<li class="full">{$document->getContent(false)} </li>
+			<!--@end-->     
+			<li class="columns middle">
+				<div class="meta">
+					<img cond="$document->getProfileImage()" src="{$document->getProfileImage()}" alt="Profile" class="profile" />
+					<span cond="!$document->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+					<span class="uname">{$document->getNickName()}</span>
+				</div>
+				<div class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</div>
+			</li>
+			<li class="columns bottom">
+				<span class="read"><i class='bx bxs-show' ></i>&nbsp;{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+				<span cond="$document->getCommentCount()" class="count"><i class='bx bxs-message-rounded-dots'></i>&nbsp;{$document->getCommentCount()}</span>
+				<span class="count" cond="$document->get('voted_count')!=0"><i class='bx bxs-heart'></i>&nbsp;{$document->get('voted_count')}</span>
+			</li>
+		</ul>  
+	</div>
+</div>
+<div class="wrap-infinity">
+	<div class="page-load-status" style="display:  none ;">
+		<p class="infinite-scroll-request"><i class='bx bx-loader-circle bx-spin bx-rotate-90' ></i></p>
+		<p class="infinite-scroll-last">End of content</p>
+		<p class="infinite-scroll-error">No more pages to load</p>
+	</div>
+	<!--@if($mi->infinity_use != 'yes')-->
+	<div class="infinity-btn-box"><a class="view-more-button"><i class='bx bx-plus'></i> View more</a></div>
+	<!--@end-->
+</div>
+<div id="page-nav"><a href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division)}" class="pagination__next"></a></div>
+<div class="iframeCon"><iframe src ="" width="100%" height="100%" frameborder="no" id="iframeWin" name="viewgall"></iframe><div class="iframeBg"></div></div>
+<!--@end-->
+<include target="opt_list/_list__opt_btnbox.html" />
+
+
+<style>
+#list-gall { margin-top:{$mi->gall_cell_gap}px !important; }
+#list-gall .box { margin-bottom:{$mi->gall_cell_gap}px; }
+.wrapGall .boxsize2 a img.thum  { min-height:300px;}
+.wrapGall.changeWidth .boxsize2 a img.thum  { min-height:unset;}
+.ttdiv { width:var(--cellWidth); padding:10px 0; margin-top:10px; font-size:.85em; text-align:center; background-color:var(--oday_listBgColor); border-radius:10px}
+</style>
+<!--@if($oi->layout =='Oday_blog')-->
+{@
+	
+}
+<!--@end-->
+
+
+	<!--@if(($oi->layout_align && $oi->layout =='Oday_blog' && $oi->layout_align =='full') || (!$oi->layout_align && $mi->page_align=='full'))-->
+		<style>
+			.ttdiv { border:1px solid #f00;}
+			:root {
+				--cellWidth : calc(100vw <!--@if($oi->layout =='Oday_blog')--> - {$gallWidthMinus}px <!--@end--> - {$bodyscroll}px); 
+			}	
+			.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell9}) - {$mi->gall_cell_gap}px); }
+			.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell9}) * 2) - {$mi->gall_cell_gap}px); }
+
+			@media screen and (max-width:2400px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell8}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell8}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:2100px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell7}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell7}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:1900px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell6}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell6}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:1600px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell5}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell5}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (max-width:1300px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell4}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell4}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (max-width:1000px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell3}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell3}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+		</style>	
+	<!--@elseif(($oi->layout_align && $oi->layout_align !='full') || (!$oi->layout_align && $mi->page_align!='full'))-->
+		<style>
+			.ttdiv { border:1px solid #000;}
+			@media screen and (min-width:{$checkwidth_wide + 300}px){
+				:root {
+					--cellWidth : calc(100vw - ((100vw - {$checkwidth_wide}px) + {$gallWidthMinus}px));
+				}
+				.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum + 1}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum + 1}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (min-width:{$checkwidth_wide}px){
+				:root {
+					--cellWidth : calc(100vw - ((100vw - {$checkwidth_wide}px) + {$gallWidthMinus}px));
+				}
+				.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+
+			@media screen and (max-width:{$checkwidth_wide}px){
+				:root {
+					--cellWidth : calc(100vw - {$gallWidthMinus}px - {$layougap}px - {$bodyscroll}px)  ; 
+				}
+				
+				.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (max-width:{$checkwidth_wide - 200}px){
+				:root {
+					--cellWidth : calc(100vw - {$gallWidthMinus}px - {$layougap}px - {$bodyscroll}px)  ; 
+				}
+				
+				.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 1}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 1}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			<!--@if($cnd=='PnonoFnoyesPno')-->
+				@media screen and (max-width:{$checkwidth}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 1}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 1}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 200}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 2}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 2}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 500}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 3}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 3}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 800}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 4}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 4}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 1100}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 5}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 5}) * 2) - {$mi->gall_cell_gap}px); }
+				}				
+			<!--@elseif($cnd=='PFPyes')-->
+				@media screen and (max-width:{$checkwidth}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 200}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 1}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 1}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 500}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 2}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 2}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 800}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 3}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 3}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 1100}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 4}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 4}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+			<!--@else-->
+				@media screen and (max-width:{$checkwidth}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 1}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 1}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 200}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 1}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 1}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 500}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 2}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 2}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 800}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 3}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 3}) * 2) - {$mi->gall_cell_gap}px); }
+				}
+				@media screen and (max-width:{$checkwidth - 1100}px){
+					:root {
+						--cellWidth : calc(100vw -  {$bodyscroll}px)  ; 
+					}
+					.box, .boxsize { width:calc((var(--cellWidth)  / {$cellnum - 4}) - {$mi->gall_cell_gap}px); }
+					.wrapGall.changeWidth .boxsize2 { width:calc(((var(--cellWidth)  / {$cellnum - 4}) * 2) - {$mi->gall_cell_gap}px); }
+				}				
+			<!--@end-->
+		</style>
+	<!--@elseif(($oi->layout_align && $oi->layout =='Oday_horizon' && $oi->layout_align =='full' && $mi->page_align=='full'))-->
+		<style>
+			.ttdiv { border:1px solid #ff0;}
+			:root {
+				--cellWidth : calc(100vw  - {$gallWidthMinus}px - {$bodyscroll}px); 
+			}	
+			.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell9}) - {$mi->gall_cell_gap}px); }
+			.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell9}) * 2) - {$mi->gall_cell_gap}px); }
+
+			@media screen and (max-width:2400px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell8}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell8}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:2100px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell7}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell7}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:1900px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell6}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell6}) * 2) - {$mi->gall_cell_gap}px); }
+			}	
+			@media screen and (max-width:1600px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell5}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell5}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (max-width:1300px){
+				:root {
+					--cellWidth : calc(100vw - {$bodyscroll}px); 
+				}			
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell4}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell4}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+			@media screen and (max-width:1000px){
+				.box, .boxsize { width:calc(((var(--cellWidth) - 2px) / {$cell3}) - {$mi->gall_cell_gap}px); }
+				.wrapGall.changeWidth .boxsize2 { width:calc((((var(--cellWidth) - 2px) / {$cell3}) * 2) - {$mi->gall_cell_gap}px); }
+			}
+		</style>
+	<!--@end-->
+
+
+
+<style>
+@media screen and (max-width:768px){
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		:root {
+		--cellWidth : calc(100vw - 0vw); /* 3px 스크롤바 폭 */
+		}
+	<!--@else-->
+		:root {
+		--cellWidth : calc((100vw - 10px) - 2vw); /* 3px 스크롤바 폭 */
+		}
+	<!--@end-->
+	.box, .boxsize { width:calc((var(--cellWidth)  / 2) - {$mi->gall_cell_gap}px); }
+	.wrapGall.changeWidth .boxsize2  { width:calc((var(--cellWidth)  / 2) - {$mi->gall_cell_gap}px); }
+	.searchBox div.sort a.viewOne,
+	.searchBox div.sort a.viewTwo { display:none ;}
+}
+</style>
+<script>
+function viewCon(ta,tb) {
+	scrollDisable();
+	setTimeout(function() { 
+		$(".iframeCon").fadeIn();
+	}, 100);
+	document.getElementById('iframeWin').contentWindow.focus();
+	//history.pushState({page:"child"}, ta, tb);
+}
+var tUrl = "{getUrl('document_srl','')}";
+function closeCon() {
+	
+	scrollAble();
+	$(".iframeCon").hide();
+	$("#iframeWin").attr('src',"");
+	//history.go(-1);
+	document.title = "{Context::getBrowserTitle()}";
+	history.replaceState({}, null, tUrl);
+	//history.go(-1);
+	//history.replaceState({}, '바닥', '{$oDocument->getPermanentUrl()}?listStyle=galleryView');
+	//document.title = "{Context::getBrowserTitle()}";
+}
+$(function(){
+	setDouble();
+/* 메이슨리 */
+	var $inficon = $("#list-gall");
+	let $grid = $inficon.masonry({
+		// options
+		itemSelector:'none',
+		columnWidth: '.boxsize',
+		//percentPosition: true,
+		//horizontalOrder: true,
+		gutter: {$mi->gall_cell_gap},
+		visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+		hiddenStyle: { transform: 'translateY(50px)', opacity: 0 },
+		fitWidth: true
+	});
+ 	let msnry = $grid.data('masonry');
+	$grid.imagesLoaded( function() {
+		//$(".boxsize img").css({ "width" : "100%" }); 
+		$grid.masonry( 'option', { itemSelector: '.box' });
+		let $items = $grid.find('.box');
+		$grid.masonry( 'appended', $items );
+	});
+/* 인피니티 스크롤 */
+<!--@if($mi->infinity_use == 'yes')-->
+	$grid.infiniteScroll({
+		// options
+		path: '.pagination__next',
+		append: '.box',
+		//  scrollThreshold: 500,
+		status: '.page-load-status',
+		history: false,
+		outlayer: msnry
+	});
+<!--@else-->	
+	$grid.infiniteScroll({
+		path: '.pagination__next',
+		append: '.box',
+		button: '.view-more-button',
+		scrollThreshold: false,
+		status: '.page-load-status',
+		history: false,
+		outlayer: msnry
+	});
+<!--@end-->
+	$grid.on( 'append.infiniteScroll', function( event ) {
+		setDouble();
+		$inficon.masonry();
+	});
+/* 셀 사이즈 변환 */
+	$('.viewOne').click(function(){ 
+		viewOne();
+		$inficon.masonry();
+	});
+	$('.viewTwo').click(function(){ 
+		viewTwo();
+		$inficon.masonry();
+	});
+});
+/*
+if ( document.cookie.indexOf("setOdayGallWidth_{$mid}=one") < 0 ){
+	doViewTwo();
+} else {
+	doViewOne();
+}
+*/
+var $getColor = XE.cookie.get('setOdayGallWidth_{$mid}');
+if ( $getColor == "one" ){
+	doViewOne();
+} else if ( $getColor == "two" ) {
+	doViewTwo();
+} else {
+	doViewOne();
+}
+function viewOne() {
+	setCookie( "setOdayGallWidth_{$mid}", "one");
+	doViewOne();
+} 
+function viewTwo() {
+	setCookie( "setOdayGallWidth_{$mid}", "two");
+	doViewTwo();
+} 
+function doViewOne(){
+	$('.viewOne').addClass('acitvegall');
+	$('.viewTwo').removeClass('acitvegall');
+	$('.wrapGall').removeClass('changeWidth');	
+}
+function doViewTwo(){
+	$('.viewTwo').addClass('acitvegall');
+	$('.viewOne').removeClass('acitvegall');
+	$('.wrapGall').addClass('changeWidth');
+}
+/* 가로형 이미지 체크 */
+function setDouble() {
+	$('.box').each(function() { 
+		var w = $(this).find(".viewthum").width();
+		var h = $(this).find(".viewthum").height();
+		var r = w/h;
+		if(r > 1 ) {
+			$(this).addClass('boxsize2');
+		}
+	});	
+} 
+</script>
