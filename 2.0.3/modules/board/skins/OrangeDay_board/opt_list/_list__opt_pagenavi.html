@@ -1,0 +1,13 @@
+<!-- ////////////////////////
+
+	페이지 네비
+
+ ////////////////////////-->
+	<div class="pagination" cond="$document_list || $notice_list">
+		<a href="{getUrl('page','','document_srl','','division',$division,'last_division',$last_division)}" class="direction prev"><span></span><span></span><i class='bx bxs-chevron-left' ></i></a> 
+		<block loop="$page_no=$page_navigation->getNextPage()">
+			<strong cond="$page==$page_no">{$page_no}</strong> 
+			<a cond="$page!=$page_no" href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division)}" class="pageBtn">{$page_no}</a>
+		</block>
+		<a href="{getUrl('page',$page_navigation->last_page,'document_srl','','division',$division,'last_division',$last_division)}" class="direction next"><i class='bx bxs-chevron-right'></i><span></span><span></span></a>
+	</div>

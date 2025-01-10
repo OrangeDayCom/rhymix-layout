@@ -1,0 +1,43 @@
+<article id="readBox" style="font-size:{$mi->font_size}px">
+	<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+		<include target="opt_read/_read_opt_secret.html" />
+		<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+	<!--@else--><!-- 비밀글 분기 -->
+		<include target="opt_read/_read_opt_location.html" cond="$mi->read_location == 'use'" />	
+		<include target="opt_read/_read_opt_title.html" cond="$mi->read_title == 'use'" />	
+		<include target="opt_read/_read_opt_meta.html" cond="$mi->read_meta == 'use'"/>
+		
+		<!--@if($mi->default_style=='youtube' && $document->getExtraValue(1))-->		
+		<div class="utube-wrap">
+			<div class="utube-direct" cond="$document->getExtraValue(1)">
+				<iframe  src="https://www.youtube.com/embed/{$document->getExtraValue(1)}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+			</div>
+			<div class="utube-direct no-movie" cond="!$document->getExtraValue(1)">
+				<div><i class='bx bxs-coffee'></i>no movie</div>
+			</div>
+		</div>
+		<style>
+			#readBox .utube-wrap { }
+			#readBox .utube-direct {position: relative; padding-bottom: 56.25%; /* 16:9 */ height: 0; overflow:hidden; }
+			#readBox .utube-direct iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;}
+			#readBox .utube-direct.no-movie div { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; flex-direction: column; background-color:var(--oday_listBgColorUp1)}
+			#readBox .utube-direct.no-movie div i { font-size:2em;}		
+		</style>
+		<!--@end-->
+		<div class="rMain">
+		{$oDocument->getContent(false)|noescape}
+		</div>
+		<include target="opt_read/_read_opt_extravar.html" />
+		<include target="opt_read/_read_opt_vote.html" cond="$mi->read_vote == 'use'" />
+		<include target="opt_read/_read_opt_tags.html" cond="$mi->read_tag == 'use'" />
+		<include target="opt_read/_read_opt_download.html" cond="$mi->read_download == 'use'" />
+		<include target="opt_read/_read_opt_doNsns.html" cond="$mi->read_utility == 'use' || $mi->read_sns == 'use'"/>
+		<include target="opt_read/_read_opt_sign.html" cond="$mi->read_sign == 'use'" />
+		<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+		<include target="_comment.html" />
+		<include target="_comment_write.html" />
+	<!--@end-->
+	<include target="opt_read/_read_opt_btnbox.html" />
+</article>
+<include target="opt_read/_read_opt_navi_side.html" />
+

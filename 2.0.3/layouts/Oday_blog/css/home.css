@@ -1,0 +1,16 @@
+@charset "utf-8";
+.b_counter { padding:20px;}
+.basic_main { padding:0 50px; }
+.basic_main .b_title { display:flex; align-items: center; justify-content: center; padding:10px;}
+.basic_main li + .b_title { margin-top:20px;}
+
+.basic_main h2 { width: fit-content; height:36px; padding:0 20px; font-size:1.1em; font-weight:500;  letter-spacing:-.5px; background-color: var(--oday_mainColor); color:var(--oday_primaryBtnColor); display:flex; align-items: center;    justify-content: center; border-radius:36px; line-height:0}
+.basic_main h2 i.bx { font-size:1.2em; margin-right:4px}
+.basic_main .notice h2,
+.basic_main .comment h2 { height:32px; padding:0 15px; font-size:.9em;  font-weight:500; border-radius:32px; }
+
+.slidebanner { padding:50px 0}
+
+@media screen and (max-width:1200px){
+	.basic_main { padding:0 20px; }
+}

@@ -1,0 +1,719 @@
+{@ Context::addMetaTag('viewport', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');}
+{@ $_is_indexmodule = ($site_module_info->module_srl === $current_module_info->module_srl)}
+{@
+	$oi = $layout_info;
+	
+	$domain = $_SERVER['HTTP_HOST'];
+	
+	if(!$oi->use_member) $oi->use_member = 'yes';
+	if(!$oi->site_title) $oi->site_title = '레이아웃 호라이즌';
+	if(!$oi->use_logo_img) $oi->use_logo_img = 'no';
+	if(!$oi->site_address) $oi->site_address = '서울 강남구 강남대로 464';
+	if(!$oi->site_copyright) $oi->site_copyright = 'OrangeDay';
+	if(!$oi->view_bottom_gnb) $oi->view_bottom_gnb = 'yes';
+	if(!$oi->site_badge) $oi->site_badge = 'yes';
+	if(!$oi->use_visitor) $oi->use_visitor = 'yes';
+	
+	if(!$oi->layout_align) $oi->layout_align= 'num'; 
+	if(!$oi->site_width) $oi->site_width = '1200';
+	if(!$oi->site_wing_width) $oi->site_wing_width = '280';
+	if(!$oi->site_wing_gap) $oi->site_wing_gap = '20';
+	if(!$oi->site_column_c1) $oi->site_column_c1 = 'yes';
+	if(!$oi->site_column_c3) $oi->site_column_c3 = 'yes';
+
+	$side = $oi->site_column_c1.$oi->site_column_c3;
+	$force = $oi->use_sub_page.$oi->use_snb_force;
+	if($force == 'noyes') :
+		 $gallWidthMinus_oi = $oi->site_wing_width  + $oi->site_wing_gap;
+	endif;
+	if($force == 'yesyes' || $force == 'yesno') :
+		if($side =="yesyes") $gallWidthMinus_oi = $oi->site_wing_width  + $oi->site_wing_gap;
+		if($side =="yesno" || $side =="noyes") $gallWidthMinus_oi = $oi->site_wing_width  + $oi->site_wing_gap;
+		if($side =="nono") $gallWidthMinus_oi = 0;
+	endif;
+	$cnd_oi = 'P'.$oi->site_column_c1.$oi->site_column_c3.'F'.$oi->use_sub_page.$oi->use_snb_force;
+	
+	if(!$oi->use_sub_page) $oi->use_sub_page = 'yes';
+	if(!$oi->use_snb_force) $oi->use_snb_force = 'no';
+
+	if(!$oi->use_main_banner) $oi->use_main_banner = 'yes';
+	if(!$oi->widget_bg) $oi->widget_bg = 'yes';
+	if(!$oi->use_sns) $oi->use_sns = 'yes';
+	
+	if(!$oi->use_snb) $oi->use_snb = 'yes';
+	if(!$oi->use_snb_location) $oi->use_snb_location = 'right';
+ 
+	if(!$oi->use_darkMode) $oi->use_darkMode = 'yes';
+	if(!$oi->use_darkMode_set) $oi->use_darkMode_set = 'dark';
+	
+	if(!$oi->use_colorTheme) $oi->use_colorTheme = 'yes';
+	if(!$oi->use_colorTheme_set) $oi->use_colorTheme_set = 'orange';
+	if(!$oi->use_brightTheme_set) $oi->use_brightTheme_set = 'd2';
+
+
+}
+<!--@if($layout_info->layout_align== 'num')-->
+{@
+	$checkwidth_oi = $oi->site_width - $gallWidthMinus_oi;
+}
+<!--@else-->
+{@
+	$checkwidth_oi = 1300;
+}
+<!--@end-->
+<!--@if(strpos($act,"dispBoardAdmin") !== false || strpos($act,"dispPageAdmin") !== false || !$module_info || $module_info->module=='member')-->
+{@
+	$layout_info->site_column_c1 = 'no';
+	$layout_info->site_column_c3 = 'no';
+}
+<!--@end-->
+<!--// 레벨 -->
+{@
+$oPointModel = getModel('point');
+$point = $oPointModel->getPoint($logged_info->member_srl);
+$oModuleModel = &getModel('module');
+$config = $oModuleModel->getModuleConfig('point');
+$level = $oPointModel->getLevel($point, $config->level_step);
+$next_point = $config->level_step[$level+1];
+$now_point = $config->level_step[$level];
+$need_point = (int)($next_point-$now_point);
+$need_point2 = (int)($point-$now_point);
+if($next_point > 0) $per = (int)($need_point2 / $need_point*1000);
+
+
+			
+}
+
+
+<!--@if($oi->googleAnalytics)-->
+<script async src="https://www.googletagmanager.com/gtag/js?id={$oi->googleAnalytics}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{$oi->googleAnalytics}');
+</script>
+<!--@end-->
+
+<load target="/_assets/js/_Oday_script.js" index="-100000000" />
+<!--@if($oi->use_darkMode == 'yes')-->
+<load target="/_assets/js/_Oday_script_darkMode.js" index="-100000000" />
+<!--@else-->
+<script>
+	setColorScheme("{$oi->use_darkMode_set}");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').removeClass("color_scheme_dark, color_scheme_light");
+	$('iframe.cke_wysiwyg_frame').contents().find('body').addClass("color_scheme_{$oi->use_darkMode_set}");
+	document.documentElement.setAttribute('color-theme', '{$oi->use_darkMode_set}');
+	//$('body').addClass("color_scheme_{$oi->use_darkMode_set}");
+</script>
+<!--@end-->
+<!--@if($oi->use_colorTheme == 'yes')-->
+<load target="/_assets/js/_Oday_script_colorTheme.js" index="-100000000" />
+<!--@else-->
+<script>
+	$('body').removeClass("color_theme_white color_theme_gray color_theme_orange color_theme_blue color_theme_green color_theme_red bright_theme_d1 bright_theme_d2 bright_theme_d3"); 
+	$('body').addClass("color_theme_{$oi->use_colorTheme_set} bright_theme_{$oi->use_brightTheme_set}");
+</script>
+<!--@end-->
+
+<load target="/_assets/js/jscookie.js" index="-100000000" />
+<load target="/_assets/js/nice-select.js" />
+
+<load target="/_assets/css/nice-select.css" />
+<load target="/_assets/css/_Oday_default.css" />
+<load target="/_assets/css/_Oday_rhymix_fix.css" /> 
+
+<load target="/_assets/js/jquery-ui.min.js" />
+<load target="/_assets/css/jquery-ui.min.css" />
+
+<load target="/_assets/css/nprogress.css" />
+<load target="/_assets/js/nprogress.js" />
+
+<load target="css/layout.css" />
+
+<style>
+
+.horizon li.wing-left,
+.horizon li.wing-right {width:{$oi->site_wing_width}px}
+.horizon li.main {width:100%; position:relative; }
+.horizon li.main.wl,
+.horizon li.main.wr {width:calc((100% - {$oi->site_wing_width}px) - {$oi->site_wing_gap}px)}
+.horizon li.main.wl.wr { width:calc((100% - ({$oi->site_wing_width}px * 2)) - ({$oi->site_wing_gap}px * 2))}
+
+
+.horizon.sub > li { width:100%}
+.horizon.sub li.force  { width:calc((100% - {$oi->site_wing_width}px) - {$oi->site_wing_gap}px); position:relative;  }
+.horizon.sub li.force_nono  { width:calc((100% - {$oi->site_wing_width}px) - {$oi->site_wing_gap}px); position:relative;  }
+.horizon.sub li.force_nono.wide,
+.horizon.sub li.force.wide{ width:100%; }
+.horizon.sub li.wing  {width:{$oi->site_wing_width}px}
+.horizon.sub li.wing #SNB { position:sticky; top:80px}
+@media screen and (max-width:{$checkwidth_oi}px){
+	.horizon li.main,
+	.horizon li.main.wl,
+	.horizon li.main.wr,
+	.horizon li.main.wl.wr,
+	.horizon.sub li.force { width:100%; margin-bottom: 10px;}
+	.horizon li.wing-left,
+	.horizon li.wing-right {width:calc(50% - 5px)}
+	.horizon li.wing-left.only-wl,
+	.horizon li.wing-right.only-wr,
+	.horizon.sub li.wing  {width:100%}
+	.horizon li.wing,
+	.horizon li.wing-left {order:1}
+	.horizon li.wing-right {order:2}
+	.horizon li.main{order:0}
+}
+@media screen and (max-width:768px){
+	.horizon li.wing-left,
+	.horizon li.wing-right,
+	.horizon li.main,
+	.horizon li.main.wl,
+	.horizon li.main.wr,
+	.horizon li.main.wl.wr { width:100%; margin-bottom: 10px;}
+	.horizon li.wing-left {order:1}
+	.horizon li.wing-right {order:2}
+	.horizon li.main,
+	.horizon.sub li.force {order:0}
+	
+	.horizon.sub li.force,
+	.horizon.sub li.force_nono,
+	.horizon.sub li.force_nono.wide,
+	.horizon.sub li.force.wide { width:100%; }
+	.horizon.sub li.wing  {display:none;}
+}
+<!--@if($oi->widget_bg == 'no')-->
+	.widget_wrap,
+	.widgetCounter_classic,
+	.wrap_contentex { border:unset; background-color: unset; box-shadow: unset; padding: 0px 15px !important; }
+	.horizon {
+		--bggra_up :  color-mix(in srgb, var(--oday_listBgColor), #000 5%);
+		--bggra_down :  color-mix(in srgb, var(--oday_listBgColor), #fff 20%);
+	}
+	.horizon li.wing-left,
+	.horizon li.wing-right { padding-top:20px;}
+	.horizon > li:not(:has(.pagelocation)) > * + * { /*border-top:var(--oday_listBorderUp); */ padding-top:40px !important; margin-top:40px !important; position:relative; }	
+	.horizon > li:not(:has(.pagelocation)) > * + *:before {content:""; position:absolute; top:0px; left:0;display:block; width:100%; height:2px; background: linear-gradient(90deg, transparent 5%, var(--bggra_up) 30%,  var(--bggra_up) 70%, transparent 95%); mix-blend-mode: multiply;} 
+	.horizon > li:not(:has(.pagelocation)) > * + *:after {content:""; position:absolute; top:2px; left:0; display:block; width:100%; height:1px; background:  linear-gradient(90deg, transparent 5%, var(--bggra_down) 30%,  var(--bggra_down) 70%, transparent 95%); }
+	:is(.color_scheme_dark),
+	:root[color-theme='dark'] {
+		.horizon {
+			--bggra_up :  color-mix(in srgb, var(--oday_bodyBgColor), #000 80%);
+			--bggra_down :  color-mix(in srgb, var(--oday_listBgColor), #fff 5%);
+		}
+	}
+<!--@end-->
+
+
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+	:root {
+		--oday_gnbSize:70px;
+		--oday_gnbHeight:70px;
+		--oday_sideNaviBtnWidth: 4vw;
+	}	
+	#header.scrollHead {
+	--oday_gnbHeight:70px;
+	}	
+    /* iPad 공통 스타일 */
+	.vp,
+	.vpwrap br  { display:none !important;  }
+	.vm,
+	.vmwrap br { display:inherit !important; }		
+}
+</style>
+<script>
+jQuery(function($){
+	NProgress.start();
+	setTimeout(function() { NProgress.done(); $('.fade').removeClass('out'); }, 1000);
+});
+</script>
+
+<ul class="searchWrap">
+	<li>
+		<h3>SEARCH</h3>
+		<div class="wrapsearch">
+			통합검색
+			<form action="{getUrl()}" method="get" class="searchall" no-error-return-url="true">
+				<input type="hidden" name="act" value="IS" />
+				<input type="hidden" name="mid" value="" />
+				<input type="text" name="is_keyword" value="{$is_keyword}" title="{$lang->cmd_search}" />
+				<!-- input type="submit" value="{$lang->cmd_search}" / -->
+				<button type="submit"><i class='bx bx-search'></i></button>									
+			</form>
+		</div>
+		<!--@if($oi->googleSearch)-->
+		<div class="wrapsearch">
+			구글검색
+			<script async src="https://cse.google.com/cse.js?cx={$oi->googleSearch}"></script>
+			<div class="gcse-searchbox-only" data-resultsUrl="/"></div>
+		</div>
+		<!--@end-->		
+	</li>
+	<li><a class="search-close"><i class='bx bxs-x-circle'></i></a></li>
+	<li class="searchBg"></li>
+</ul>
+
+<header id="header">
+	<ul class="front">
+		<li class="objHeader start">
+			<a href="{getUrl('')}" target="_top" class="gbtn gohome">
+				<!--@if($oi->use_logo_img=='yes')-->
+				<img src="{$oi->logo_img}" alt="{$oi->site_title}" />
+				<!--@else-->
+				<span class="text">{$oi->site_title}</span>
+				<!--@end-->
+			</a>
+			<!--@if($oi->use_member == 'yes')-->
+			<a cond="!$is_logged" href="{getUrl('act', 'dispMemberLoginForm')}" class="gbtn vm" rel="nofollow"><i class='bx bx-key' ></i></a>
+			<!--@end-->
+			<a class="search-open gbtn vm"><i class='bx bx-search'></i></a>
+			
+			<!--@if($oi->use_member == 'yes')-->
+			<div cond="$is_logged" class="loginP vm">
+				<a href="{getUrl('act', 'dispMemberInfo')}" class="gbtn" rel="nofollow">
+					<!--@if($logged_info->profile_image->src)-->
+					<img src="{$logged_info->profile_image->src}" alt="{$logged_info->nick_name}" class="profile" />
+					<!--@else-->
+					<div class="profile"><i class='bx bxs-ghost' ></i></div>
+					<!--@end-->
+				</a>
+			</div>	
+			<!--@end-->
+			<a class="viewgnb gbtn"><i class='bx bx-menu' ></i></a>
+			<a class="closegnb gbtn"><i class='bx bx-x' ></i></a>
+		</li>
+		<li class="wrapNav">
+			<nav id="nav">
+				<ul class="depth0">
+					<li loop="$GNB->list => $key1, $val1" class="depth1">
+						
+						<a href="{$val1['href']}" class="depth1<!--@if($val1['class'])--> {$val1['class']}<!--@end--><!--@if($val1['selected'])--> active1<!--@end-->" target="_blank"|cond="$val1['open_window'] == 'Y'">
+							<i cond="$val1['icon']" class="{$val1['icon']}"></i> 
+							<span>{$val1['link']|noescape}</span>
+							<i cond="$val1['open_window'] == 'Y'" class='bx bx-link-external'></i>
+							<i cond="$val1['list']" class='bx bxs-chevron-down'></i>
+						</a>
+						
+						<div cond="$val1['list']" class="subarrow"></div>
+						<ul cond="$val1['list']" class="depth2">
+							<li loop="$val1['list'] => $key2, $val2" class="more"|cond="$val2['list']">
+								<a href="{$val2['href']}" class="active"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+									{$val2['link']|noescape}
+									<i cond="$val2['open_window'] == 'Y'" class='bx bx-link-external'></i>
+								</a>
+								<ul cond="$val2['list']" class="depth3">
+									<li loop="$val2['list'] => $key3, $val3">
+										<a href="{$val3['href']}" class="active"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+											<i class="bx bx-subdirectory-right"></i><span>{$val3['link']|noescape}</span>
+											<i cond="$val3['open_window'] == 'Y'" class='bx bx-link-external'></i>
+										</a>
+										<ul cond="$val3['list']" class="depth4">
+											<li loop="$val3['list'] => $key4, $val4">
+												<a href="{$val4['href']}" class="active"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+													<i class="bx bx-subdirectory-right"></i><span>{$val4['link']|noescape}</span>
+													<i cond="$val4['open_window'] == 'Y'" class='bx bx-link-external'></i>
+												</a>
+												<ul cond="$val4['list']" class="depth5">
+													<li loop="$val4['list'] => $key5, $val5">
+														<a href="{$val5['href']}" class="active"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+															<i class="bx bx-subdirectory-right"></i><span>{$val5['link']|noescape}</span>
+															<i cond="$val5['open_window'] == 'Y'" class='bx bx-link-external'></i>
+														</a>
+													</li>
+												</ul>												
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+
+					</li>
+				</ul>
+			</nav>		
+		</li>
+		<li class="objHeader end">
+			<a class="search-open gbtn vp"><i class='bx bx-search'></i></a>
+			<!--@if($oi->use_member == 'yes')-->
+			<div cond="!$is_logged" class="fl_right vp">
+				<a href="{getUrl('act', 'dispMemberLoginForm')}" class="gbtn" rel="nofollow"><i class='bx bx-key' ></i></a>
+			</div>
+			
+			<div cond="$is_logged" class="loginP">
+				<a href="{getUrl('act', 'dispMemberInfo')}" class="gbtn" rel="nofollow">
+					<!--@if($logged_info->profile_image->src)-->
+					<img src="{$logged_info->profile_image->src}" alt="{$logged_info->nick_name}" class="profile" />
+					<!--@else-->
+					<div class="profile"><i class='bx bxs-ghost' ></i></div>
+					<!--@end-->
+				</a>
+			</div>
+			<!--@end-->
+			<a class="closegnb end gbtn"><i class='bx bx-x' ></i></a>
+			<div class="vm meta_m">	
+			<include target="meta.html" />
+			</div>
+
+		</li>
+	</ul>
+	
+	<div class="vp meta_p">	
+	<include target="meta.html" />
+	</div>
+	
+</header>
+<div class="header_bg">
+	<ul>
+		<li class="company">
+			<!--@if($oi->use_logo_img=='yes')-->
+			<img src="{$oi->logo_img}" alt="{$oi->site_title}" />
+			<!--@else-->
+			<span class="text">{$oi->site_title}</span>
+			<!--@end-->			
+		</li>
+		<li class="info" cond="$oi->site_info1">{$oi->site_info1}</li>
+		<li class="info" cond="$oi->site_info2">{$oi->site_info2}</li>
+		<li class="info" cond="$oi->site_info3">{$oi->site_info3}</li>
+		<li class="info" cond="$oi->site_info4">{$oi->site_info4}</li>
+		<li class="copyright"><i class='bx bx-copyright'></i>&nbsp;{$oi->site_copyright}&nbsp;all rights reserved.</li>
+	</ul>
+</div>
+<div class="gnbGap"></div>
+
+<!--@if($_is_indexmodule && $module_info && $act != 'IS' && !$q)-->
+	<!--@if($oi->use_main_banner == 'yes')-->
+		
+				<!--@if($oi->use_main_banner_con)-->
+					{$oi->use_main_banner_con}
+				<!--@else-->
+					<include target="_page_top.html" />
+				<!--@end-->
+				
+	<!--@end-->
+<!--@end-->
+
+<div id="contents" <!--@if($oi->layout_align== 'num')-->style="width:100%; max-width:calc({$oi->site_width}px + 20px)"<!--@else-->style="width:100%;"<!--@end-->>
+	<!--@if($q && $_is_indexmodule)-->
+		<div class="pagelocation"><a>구글 검색</a></div>
+		<div class="gcse-searchbox-only" data-resultsUrl="/"></div>
+		<div class="gcse-searchresults-only"></div>
+	<!--@elseif(!$module_info || $module_info->module=='member' || strpos($act,"dispSociall") !== false)-->
+		<div class="templatepage vmeta">{$content}</div>			
+	<!--@elseif($act && $_is_indexmodule)-->
+		<include target="pagetitle.html" />
+		<div class="templatepage vsearch">{$content}</div>	
+	<!--@elseif(strpos($act,"dispBoardAdmin") !== false)-->
+		<include target="pagetitle.html" />
+		<div class="templatepage vboard">{$content}</div>			
+
+	<!--@elseif(!$_is_indexmodule && ($cnd_oi=='PnonoFyesyes' || $cnd_oi=='PyesyesFnoyes'))-->
+		<ul class="horizon sub">
+			<!--@if($oi->use_snb_location=='left' && ($module_info->module =='page' || $module_info->use_sidewing == 'yes'))-->
+				<!--@if(!Mobile::isMobileCheckByAgent())-->
+					<li class="wing">
+						<include target="snb.html" />
+					</li>
+				<!--@end-->	
+			<!--@end-->
+		
+			<li class="force<!--@if($module_info->use_sidewing == 'no')--> wide<!--@end-->">
+				<include target="pagetitle.html" />
+				<!--@if($module_info->module =='page')-->
+					<div class="templatepage vpage">{$content}</div>
+				<!--@else-->
+					<div class="templatepage">{$content}</div>
+				<!--@end-->
+				
+			</li>
+			<!--@if($oi->use_snb_location=='right' && ($module_info->module =='page' || $module_info->use_sidewing == 'yes'))-->
+				<!--@if(!Mobile::isMobileCheckByAgent())-->
+					<li class="wing">
+						<include target="snb.html" />
+					</li>
+				<!--@end-->	
+			<!--@end-->			
+		</ul>
+
+	<!--@else-->
+		
+		<ul class="horizon">
+			<li cond="$oi->site_column_c1=='yes'" class="wing-left<!--@if($oi->site_column_c1=='yes' && $oi->site_column_c3=='no')--> only-wl<!--@end-->">
+				 <!--@if(!Mobile::isMobileCheckByAgent())-->
+					<!--@if($oi->use_snb == 'yes' && $oi->use_snb_location=='left')-->				
+					<include target="snb.html" />
+					<!--@end-->
+				<!--@end-->
+				<!--@if($oi->site_column_c1_con)-->
+					{$oi->site_column_c1_con}
+				<!--@else-->
+					<include target="_page_left.html" />
+				<!--@end-->
+			</li>
+			<li class="main<!--@if($_is_indexmodule)--> start<!--@end--><!--@if($oi->site_column_c1=='yes')--> wl<!--@end--><!--@if($oi->site_column_c3=='yes')--> wr<!--@end-->">
+				<!--@if($_is_indexmodule && $module_info)-->
+					<!--@if($oi->site_column_c2_con)-->
+						{$oi->site_column_c2_con}
+					<!--@else-->
+						<include target="_page_center.html" />
+					<!--@end-->
+				<!--@else-->
+				
+					<include target="pagetitle.html" />
+					<div class="templatepage">{$content}</div>
+					
+				<!--@end-->			
+			</li>
+			<li class="wing-right<!--@if($oi->site_column_c1=='no' && $oi->site_column_c3=='yes')--> only-wr<!--@end-->" cond="$oi->site_column_c3 == 'yes'">
+				 <!--@if(!Mobile::isMobileCheckByAgent())-->
+					<!--@if($oi->use_snb == 'yes' && $oi->use_snb_location=='right')-->				
+					<include target="snb.html" />
+					<!--@end-->
+				<!--@end-->				
+
+				<!--@if($oi->site_column_c3_con)-->
+					{$oi->site_column_c3_con}
+					<!--@if($oi->cafe24Traffic)-->
+						<include target="traffic.html" />
+					<!--@end-->
+				<!--@else-->
+					<include target="_page_right.html" />
+				<!--@end-->
+			</li>
+		</ul>
+	<!--@end-->
+
+</div>
+
+<footer id="footer">
+	<div class="share_sns">
+		<a  onClick="share_fb_layout();" class="sns_fb"><i class='bx bxl-facebook'></i></a>
+		<a onClick="share_tw_layout();" class="sns_tw"><i class='bx bxl-twitter' ></i></a>
+		<a onClick="share_link_layout();" class="sns_tw"><i class='bx bxl-linkedin' ></i></a>
+
+		<!--@if($layout_info->use_kakao_layout)-->
+		<a id="kakaotalk-sharing-btn-layout" href="javascript:;"><i class='bx bxs-message-rounded'></i></a>		
+		<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" crossorigin="anonymous"></script>
+		<script>Kakao.init('{$layout_info->use_kakao_layout}');</script>
+		<script>
+			const currentUrl = window.location.href;
+			const title = $("title").text();
+			Kakao.Share.createDefaultButton({
+				container: '#kakaotalk-sharing-btn-layout',
+				objectType: 'text',
+				text: title,
+				link: {
+					mobileWebUrl: currentUrl,
+					webUrl: currentUrl,
+				},
+			});
+		</script>
+		<!--@end-->
+		
+		<script>
+			/* SNS공유 공통페이지 */
+			var linkUrlcom = encodeURIComponent(window.location.href);
+			function share_fb_layout() { 
+				window.open( 'http://www.facebook.com/sharer.php?u=' + linkUrlcom, '페이스북 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600' );
+			}
+			function share_tw_layout() {
+				var sendText = document.title;
+				window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + linkUrlcom,  '트위터 공유', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600');
+			}
+			function share_link_layout() {
+				window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + linkUrlcom,  'Linkedin', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600');
+			}
+		</script>		
+	</div>
+	<div class="nav_footer lnb">
+		<ul class="depth0">
+			<li loop="$LNB->list => $key1, $val1" class="depth1">
+				<a href="{$val1['href']}" class="active1"|cond="$val1['selected']" target="_blank"|cond="$val1['open_window'] == 'Y'">
+					<i cond="$val1['icon']" class="{$val1['icon']}"></i> 
+					<span>{$val1['link']|noescape}</span>
+					<i cond="$val1['open_window'] == 'Y'" class='bx bx-link-external'></i>
+				</a>
+				<div cond="$val1['list']" class="subarrow"></div>
+				<ul cond="$val1['list']" class="depth2">
+					<li loop="$val1['list'] => $key2, $val2" class="more"|cond="$val2['list']">
+						<a href="{$val2['href']}" class="active"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+							{$val2['link']|noescape}
+							<i cond="$val2['open_window'] == 'Y'" class='bx bx-link-external'></i>
+						</a>
+						<ul cond="$val2['list']" class="depth3">
+							<li loop="$val2['list'] => $key3, $val3">
+								<a href="{$val3['href']}" class="active"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+									<i class="bx bx-subdirectory-right"></i><span>{$val3['link']|noescape}</span>
+									<i cond="$val3['open_window'] == 'Y'" class='bx bx-link-external'></i>
+								</a>
+								<ul cond="$val3['list']" class="depth4">
+									<li loop="$val3['list'] => $key4, $val4">
+										<a href="{$val4['href']}" class="active"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+											<i class="bx bx-subdirectory-right"></i><span>{$val4['link']|noescape}</span>
+											<i cond="$val4['open_window'] == 'Y'" class='bx bx-link-external'></i>
+										</a>
+										<ul cond="$val4['list']" class="depth5">
+											<li loop="$val4['list'] => $key5, $val5">
+												<a href="{$val5['href']}" class="active"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+													<i class="bx bx-subdirectory-right"></i>{$val5['link']|noescape}
+													<i cond="$val5['open_window'] == 'Y'" class='bx bx-link-external'></i>
+												</a>
+											</li>
+										</ul>												
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+			</li>
+		</ul>
+	</div>
+	<ul class="comsummury">
+		<li class="company">{$oi->site_title}</li>
+		<li class="info" cond="$oi->site_info1">{$oi->site_info1}</li>
+		<li class="info" cond="$oi->site_info2">{$oi->site_info2}</li>
+		<li class="info" cond="$oi->site_info3">{$oi->site_info3}</li>
+		<li class="info" cond="$oi->site_info4">{$oi->site_info4}</li>
+	</ul>	
+	<div class="nav_footer" cond="$oi->view_bottom_gnb == 'yes'">
+
+		<ul class="depth0">
+			<li loop="$GNB->list => $key1, $val1" class="depth1">
+				<a href="{$val1['href']}" class="active1"|cond="$val1['selected']" target="_blank"|cond="$val1['open_window'] == 'Y'">
+					<i cond="$val1['icon']" class="{$val1['icon']}"></i> 
+					<span>{$val1['link']|noescape}</span>
+					<i cond="$val1['open_window'] == 'Y'" class='bx bx-link-external'></i>
+				</a>
+
+				<div cond="$val1['list']" class="subarrow"></div>
+				<ul cond="$val1['list']" class="depth2">
+					<li loop="$val1['list'] => $key2, $val2" class="more"|cond="$val2['list']">
+						<a href="{$val2['href']}" class="active"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+							{$val2['link']|noescape}
+							<i cond="$val2['open_window'] == 'Y'" class='bx bx-link-external'></i>
+						</a>
+						<ul cond="$val2['list']" class="depth3">
+							<li loop="$val2['list'] => $key3, $val3">
+								<a href="{$val3['href']}" class="active"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+									<i class="bx bx-subdirectory-right"></i><span>{$val3['link']|noescape}</span>
+									<i cond="$val3['open_window'] == 'Y'" class='bx bx-link-external'></i>
+								</a>
+								<ul cond="$val3['list']" class="depth4">
+									<li loop="$val3['list'] => $key4, $val4">
+										<a href="{$val4['href']}" class="active"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+											<i class="bx bx-subdirectory-right"></i><span>{$val4['link']|noescape}</span>
+											<i cond="$val4['open_window'] == 'Y'" class='bx bx-link-external'></i>
+										</a>
+										<ul cond="$val4['list']" class="depth5">
+											<li loop="$val4['list'] => $key5, $val5">
+												<a href="{$val5['href']}" class="active"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+													<i class="bx bx-subdirectory-right"></i>{$val5['link']|noescape}
+													<i cond="$val5['open_window'] == 'Y'" class='bx bx-link-external'></i>
+												</a>
+											</li>
+										</ul>												
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+			</li>
+		</ul>
+	</div>
+	<div class="copyright">
+		<div><i class='bx bx-copyright'></i>&nbsp;{$oi->site_copyright}&nbsp;all rights reserved.</div>
+		<!--@if($oi->site_badge=='yes')-->
+			<div class="powered">
+				<a href="https://www.orangeday.com/" target="_blank">by <span>OrangeDay</span></a>
+			</div>
+		<!--@else-->
+			<div style="display:none;">by OrangeDay</div>
+		<!--@end-->
+	</div>	
+</footer>
+<div class="gototop"><a style="display: none;"><i class='bx bx-chevron-up' ></i></a></div>
+<include target="/_assets/version.html" />
+<script>
+var $ = jQuery;
+
+/* 스크롤바 감추기 */
+function scrollDisable(){
+    $('body').addClass('scrollDisable').on('scroll touchmove mousewheel', function(e){
+      //  e.preventDefault();
+    });
+}
+function scrollAble(){
+    $('body').removeClass('scrollDisable').off('scroll touchmove mousewheel');
+}
+
+$(function(){
+	$('.viewgnb').click(function(){
+		scrollDisable();
+		$("#header").addClass("gnbShow");
+	});
+	$('.closegnb').click(function(){
+		scrollAble();
+		$("#header").removeClass("gnbShow");
+	});
+
+});
+/* 검색 열고 닫기 */
+$(".search-open").click(function(){
+	$('.searchWrap').addClass('active');
+	$('.gsc-search-button-v2').html('<i class="bx bx-search"></i>');
+});
+$(".search-close, .searchBg").click(function(){
+	$('.searchWrap').removeClass('active');
+});
+
+$('.g-search-acitive').click(function(){
+	$("#g-search").addClass("gsearchShow");
+});
+$('.g-search-deacitive').click(function(){
+	$("#g-search").removeClass("gsearchShow");
+});
+/* 상단이동 */
+$(".gototop").click(function(){
+	$('html, body').animate({scrollTop: 0}, 300);
+});
+$(function() {
+	$('.depth0').each(function() {
+		$(this).find('.active').last().addClass('on');
+	});	
+});
+</script>
+<!--@if(!Mobile::isMobileCheckByAgent())-->
+<script>
+$(window).scroll(function () {
+	Yposition = $(this).scrollTop();
+	if (Yposition >= 100) {
+		$(".gototop a").fadeIn(100);
+		$("#header").addClass("scrollHead");
+	}else {
+		$(".gototop a").fadeOut(500);
+		$("#header").removeClass("scrollHead");
+	}
+});
+</script>
+<!--@else-->
+<script>
+$(window).scroll(function () {
+	Yposition = $(this).scrollTop();
+	<!--@if($module_info->module =='board')-->
+		$tposi = $(".readend").offset().top - 500;
+	<!--@else-->
+		$tposi = 100;
+	<!--@end-->	
+	if (Yposition >= $tposi) {
+		$(".gototop a").fadeIn(100);
+	}else {
+		$(".gototop a").fadeOut(500);
+	}
+});
+</script>
+<!--@end-->

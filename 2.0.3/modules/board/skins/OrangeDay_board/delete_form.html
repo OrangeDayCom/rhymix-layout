@@ -1,0 +1,40 @@
+<include target="_header.html" />
+<ul class="wrapUtilitytWin">
+	<li>
+		<div cond="$oDocument->isExists()" class="utilitytWin">
+			<div>
+				<table class="tbl_rymix">
+					<tr>
+						<th>{$lang->title}</th>
+						<td><h3>{$oDocument->getTitle()|noescape}</h3></td>
+					</tr>
+					<tr>
+						<th>{$lang->writer}</th>
+						<td>{$oDocument->getNickName()}&nbsp;&nbsp; <span class="od_date">{getTimeGap($oDocument->get('regdate'), "Y.m.d a h:i")}</span></td>
+					</tr>
+					<tr>
+						<th> {$lang->content}</th>
+						<td>{$oDocument->getSummary(200)}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<form action="./" method="get" onsubmit="return procFilter(this, delete_document)" class="utilitytWin">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="page" value="{$page}" />
+			<input type="hidden" name="document_srl" value="{$document_srl}" />
+			<div class="utilityMessage"><i class='bx bxs-message-square-dots' ></i> {sprintf($lang->comfirm_act_msg,$lang->document,$lang->cmd_delete,$lang->msg_rul)}</div>
+
+			<ul class="formBox">
+				<li class="front">
+					<button type="button" class="obtn" onclick="history.back()">{$lang->cmd_cancel}</button>
+				</li>
+				<li class="end">
+					<input type="submit" class="obtn" value="{$lang->cmd_delete}" />
+				</li>
+			</ul>
+		</form>
+	</li>
+</ul>
+<include target="_footer.html" />

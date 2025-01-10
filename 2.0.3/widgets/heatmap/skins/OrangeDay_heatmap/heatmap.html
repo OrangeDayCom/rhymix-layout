@@ -1,0 +1,50 @@
+@version(2)
+@load ("css/styles.css")
+@load ("js/script.js")
+
+@auth
+<div>
+    <div class="heatmap-head">
+        @if ($widget_info->title)
+        <div class="heatmap-title">{{ $widget_info->title }}</div>
+        @else
+        <div class="heatmap-title">{{ array_sum($hm_data->output_data) }} posts</div>
+        @endif
+        <div class="heatmap-year">
+            <span class="heatmap-year-button">
+                {{ $hm_data->search_year ? $hm_data->search_year : "last year" }}
+                <div class="dropdown-caret"></div>
+            </span>
+            <div class="heatmap-year-list">    
+		<a href="{{ getUrl('search_year') }}">All</a>
+                @foreach(range($hm_data->this_year, $hm_data->reg_year) as $year)
+                <a href="{{ getUrl('search_year', $year) }}">{{ $year }}</a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <div class="heatmap-wrapper">
+        <div class="heatmap-container" id="heatmap-container">
+            <div class="heatmap" id="heatmap"></div>
+        </div>
+        <div class="color-label-container">
+            <div class="color-label-text">Less</div>
+            @foreach(range(0, 4) as $i)
+            <div class="color-label-cell day level-{$i}">
+                <span class="tooltip">{$i} posts</span>
+            </div>
+            @endforeach
+            <div class="color-label-text">More</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const heatmapData = @json($hm_data->output_data);
+    const postsLevel = @json($widget_info->posts_level);
+    const firstDate = '{$hm_data->first_date}';
+    const lastDate = '{$hm_data->last_date}';
+    createHeatmap('heatmap', heatmapData, postsLevel, firstDate, lastDate);
+</script>
+@endauth
+
