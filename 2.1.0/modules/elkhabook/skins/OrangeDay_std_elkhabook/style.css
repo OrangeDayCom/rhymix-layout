@@ -1,0 +1,126 @@
+@charset "utf-8";
+@import url('_Oday_default.css');
+@import url('_Oday_rhymix_fix.css');
+:root {
+	--mb_profile_size : 200px;
+	--mb_profile_size2 : 40px;
+}
+.whoiam {
+    border: var(--oday_listBorderStress);
+    background-color: var(--oday_listBgColor);
+    border-radius: calc(var(--oday_listBorderRadius) * 2);
+    padding: var(--oday_sideGap);
+    width: calc(100% - 20px);
+    margin: 0 auto;
+	display: flex;
+}
+.whoiam.me { padding:80px 50px; margin-top:10px;}
+.whoiam + .whoiam { margin-top:10px;}
+.whoiam > li { display: flex; position:relative}
+.whoiam > li.left {flex-direction: column; align-items: center; flex-wrap: wrap;}
+.whoiam > li.left div.lv { position: absolute; right:-5px; top:calc(var(--mb_profile_size) - 65px); 
+	display:flex; justify-content: center; align-items: center;
+	width:60px; height:60px;  border-radius:100%;
+	background-color: var(--oday_listBgColor);
+	box-shadow:var(--oday_listShadow);
+}
+.whoiam > li.left div.lv span { font-size:1.2em; font-weight:700; margin-left:2px; color:var(--oday_mainColor);}
+
+.whoiam > li.left div.group { margin-top:30px;}
+.whoiam > li.left div.group span { border-radius:5px; border:var(--oday_listBorderHover); padding:6px; color: var(--oday_mainColor); font-weight:400; font-size:.9em;}
+
+.whoiam > li.right { padding-left:50px; align-items: flex-start; flex-direction: column; justify-content: center;     width: -webkit-fill-available; } 
+.whoiam .profile { border-radius:100%;  width:var(--mb_profile_size); height:var(--mb_profile_size); display:flex; justify-content: center; align-items: center;font-size: calc(var(--mb_profile_size) * .5); background-color:var(--oday_metaBgColor); color:var(--oday_metaColor)}
+.whoiam .name { font-size:2.5em; display:block; font-weight:700; line-height:1; color:var(--oday_fontColor); padding-top:10px; }
+
+.whoiam .date { margin-top:20px;  font-size:.9em; display:flex; }
+.whoiam .date + .date {margin-top:8px; }
+.whoiam .date .title { font-weight:500; margin-right:10px; }
+.whoiam .date .num + .title { margin-left:20px;}
+.whoiam .date .nickhistory { display: flex; flex-direction: row-reverse; margin-left:5px }
+.whoiam .date .nickhistory li {display:flex; align-items: center;}
+.whoiam .date .nickhistory li i { font-size:.6em; margin:0 5px; color: var(--oday_mainColor);}
+.whoiam .date .nickhistory li:last-child i {display:none;}
+.whoiam .signature { margin-top:20px; line-height:1.4; opacity:.8; }
+.whoiam .signature li { padding:5px}
+
+.stext { width:100%; margin-top:20px; }
+.exp-graph { position:relative; background-color:var(--oday_bodyBgColor); height:2px; border-radius:15px; overflow:hidden}
+.exp-graph div { position:absolute; top:0; left:0; height:100%; background-color:var(--oday_mainColor);}
+.exp-sum { margin-top:8px; width:100%; letter-spacing:.5px; font-size:.8em;  line-height:1.4}
+.exp-sum span { font-weight:600; color:var(--oday_mainColor); }
+
+.whoiam .link { margin-top:5px; font-size:.8em; }
+.whoiam .link * + * { margin-left:5px;}
+
+.whoiam .follow { font-size:1.2em; margin:20px 0 0 0;}
+.whoiam .follow > span +  span { margin-left:10px;}
+.whoiam .follow .num { font-weight:600; color:var(--oday_mainColor)}
+.whoiam .follow i.bx { font-size:1.4em}
+
+
+.whoiam.friend li { flex-direction: column;}
+.whoiam.friend li > * + * { margin-top:20px;}
+.whoiam .profile2 { border-radius:100%;  width:var(--mb_profile_size2); height:var(--mb_profile_size2); display:flex; justify-content: center; align-items: center;font-size: calc(var(--mb_profile_size2) * .5); background-color:var(--oday_metaBgColor); color:var(--oday_metaColor); box-shadow:var(--oday_listShadowStress)}
+.whoiam.friend .group .title {margin-bottom:10px;}
+.whoiam.friend .group .title span {font-weight: 600; color: var(--oday_mainColor);}
+.whoiam.friend .group .list { display:flex; flex-wrap: wrap; padding-left:5px; }
+.whoiam.friend .group .list a { margin-left:-5px; margin-bottom:10px}
+.whoiam.friend .group .list a.more {background-color:var(--oday_listBgColorStress1); color:var(--oday_mainColor) }
+
+
+.elkhabook.whoiam{ flex-direction: column; }
+.btn_navi { flex-shrink: 0; width: 100%; display: flex; justify-content: center; padding:20px 0}
+.btn_navi a { font-size:1.5em; width: fit-content; font-weight:600; display:flex; justify-content: center; align-items: center; color:var(--oday_fontColor); opacity:.4 }
+.btn_navi a:active, 
+.btn_navi a:focus, 
+.btn_navi a:hover {color:var(--oday_fontColor)}
+.btn_navi a.active { opacity:1}
+.btn_navi a i { font-size:1.4em; margin-right:5px}
+.btn_navi a + a { margin-left:40px;}
+.getElkhabookList { display:flex; width:100%;}
+.getElkhabookList .docs { width:-webkit-fill-available;}
+.getElkhabookList .docs + .docs { margin-left:50px; width:50%;}
+.getElkhabookList .more {  font-size:1.4em; padding:20px 0; display: flex;justify-content: center;position: sticky;    bottom: -1px; border-top:var(--oday_listBorder); background-color:var(--oday_listBgColor)}
+.getElkhabookList .more a {   } 
+
+.getElkhabookList .more i { font-size:1.4em}
+.getElkhabookList .more > * {padding:6px; display:flex; justify-content: center; align-items: center; }
+.getElkhabookList .more > * + * { margin-left:10px;}
+.getElkhabookList ul {display:flex; flex-wrap: wrap;}
+.getElkhabookList ul li { padding:20px ; width:50%;  border-top:var(--oday_listBorder);}
+.getElkhabookList ul li:nth-child(2n+1) {  border-right:var(--oday_listBorder);}
+.getElkhabookList .regdate { padding-top:15px; font-size:.9em; opacity:.6}
+.getElkhabookList h3.hx {padding-top:5px; padding-bottom:15px; font-size:1.2em}
+.getElkhabookList h4.hx { font-size:1.2em}
+.getElkhabookList h4.hx span a:nth-last-child(2) { font-size:.8em; display:block; margin-bottom:5px; }
+.getElkhabookList .p { padding-top:10px; line-height:1.4; opacity:.6}
+.getElkhabookList .icon-comment p { padding:5px 10px; margin-bottom:15px; border-radius:5px; border:var(--oday_listBorder); position: relative; background-color: var(--oday_listBgColorDark); opacity:1}
+.getElkhabookList .icon-comment p:after
+{
+	content: "";
+    position: absolute;
+    left: 15px;
+    bottom: -5px;
+    width: 10px;
+    height: 10px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+	background-color: var(--oday_listBgColorDark);
+	border-right: var(--oday_listBorder) !important;
+    border-bottom: var(--oday_listBorder) !important;
+}
+.getElkhabookList .icon-comment p a { overflow: hidden; white-space: nowrap; display: block; text-overflow: ellipsis;}
+.getElkhabookList .icon-comment p a:first-child { font-size:.85em; display:block; }
+
+
+@media screen and (max-width:768px){
+.whoiam { border-radius:var(--oday_listBorderRadius);}
+.whoiam.me { padding: var(--oday_sideGap); flex-direction: column;}
+.whoiam > li.left div.lv { right:calc(48% - (var(--mb_profile_size) * .5))}
+.whoiam > li.right { padding-left:0; margin-top:30px; }
+
+.getElkhabookList ul li { padding:20px 10px; width:100%;  border-top:var(--oday_listBorder);}
+.getElkhabookList ul li:nth-child(2n+1) {  border-right:none;}
+}

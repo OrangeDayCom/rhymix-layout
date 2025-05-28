@@ -1,0 +1,125 @@
+
+.wrap_contentex.rank {padding: 10px 5px 10px 5px;}
+.rank_ti { display:flex; align-items: center;  font-size:11px; font-weight:700; margin:0 0 5px 2px; text-transform: uppercase}
+.rank_ti i {color:var(--oday_mainColorOpt); font-size:1.2em; margin-right:2px}
+.elkha_rank {
+	--rg_height : 18px;
+}
+.elkha_rank table {
+	font-size:10px;
+    width: 100%;
+    border-collapse: 10px;
+    white-space: nowrap
+}
+.elkha_rank .rank {  height:var(--rg_height);  width: var(--rg_height); padding:2px}
+.elkha_rank .rank span { background-color: var(--oday_listBgColorDown1);  height:100%;  width: 100%; border-radius:3px; font-weight:700; display: flex; justify-content: center; align-items: center; font-size:8px; padding:0px 4px; }
+.elkha_rank .rank.rank-1 span {background-color: var(--oday_mainColor); color:var(--oday_primaryBtnColor); }
+.elkha_rank .rank.rank-2 span {background-color: color-mix(in srgb, var(--oday_mainColor), transparent 30%); color:var(--oday_primaryBtnColor); }
+.elkha_rank .rank.rank-3 span {background-color: color-mix(in srgb, var(--oday_mainColor), transparent 50%); color:var(--oday_primaryBtnColor); }
+
+.elkha_rank .nick_name { padding:0 5px 0 0;} 
+
+.elkha_rank td.value { background-color:  color-mix(in srgb, var(--oday_mainColorOpt2), transparent 90%); height:var(--rg_height); width:99%; text-align:right; position:relative; border-radius:6px; overflow:hidden}
+.elkha_rank td.value * { display:flex; align-items: center; justify-content: center; top:0; left:0;}
+.elkha_rank td.value > div {background-color:color-mix(in srgb, var(--oday_mainColorOpt2), transparent 70%); height:var(--rg_height); overflow:hidden; position:absolute; padding:1px;align-items: flex-start !important; }
+/* .elkha_rank td > div > div { position: ; height:5px; width:100%; background: linear-gradient(#fff, transparent); border-radius:6px;}*/
+.elkha_rank td.value > div > div span {}
+.elkha_rank td.value > span {position:absolute; height:var(--rg_height); width:100%; z-index:1; padding-right: 5px; justify-content: flex-end; opacity:.8}
+
+:root[color-theme='dark'] {
+	.elkha_rank td.value > span {opacity:.5}
+}
+/*
+
+.elkha_rank {
+    --color-elkha-rank: #69e;
+    color: #333;
+	font-size:12px;
+}
+
+.elkha_rank>table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap
+}
+
+.elkha_rank>table a {
+    color: inherit;
+    text-decoration: none
+}
+
+.elkha_rank>table a:hover,
+.elkha_rank>table a:focus {
+    color: var(--color-elkha-rank);
+    text-decoration: underline
+}
+
+.elkha_rank>table thead tr {
+    border-top: 1px solid rgba(127, 127, 127, .2);
+    border-bottom: 1px solid rgba(127, 127, 127, .2);
+    background-color: rgba(127, 127, 127, .075)
+}
+
+.elkha_rank>table th,
+.elkha_rank>table td {
+    padding: 5px
+}
+
+.elkha_rank>table .rank {
+    position: relative;
+    text-align: center
+}
+
+.elkha_rank>table .rank-1,
+.elkha_rank>table .rank-2,
+.elkha_rank>table .rank-3 {
+    color: rgba(0, 0, 0, 1)
+}
+
+
+.elkha_rank>table .value {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle
+}
+
+.elkha_rank>table .value:before {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    right: 0;
+    bottom: 3px;
+    content: "";
+    background-color: var(--oday_mainColor);
+    opacity: .1;
+}
+
+.elkha_rank>table .value:hover:before {
+    opacity: .2
+}
+
+.elkha_rank>table .value>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 3px;
+    bottom: 3px;
+    z-index: 1;
+    box-sizing: border-box;
+    background-color:  color-mix(in srgb, var(--oday_mainColor), transparent 20%);
+    color: #fff;
+    font-weight: bold;
+	font-size:10px;
+}
+.elkha_rank>table .value>div span {
+    position: absolute;
+    width: 100%;
+    left: 0;
+	}
+.color_scheme_dark .elkha_rank {
+    --color-elkha-rank: #35a;
+    color: #bbb
+}
+*/

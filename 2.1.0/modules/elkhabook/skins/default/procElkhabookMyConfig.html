@@ -1,0 +1,19 @@
+<!--@if(count($my_config) >= 2)--><!--// 옵션을 변경할 수 있다면. -->
+<div class="li doc_types getElkhabookMyConfig" data-name="{strip_tags($name)}">
+	<a href="javascript:void(0);">{@
+		echo \Context::getLang('elkhabook_contents_' . $my_config[0]);
+		}</a>
+	<div class="ul1">
+		<ul>
+			<!--@foreach($my_config as $key => $val)--><!--@if($key)-->
+			<li class="li1"><a href="javascript:void(0);" onclick="return false;" class="procElkhabookMyConfig" data-name="{strip_tags($name)}" data-contents="{$val}">{@
+				echo \Context::getLang('elkhabook_contents_' . $val);
+				}</a></li>
+			<!--@endif--><!--@endforeach-->
+		</ul>
+		<span class="span">{$lang->elkhabook_contents_help}</span>
+	</div>
+</div>
+<!--@elseif(strlen($my_config[0] ?? ''))--><!--// 1개의 옵션만 있다면. -->
+<span class="li">{@ echo \Context::getLang('elkhabook_contents_' . $my_config[0]); }</span>
+<!--@endif-->

@@ -1,0 +1,21 @@
+<!--@if(!Mobile::isMobileCheckByAgent())-->
+<ul class="naviBtn">
+	<li>
+		<!--@if($mi->default_style=='gallery' && !Mobile::isMobileCheckByAgent())-->
+			<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']!='document')-->
+				<a onclick="golistPage();" title="목록 보기(창 닫기)"  class="obtn iframe-o"><span class="material-symbols-sharp">view_headline</span> 목록</a>
+			 <!--@else-->
+				 <a href="{getUrl('document_srl','','listStyle',$listStyle,'page',$page)}" title="목록 보기(창 닫기)"  class="obtn iframe-x"><span class="material-symbols-sharp">view_headline</span> 목록</a>
+			 <!--@end-->
+		<!--@else-->
+			<a href="{getUrl('document_srl','','listStyle',$listStyle,'page',$page)}" title="목록 보기(창 닫기)"  class="obtn iframe-x"><span class="material-symbols-sharp">view_headline</span> 목록</a>
+		<!--@end-->		
+		
+		<!--@if($grant->write_document)-->
+			<a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn"><i class='bx bx-edit'></i> 수정</a>
+			<a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()" class="obtn"><i class='bx bx-trash'></i> 삭제</a>
+		<!--@end-->
+	</li>
+</ul>
+<!--@end-->
+

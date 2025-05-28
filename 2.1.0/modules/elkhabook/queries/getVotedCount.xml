@@ -1,0 +1,11 @@
+<query action="select">
+	<tables>
+		<table name="documents" />
+	</tables>
+	<columns>
+		<column name="SUM(voted_count - ABS(blamed_count))" alias="voted_count" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" filter="number" var="member_srl" />
+	</conditions>
+</query>

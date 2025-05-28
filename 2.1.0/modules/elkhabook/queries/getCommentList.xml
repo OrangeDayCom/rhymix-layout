@@ -1,0 +1,34 @@
+<query action="select">
+	<tables>
+		<table name="comments" alias="c" />
+		<table name="comments" alias="p" type="left join">
+			<conditions>
+				<condition operation="equal" column="p.comment_srl" default="c.parent_srl" />
+			</conditions>
+		</table>
+	</tables>
+	<columns>
+		<column name="c.*" />
+
+		<column name="p.document_srl" alias="p_document_srl" />
+		<column name="p.content" alias="p_content" />
+		<column name="p.regdate" alias="p_regdate" />
+		<column name="p.module_srl" alias="p_module_srl" />
+		<column name="p.comment_srl" alias="p_comment_srl" />
+		<column name="p.is_secret" alias="p_is_secret" />
+		<column name="p.parent_srl" alias="p_parent_srl" />
+		<column name="p.member_srl" alias="p_member_srl" />
+		<column name="p.nick_name" alias="p_nick_name" />
+		<column name="p.status" alias="p_status" />
+	</columns>
+	<conditions>
+		<condition operation="in" column="c.module_srl" var="s_module_srl" />
+		<condition operation="in" column="c.member_srl" var="s_member_srl" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="c.list_order" order="asc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

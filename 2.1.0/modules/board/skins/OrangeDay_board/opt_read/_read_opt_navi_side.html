@@ -1,0 +1,82 @@
+
+<div class="naviBoxSide"> 
+	<ul class="font-size">
+		<li><a class="font-btn read" id="switcher-large"><i class='bx bx-plus'></i></a></li>
+		<li class="sizeview fread">{$viewfont_read}px</li>
+		<li><a class="font-btn read" id="switcher-small"><i class='bx bx-minus' ></i></a></li>
+	</ul>
+	<ul>
+		<!--@if($document_list[$no+1]->document_srl)-->
+				<li><div><span>{$document_list[$no+1]->getTitle()}</span></div><a href="{getUrl('document_srl',$document_list[$no+1]->document_srl,'page','','cpage','')}"> <i class='bx bxs-chevron-left'></i></a></li>
+		<!--@else-->
+			<!--@if(!$is_prevnext=='P')-->
+				<li class="disabled"><a> <i class='bx bxs-chevron-left' ></i></a></li>
+			<!--@end-->	
+		<!--@end-->
+		<!--// 현재목록 외 이전글-다음글 -->
+		<block cond="$is_prevnext">
+			<!--@if($is_prevnext=='P')-->
+				<li><div><span>{$prevnext_title} </span></div><a href="{getUrl('document_srl',$prevnext_doc,'page','','cpage','')}"><i class='bx bxs-chevron-left'></i></a></li>
+			<!--@else-->
+				<li><div><span>{$prevnext_title} </span></div><a href="{getUrl('document_srl',$prevnext_doc,'page','','cpage','')}"> <i class='bx bxs-chevron-right'></i></a></li>
+			<!--@end-->
+		</block>
+		<!--@if($document_list[$no-1]->document_srl)-->
+				<li><div><span>{$document_list[$no-1]->getTitle()} </span></div><a href="{getUrl('document_srl',$document_list[$no-1]->document_srl,'page','','cpage','')}"> <i class='bx bxs-chevron-right'></i></a></li>
+		<!--@else-->
+			<!--@if($is_prevnext=='P' || $is_prevnext=='' )-->
+				<li class="disabled"><a><i class='bx bxs-chevron-right'></i></a></li>
+			<!--@end-->
+		<!--@end-->
+
+		<li class="btngolist">
+			<div class="yellow"><i class='bx bxs-chevron-left'></i> <span>목록</span></div>
+			<!--@if($mi->default_style=='gallery' && !Mobile::isMobileCheckByAgent())-->
+				<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']!='document')-->
+					<a onclick="golistPage();" title="목록 보기" ><span class="material-symbols-sharp">view_headline</span></a>
+				 <!--@else-->
+					 <a href="{getUrl('document_srl','','listStyle',$listStyle,'page',$page)}" title="목록 보기"><span class="material-symbols-sharp">view_headline</span></a>
+				 <!--@end-->
+			<!--@else-->
+				<a href="{getUrl('document_srl','','listStyle',$listStyle,'page',$page)}" title="목록 보기"><span class="material-symbols-sharp">view_headline</span></a>
+			<!--@end-->
+		</li>
+		<!--@if($grant->write_document)-->
+		<li cond="$oDocument->isEditable()" class="btngrant gap"><div class="red">수정</div><a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" target="_top"><i class='bx bx-edit'></i></a></li>
+		<li cond="$oDocument->isEditable()" class="btngrant"><div class="red">삭제</div><a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}"><i class='bx bx-trash'></i></a></li>
+		<!--@end-->
+
+	</ul>
+	<div cond="$oDocument->getCommentCount()" class="naviadd gotoComInNavi"><a class="comcount"><i class='bx bxs-message-rounded' ></i><div>{$oDocument->getCommentCount()}</div></a></div>
+	<div class="naviadd gotoTopInNavi hiddengo"><a><i class='bx bxs-chevron-up' ></i></a></div>
+	<div class="naviadd gotoListNavi hiddengo"><a><i class='bx bxs-chevron-down' ></i></a></div>
+</div>
+<script>
+
+	$(".gotoComInNavi").click(function(){
+		$posiCom = $("#comment").offset().top - 100;
+		$('html, body').animate({scrollTop: $posiCom}, 400);
+	});
+	$(".gotoListNavi").click(function(){
+		$checkHeight = $( window ).height() / 2;
+		if($('.od-bord').find('.readActive').length){
+			$posiCom = $(".readActive").offset().top - $checkHeight;
+		} else if($('.od-bord').find('.stickyTopBox').length) {
+			$posiCom = $(".stickyTopBox").offset().top;
+		} else {
+			$posiCom = $(".readend").offset().top;
+		}
+		$('html, body').animate({scrollTop: $posiCom}, 400);
+	});
+	$(".gotoTopInNavi").click(function(){$('html, body').animate({scrollTop: 0}, 400);});
+
+	$(function() {
+		const el = document.querySelector(".naviBoxSide");
+		const observer = new IntersectionObserver( 
+		  ([e]) => e.target.classList.toggle("is-pinned", e.intersectionRatio < 1),
+		  { threshold: [1] }
+		);
+		observer.observe(el);
+	});
+	
+</script>

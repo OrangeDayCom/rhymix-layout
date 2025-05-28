@@ -1,0 +1,18 @@
+<query action="select">
+	<tables>
+		<table name="elkhatalk_public" />
+	</tables>
+	<conditions>
+		<condition operation="in" column="pk" var="pk" />
+		<group pipe="or">
+			<condition operation="more" column="pk" var="pk_more" />
+			<condition operation="less" column="pk" var="pk_less" pipe="and" />
+		</group>
+	</conditions>
+	<navigation>
+		<index default="pk" order="desc" />
+		<list_count var="list_count" />
+		<!--<page_count var="page_count" default="10" />
+		<page var="page" />-->
+	</navigation>
+</query>

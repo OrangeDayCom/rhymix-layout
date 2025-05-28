@@ -1,0 +1,52 @@
+<!--@if($grant->manager && $use_list_update)-->
+
+<load target="./css/default.css" />
+<load target="./js/default.js" />
+
+<form class="ap_extra_update" action="{getUrl()}" method="post" no-error-return-url="true">
+	<input type="hidden" name="mid" value="{$module_info->mid}" />
+	<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
+	<div class="ap_extra_update_wrapper">
+	<!--@if($use_category_update)-->
+		<div class="ap_extra_update_element categorylist" rel="category_update">
+			<div class="ap_extra_update_name_category">{$lang->category}</div>
+			<div class="ap_extra_update_formHTML category_list">
+				<ul class="rx_ev_radio">
+					<!--@foreach($category_list as $key => $val)-->
+					<!--@if(!$val->depth)-->
+					<li>
+						<input type="radio" name="category" id="{$key}" value="{$key}" class="radio" />
+						<label for="{$key}" style="color: {$val->color}"|cond="$val->color && $val->color !== 'transparent'">{$val->title}</label>
+						<!--@if($val->child_count)-->
+						<ul class="rx_ev_radio">
+							<!--@foreach($val->childs as $k => $v)-->
+							<li>
+								<input type="radio" name="category" id="{$v}" value="{$v}" class="radio" />
+								<label for="{$v}" style="color: {$category_list[$v]->color}"|cond="$category_list[$v]->color && $category_list[$v]->color !== 'transparent'">{$category_list[$v]->title}</label>
+							</li>
+							<!--@endforeach-->
+						</ul>
+						<!--@endif-->
+					</li>
+					<!--@endif-->
+					<!--@endforeach-->
+				</ul>
+			</div>
+		</div>
+	<!--@endif-->
+	<!--@if($use_extra_vars_update)-->
+		<!--@foreach($extra_keys_for_update as $key => $val)-->
+		<div class="ap_extra_update_element" rel="{$val->idx}">
+			<div class="ap_extra_update_name">{$val->name}</div>
+			<div class="ap_extra_update_formHTML">{$val->getFormHTML()}</div>
+		</div>
+		<!--@endforeach-->
+	<!--@endif-->
+		<div class="ap_extra_update_command">
+			<input type="submit" value="수정" class="obtn" />
+			<input type="button" value="취소" class="obtn" />
+		</div>
+	</div>
+</form>
+
+<!--@endif-->

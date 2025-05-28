@@ -1,0 +1,116 @@
+{@
+	if(!$oi->site_banner_num) $oi->site_banner_num = 3;
+	if(!$oi->site_new_gall_num) $oi->site_new_gall_num = 10;	
+	if(!$oi->site_new_com_num) $oi->site_new_com_num = 20;	
+	if(!$oi->site_notice_num) $oi->site_notice_num = 3;
+	
+	/* 뉴글 */
+	if(!$oi->site_new_con_num) $oi->site_new_con_num = 20;
+	if(!$oi->man_width) $oi->man_width = 250;
+	if(!$oi->man_gap) $oi->man_gap = 10;
+	if(!$oi->man_img_width) $oi->man_img_width = 100;
+	if(!$oi->man_img_height) $oi->man_img_height = 100;	
+	if(!$oi->man_img) $oi->man_img = 'top';
+	if($oi->man_img =='left') :
+		$manimg_use ='Y';
+		$manimg_posi = 'h';
+	elseif($oi->man_img =='top') :
+		$manimg_use ='Y';
+		$manimg_posi = 'v';
+		$oi->man_img_width = $oi->man_width;
+	else :
+		$manimg_use ='N';
+	endif;	
+}
+
+
+<ul class="main_con">
+
+	<!--@if($oi->site_banner)-->
+	<li class="main_banner">
+		<!-- 상단 풀배너 -->
+		<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" list_type="banner_one" view_mode_ex="300" order_target="update_order" order_type="desc" extravar_name="exvar_title" extravar2_name="exvar_url" extravar3_name="exvar_target" extravar4_name="exvar_con" thumbnail_width="1200" thumbnail_height="auto" thumbnail_type="fill" 
+		module_srls="{$oi->site_banner}" 
+		list_count="{$oi->site_banner_num}" />
+	</li>
+	<!--@end-->
+	
+	<li>
+		<ul class="con_new">
+			<li>
+				<!-- 새글  -->			
+<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" order_target="update_order" order_type="desc" thumbnail_type="fill" show_browser_title="Y" show_category="Y" show_title="Y" subject_cut_size="" show_contents="Y" content_cut_size="500" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+list_type="masonry"
+show_thumbnail="{$manimg_use}"
+thumbnail_width="{$oi->man_img_width}"
+thumbnail_height="{$oi->man_img_height}" 
+view_mode="" 
+view_mode_ex="{$manimg_posi}"
+man_width="{$oi->man_width}"
+man_gap="{$oi->man_gap}"
+module_srls="{$oi->site_new_con}" 
+list_count="{$oi->site_new_con_num}"
+ <!--@if(!$oi->site_new_con_title)-->
+	show_main_title="NEW POST" 
+	show_main_title_icon="bx bxs-book"
+<!--@end-->
+/> 
+			</li>
+			<li>
+				<!-- 공지 글 -->			
+				<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="crop" view_secret_document="not_show" content_type="document" subject_cut_size="" content_cut_size="300" order_target="update_order" use_limit="" limit_number="" order_type="desc" view_mode="1" show_thumbnail="N" thumbnail_width="30" thumbnail_height="30" show_browser_title="N" show_category="N" show_title="Y" show_contents="N" show_all_meta="N" show_nickname="N" show_regdate="Y" show_comment_count="N" show_vote_count="N" show_read_count="N" 
+				show_main_title="NOTICE" 
+				show_main_title_icon="bx bxs-microphone" 
+				go_url="{$oi->site_notice_link}" 
+				module_srls="{$oi->site_notice}" 
+				list_count="{$oi->site_notice_num}" /> 			
+				<!-- 새 댓글 -->				
+				<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="crop" view_secret_document="not_show" content_type="comment" subject_cut_size="" content_cut_size="300" order_target="update_order" use_limit="" limit_number="" order_type="desc" view_mode="1" show_thumbnail="N" thumbnail_width="30" thumbnail_height="30" show_browser_title="N" show_category="N" show_title="Y" show_contents="N" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="N" show_vote_count="N" show_read_count="N" 
+				show_main_title="COMMENT" 
+				show_main_title_icon="bx bxs-message-rounded-dots" 
+				module_srls="{$oi->site_new_con}" 
+				list_count="{$oi->site_new_com_num}" />
+				
+				<!--@if($oi->use_visitor == 'yes')-->
+					<!-- 방문자 카운터 -->	
+					<img class="zbxe_widget_output" widget="counter_status" skin="OrangeDay_counter_status_classic" /> 
+				<!--@end-->
+				
+				<!--@if($oi->cafe24Traffic)-->
+					<!-- 카페24 트래픽 -->	
+					<include target="traffic.html" />
+				<!--@end-->				
+			</li>
+		</ul>
+	</li>
+	<li class="con_gall sideWing">
+		<!-- 갤러리 -->	
+		<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" list_type="banner_several" view_mode="1" order_target="update_order" order_type="desc" show_thumbnail="N" thumbnail_width="200" thumbnail_height="300" thumbnail_type="fill" show_browser_title="Y" show_category="N" show_title="Y" show_contents="Y" content_cut_size="300" show_all_meta="Y" show_nickname="Y" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+		show_main_title="GALLERY" 
+		show_main_title_icon="bx bx-image-alt"
+		module_srls="{$oi->site_new_gall}" 
+		list_count="{$oi->site_new_gall_num}" />
+	</li>
+
+</ul>
+
+<style>
+.main_con { padding:20px 0}
+.main_con > li + li { margin-top:20px; }
+.con_new,
+.topic { display:flex; justify-content: space-between; flex-wrap: wrap;}
+@media screen and (min-width:1000px){
+	.topic > li { width:calc((100% / 4) - 5px) }
+	.con_new > li:nth-child(1) { width:calc(75% - 2px) }
+	.con_new > li:nth-child(2) { width:calc(25% - 5px) }
+}
+@media screen and (max-width:1000px){
+	.topic > li { width:calc((100% / 2) - 5px) }
+	.topic > li:nth-child(n+3) { margin-top:10px}
+	.con_new > li:nth-child(1) { width:100% }
+	.con_new > li:nth-child(2) { width:100%;  margin-top:10px }
+}
+@media screen and (max-width:768px){
+	.main_con { padding:20px 2vw}
+}
+</style>

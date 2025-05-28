@@ -1,0 +1,13 @@
+<query action="select">
+	<tables>
+		<table name="point" alias="p" />
+	</tables>
+	<columns>
+		<column name="p.member_srl" alias="member_srl" />
+		<column name="p.point" alias="count" />
+	</columns>
+	<navigation>
+		<index default="p.point" order="desc" />
+		<list_count var="list_count" default="10" />
+	</navigation>
+</query>

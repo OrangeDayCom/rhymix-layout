@@ -1,0 +1,110 @@
+	<!--@if($oi->banner_sub_use =='yes')-->
+		<div class="banner_main">
+
+			<!--@if($oi->banner1_use =='yes')-->
+				<a href="{$oi->banner1_url}" style="
+				background-color:{$oi->banner1_bg}; 
+				background-image:url('{$oi->banner1_img}');
+				<!--@if($oi->banner1_title_img)--> justify-content: center;<!--@end-->
+				color:{$oi->banner1_font}"<!--@if($oi->banner1_win)--> target="_blank"<!--@end-->>
+					<!--@if($oi->banner1_title_img)-->
+					<img src="{$oi->banner1_title_img}" alt="{$oi->banner1_title}" />
+					<!--@else-->
+					{$oi->banner1_icon}
+					<div class="title">
+						<h3>{$oi->banner1_title}</h3>
+						<span>{$oi->banner1_text}</span>
+					</div>
+					<!--@end-->
+					<!--@if($oi->banner1_img)-->
+					<div style="background: linear-gradient(-90deg, transparent, {$oi->banner1_bg});" class="cover"></div>
+					<!--@end-->
+				</a>
+			<!--@end-->
+
+			<!--@if($oi->banner2_use =='yes')-->
+				<a href="{$oi->banner2_url}" style="
+				background-color:{$oi->banner2_bg}; 
+				background-image:url('{$oi->banner2_img}');
+				<!--@if($oi->banner2_title_img)--> justify-content: center;<!--@end-->
+				color:{$oi->banner2_font}"<!--@if($oi->banner2_win)--> target="_blank"<!--@end-->>
+					<!--@if($oi->banner2_title_img)-->
+					<img src="{$oi->banner2_title_img}" alt="{$oi->banner2_title}" />
+					<!--@else-->
+					{$oi->banner2_icon}
+					<div class="title">
+						<h3>{$oi->banner2_title}</h3>
+						<span>{$oi->banner2_text}</span>
+					</div>
+					<!--@end-->
+					<!--@if($oi->banner2_img)-->
+					<div style="background: linear-gradient(-90deg, transparent, {$oi->banner2_bg});" class="cover"></div>
+					<!--@end-->
+				</a>
+			<!--@end-->
+			
+			<!--@if($oi->banner3_use =='yes')-->
+				<a href="{$oi->banner3_url}" style="
+				background-color:{$oi->banner3_bg}; 
+				background-image:url('{$oi->banner3_img}');
+				<!--@if($oi->banner3_title_img)--> justify-content: center;<!--@end-->
+				color:{$oi->banner3_font}"<!--@if($oi->banner3_win)--> target="_blank"<!--@end-->>
+					<!--@if($oi->banner3_title_img)-->
+					<img src="{$oi->banner3_title_img}" alt="{$oi->banner3_title}" />
+					<!--@else-->
+					{$oi->banner3_icon}
+					<div class="title">
+						<h3>{$oi->banner3_title}</h3>
+						<span>{$oi->banner3_text}</span>
+					</div>
+					<!--@end-->
+					<!--@if($oi->banner3_img)-->
+					<div style="background: linear-gradient(-90deg, transparent, {$oi->banner3_bg});" class="cover"></div>
+					<!--@end-->
+				</a>
+			<!--@end-->
+			
+			<!--@if($oi->banner4_use =='yes')-->
+				<a href="{$oi->banner4_url}" style="
+				background-color:{$oi->banner4_bg}; 
+				background-image:url('{$oi->banner4_img}');
+				<!--@if($oi->banner4_title_img)--> justify-content: center;<!--@end-->
+				color:{$oi->banner4_font}"<!--@if($oi->banner4_win)--> target="_blank"<!--@end-->>
+					<!--@if($oi->banner4_title_img)-->
+					<img src="{$oi->banner4_title_img}" alt="{$oi->banner4_title}" />
+					<!--@else-->
+					{$oi->banner4_icon}
+					<div class="title">22
+						<h4>{$oi->banner4_title}</h4>
+						<span>{$oi->banner4_text}</span>
+					</div>
+					<!--@end-->
+					<!--@if($oi->banner4_img)-->
+					<div style="background: linear-gradient(-90deg, transparent, {$oi->banner4_bg});" class="cover"></div>
+					<!--@end-->
+				</a>
+			<!--@end-->	
+			
+			<!--@if($oi->banner5_use =='yes')-->
+				<a href="{$oi->banner5_url}" style="
+				background-color:{$oi->banner5_bg}; 
+				background-image:url('{$oi->banner5_img}');
+				<!--@if($oi->banner5_title_img)--> justify-content: center;<!--@end-->
+				color:{$oi->banner5_font}"<!--@if($oi->banner5_win)--> target="_blank"<!--@end-->>
+					<!--@if($oi->banner5_title_img)-->
+					<img src="{$oi->banner5_title_img}" alt="{$oi->banner5_title}" />
+					<!--@else-->
+					{$oi->banner5_icon}
+					<div class="title">
+						<h5>{$oi->banner5_title}</h5>
+						<span>{$oi->banner5_text}</span>
+					</div>
+					<!--@end-->
+					<!--@if($oi->banner5_img)-->
+					<div style="background: linear-gradient(-90deg, transparent, {$oi->banner5_bg});" class="cover"></div>
+					<!--@end-->
+				</a>
+			<!--@end-->	
+			
+		</div>
+	<!--@end-->

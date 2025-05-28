@@ -1,0 +1,236 @@
+{@
+	if(!$mi->youtube_direct_play) $mi->youtube_direct_play  = "no";
+	if(!$mi->youtube_infinity_use) $mi->youtube_infinity_use  = "no";
+	if(!$mi->youtube_cell) $mi->youtube_cell  = '3';
+	$page_tno = $page ;
+	$page_no = $page + 1;
+	if(!$mi->gall_cell_gap) $mi->gall_cell_gap = 2;
+}
+
+<load target="/_assets/js/infinite-scroll.pkgd.min.js" />
+<load target="/_assets/js/masonry.pkgd.min.js" />
+<!--@if($mi->youtube_direct_play == 'no')-->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+var params1 = { 'wmode' : 'opaque', 'vq': 'hd1080',  'controls': 1, 'autoplay' : 0, 'rel' : 0, 'loop' : 0, 'showsearch' : 0, 'playsinline' : 1, 'showinfo' : 0, 'modestbranding':1, 'start' :0 };
+var html_player = '<div id="player" class="screen"><i class="bx bx-loader-circle bx-spin bx-flip-horizontal" ></i></div>';
+var done = false;
+function _doStopUtube() {
+	scrollAble();
+	$('.utube-player').removeClass('fullsize');
+	$('.utube-player').html(html_player);
+	$('.doStopUtube').css('display', 'none');
+};
+function _doPlayUtube(URL) {
+	$('.utube-player').html(html_player);
+	scrollDisable();
+	$('.utube-player').addClass('fullsize');
+	$('.doStopUtube').css('display', 'flex');
+	/**/
+	player = new YT.Player('player', {
+		videoId: URL,
+		playerVars: params1, 
+		events: {
+			'onReady': PlayerReady,
+			'onStateChange': PlayerStateChange
+		}
+	});
+	function PlayerReady(event) {
+		event.target.playVideo();
+	}
+	function PlayerStateChange(event) {
+		if (event.data == YT.PlayerState.PLAYING && !done) {
+			
+		}
+		if (event.data == YT.PlayerState.PAUSED && !done) {
+
+		}
+		if (event.data == YT.PlayerState.ENDED && !done) {
+			scrollAble();
+			$('.utube-player').removeClass('fullsize');
+			$('.utube-player').html(html_player);
+			$('.doStopUtube').css('display', 'none');
+		}
+	}
+}
+</script>
+<!--@end-->
+
+<include target="opt_list/_list__opt_category_search.html" />
+
+<include target="opt_list/_list__opt_notice_4_infinite.html" />
+<div cond="$page > 1" class="infinitiNotice">전체 <span>{$page_navigation->last_page}</span>페이지 중 <span>{$page}</span>번째 페이지부터 시작되었습니다.<br class="vm" /> 첫 페이지 부터 보시려면 <a href="{getUrl('listStyle',$mi->default_style,'page','','','')}">여기</a>를 클릭해 주세요.</div>
+<!--@if(!$document_list && !$notice_list)-->
+	<div class="no_documents">
+	<!--@if($search_keyword)-->
+		검색된 글이 없습니다.
+	<!--@else-->
+		{$lang->no_documents}
+	<!--@end-->
+	</div>
+<!--@else-->
+<div id="list-utube" class="container" style="font-size:{$mi->font_size}px">
+	<div loop="$document_list =>$no,$document" class="box box{$no}">
+		<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon
+			<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)-->
+			<!--@if($val == 'secret')-->S<!--@end-->
+			<!--@if($val == 'new')--> Fbox N<!--@end-->
+			<!--@if($val == 'update')--> Fbox U<!--@end-->
+			<!--@if($val == 'file')-->F<!--@end-->
+			<!--@end-->
+		"><block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key"><block cond="$key == 'new'">N</block><block cond="$key == 'update'">U</block></block></span>
+		<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+			<span class="newicon Fbox secret"><i class='bx bxs-lock'></i></span>
+		<!--@end-->
+		
+		<!--@if($mi->youtube_direct_play == 'yes')-->
+			<div class="utube-direct" cond="$document->getExtraValue(1)">
+				<iframe src="https://www.youtube.com/embed/{$document->getExtraValue(1)}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+			</div>
+			<div class="utube-direct no-movie" cond="!$document->getExtraValue(1)">
+				<div><i class='bx bxs-coffee'></i>no movie</div>
+			</div>
+		<!--@else-->	
+			<div class="utube-con" cond="$document->getExtraValue(1)">
+				<a onclick="_doPlayUtube('{$document->getExtraValue(1)}')"><img src="https://img.youtube.com/vi/{$document->getExtraValue(1)}/sddefault.jpg" class="viewMovie" cond="$document->getExtraValue(1)"/></a>
+				<div class="cover"></div>
+			</div>
+			<div class="utube-direct no-movie" cond="!$document->getExtraValue(1)">
+				<div><i class='bx bxs-coffee'></i>no movie</div>
+			</div>
+		<!--@end-->	
+			<div class="boxT">	
+			<span class="category" cond="$category_list[$document->get('category_srl')]" onclick="showUpdateExtraModal(this, {$document->document_srl}, {$document->get('category_srl')}, 'category')"|cond="$grant->manager && $use_category_update">{$category_list[$document->get('category_srl')]->title}</span>
+				<div class="title">
+					 <a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">{strip_tags($document->getTitle())}</a>
+				</div>
+				<div class="opt">
+					
+					<span class="uname">{$document->getNickName()}</span>
+					<span class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+					<!-- span cond="$document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>&nbsp;{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span -->
+					<span cond="$document->getCommentCount()" class="count"><i class='bx bxs-message-rounded-dots'></i>&nbsp;{$document->getCommentCount()}</span>
+					<input cond="$grant->manager" type="checkbox" name="cart" value="{$document->document_srl}" title="Check this" onclick="doAddDocumentCart(this)" class="listchk" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+				</div>
+			</div>	
+		</a>	
+	</div>
+</div>
+<div class="utube-player"><div id="player" class="screen"><i class="bx bx-loader-circle bx-spin bx-flip-horizontal" ></i></div></div>
+<a onclick="_doStopUtube()" class="doStopUtube" style="display: none ;"><i class="bx bx-x" ></i></a>
+<div class="wrap-infinity">
+	<div class="page-load-status" style="display:  none ;">
+		<p class="infinite-scroll-request"><i class='bx bx-loader-circle bx-spin bx-rotate-90' ></i></p>
+		<p class="infinite-scroll-last">End of content</p>
+		<p class="infinite-scroll-error">No more pages to load</p>
+	</div>
+	<!--@if($mi->youtube_infinity_use != 'yes')-->
+	<div class="infinity-btn-box"><a class="view-more-button"><i class='bx bx-plus'></i> View more</a></div>
+	<!--@end-->	
+</div>
+<div id="page-nav"><a href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division)}" class="pagination__next"></a></div>
+<!--@end-->
+<include target="opt_list/_list__opt_btnbox.html" />
+
+<style>
+#list-utube { display: flex; flex-wrap: wrap; justify-content: center; margin:0 auto; margin-top: {$mi->gall_cell_gap}px; }
+#list-utube .box { position: relative;  border-radius: var(--oday_listBorderRadius); background-color: var(--oday_listBgColor); border: var(--oday_listBorder); overflow:hidden; margin-bottom:4px; margin-bottom:{$mi->gall_cell_gap}px; }
+:root {
+	--cellWidth : calc(100% - var(--oday_scrollWidth));
+}
+<!--@if($mi->youtube_cell == '4')-->
+	#list-utube  { width:100%; max-width:var(--oday_maxWidth); padding:0}
+	#list-utube .box { width:calc((100% - ({$mi->gall_cell_gap}px * 3)) / 4);}
+	#list-utube .box { margin-left:{$mi->gall_cell_gap}px !important; }
+	#list-utube .box:nth-child(4n+1) { margin-left:0 !important}	
+<!--@elseif($mi->youtube_cell == '3')-->
+	#list-utube  { width:100%; max-width:var(--oday_maxWidth); padding:0}
+	#list-utube .box { width:calc((100% - ({$mi->gall_cell_gap}px * 2)) / 3);}
+	#list-utube .box { margin-left:{$mi->gall_cell_gap}px !important; }
+	#list-utube .box:nth-child(3n+1) { margin-left:0 !important}		
+<!--@elseif($mi->youtube_cell == '2')-->
+	#list-utube  { width:100%; max-width:var(--oday_maxWidth); padding:0}
+	#list-utube .box { width:calc((100% - {$mi->gall_cell_gap}px) / 2);}
+	#list-utube .box { margin-left:{$mi->gall_cell_gap}px !important; }
+	#list-utube .box:nth-child(2n+1) { margin-left:0 !important}		
+<!--@else-->	
+	#list-utube  { width:100%; max-width:var(--oday_maxWidth); padding:0}
+	#list-utube .box { width:100%; margin-left:0 !important;}
+<!--@end-->
+@media screen and (max-width: 768px){
+	#list-utube .box { width:100%;  margin-left:0 !important; }
+}	
+
+.utube-player {
+	transition: 0.3s ease;
+	opacity: 0;
+	visibility: hidden;
+	position: fixed;	
+	top: 0;
+	left: 0;
+}
+.utube-player.fullsize { 
+	width: 100vw;
+	height: 100vh;
+	margin:0;
+	padding:0;
+	z-index: 100;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color:rgba(0,0,0,.8);
+	backdrop-filter: blur(2px);
+	overflow:hidden;
+	opacity: 1;
+	visibility: visible;    
+}
+.utube-player iframe {position: absolute;top: 0;left: 0;width: 100%; height: 100%;}
+.utube-player div.screen {opacity:.5; font-size:5em; color:#fff; display: flex; justify-content: center; align-items: center; }
+.doStopUtube { position: fixed; top: 0; right: 0; display: flex; justify-content: center; align-items: center; width:2.5vw; height:2.5vw; font-size:2vw; color:var(--oday_primaryBtnColor) !important;  z-index: 101; background-color:var(--oday_mainColor); line-height:1}
+#list-utube .box .utube-con { position: relative; width:100%; display: flex; justify-content: center; align-items: center; background-color: var(--oday_listBgColorDark); background-size: 100% 100%;}
+#list-utube .box .utube-con img {position: absolute;top: 0;left: 0;width: 100%;height: 100%;}
+#list-utube .box .utube-con div.cover {  display:block;  height: 0; padding-bottom:56.25%;}
+#list-utube .box .boxT { padding:20px;}
+#list-utube .box .boxT .title{ word-break: break-all;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	 font-size:1.1em;
+}
+#list-utube .box .boxT .opt { display:flex; align-items: center;flex-wrap: wrap; margin-top:5px;font-size:.9em}
+#list-utube .box .boxT .opt * + * {margin-left:5px;}
+
+#list-utube .box .utube-direct {position: relative; padding-bottom: 56.25%; /* 16:9 */ height: 0; overflow:hidden;}
+#list-utube .box .utube-direct iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;}
+#list-utube .box .utube-direct.no-movie div { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; flex-direction: column; background-color:var(--oday_listBgColorUp1)}
+#list-utube .box .utube-direct.no-movie div i { font-size:2em;}
+@media screen and (max-width: 768px){
+	.doStopUtube {width:10vw; height:10vw; font-size:8vw;}
+}	
+</style>
+<script>
+$(function(){
+<!--@if($mi->youtube_infinity_use == 'yes')-->
+	$('.container').infiniteScroll({
+		// options
+		path: '.pagination__next',
+		append: '.box',
+		//  scrollThreshold: 500,
+		status: '.page-load-status',
+		history: false,
+	});
+<!--@else-->	
+	$('.container').infiniteScroll({
+		path: '.pagination__next',
+		append: '.box',
+		button: '.view-more-button',
+		scrollThreshold: false,
+		status: '.page-load-status',
+		history: false,
+	});
+<!--@end-->
+});
+</script>

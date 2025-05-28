@@ -1,0 +1,20 @@
+<query action="select">
+	<tables>
+		<table name="member_friend" alias="f" />
+	</tables>
+	<columns>
+		<column name="f.target_srl" alias="member_srl" />
+		<column name="count(*)" alias="count" />
+	</columns>
+	<conditions>
+		<condition operation="in" column="f.target_srl" var="member_srls" />
+		<condition operation="notin" column="f.target_srl" var="not_member_srls" />
+	</conditions>
+	<groups>
+		<group column="f.target_srl" />
+	</groups>
+	<navigation>
+		<index default="count" order="desc" />
+		<list_count var="list_count" default="10" />
+	</navigation>
+</query>

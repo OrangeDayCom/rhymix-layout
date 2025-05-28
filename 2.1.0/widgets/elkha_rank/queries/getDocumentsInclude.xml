@@ -1,0 +1,21 @@
+<query action="select">
+	<tables>
+		<table name="documents" alias="d" />
+	</tables>
+	<columns>
+		<column name="ABS(d.member_srl)" alias="member_srl" />
+		<column name="count(*)" alias="count" />
+	</columns>
+	<conditions>
+		<condition operation="in" column="d.member_srl" var="member_srls" />
+		<condition operation="notequal" column="d.member_srl" default="d.module_srl" />
+		<condition operation="notin" column="d.member_srl" var="not_member_srls" />
+	</conditions>
+	<groups>
+		<group column="ABS(d.member_srl)" />
+	</groups>
+	<navigation>
+		<index default="count" order="desc" />
+		<list_count var="list_count" default="10" />
+	</navigation>
+</query>

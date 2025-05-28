@@ -1,0 +1,55 @@
+{@
+$cu_categoy = $oDocument->get('category_srl');
+}
+<div class="blog_b_list">
+	<div cond="$cu_categoy" class="c_title"><i class='bx bxs-book'></i> {$category_list[$oDocument->get('category_srl')]->title}</div>
+	<div cond="!$cu_categoy" class="c_title"><i class='bx bxs-book'></i> No Category</div>
+	<div class="list">
+		<a loop="$document_list =>$no,$document"
+		cond="$cu_categoy == $document->get('category_srl')"   
+		href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" 
+		rel="nofollow" 
+		class="<!--@if($document_srl==$document->document_srl)--> active<!--@end-->" 
+		title="{strip_tags($document->getTitle())}">
+			<!--@if($document_srl==$document->document_srl)-->
+				<i class='bx bx-check'></i>
+			<!--@end-->
+			
+			<!--@if($document->isSecret())-->
+				<i class='bx bxs-lock'></i>&nbsp;
+			<!--@end-->
+			<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+			<span class="title">{$lang->msg_is_secret} </span>
+			<!--@else-->
+			<span class="title">{strip_tags($document->getTitle())}</span>
+			<!--@end-->
+								
+			<span cond="$document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>&nbsp;{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+			<span cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i> {$document->getCommentCount()}</span>
+			<span class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d")}</span>
+		</a>
+	</div>
+</div>
+<style>
+.blog_b_list {position:relative; padding: var(--oday_sideGap); margin-top: 3em; margin-bottom: 3em; border-top: var(--oday_listBorder);}
+.blog_b_list:after { content:""; position:absolute; width:100%; height:10px; top:0; left:0; background: linear-gradient(rgba(0, 0, 0, .05), transparent);}
+.blog_b_list div.c_title { font-size:1em; font-weight:500; padding-bottom:10px; flex-shrink: 0;  width:100% }
+.blog_b_list div.list {display:flex; flex-wrap: wrap; border-top: var(--oday_listBorder);  border-left: var(--oday_listBorder); /*max-height:300px; overflow:auto; */}
+.blog_b_list a { display: flex; align-items: center; width:calc(100% / 3);  border-bottom: var(--oday_listBorder);  border-right: var(--oday_listBorder);  height:40px; padding:0 10px; background-color: var(--oday_listBgColorUp); font-size:.9em}
+.blog_b_list a.active {  background-color: transparent;   opacity:.5}
+.blog_b_list a .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.blog_b_list a .number  {  font-size:.8em; white-space: nowrap; opacity:.5} 
+.blog_b_list a .read, .blog_b_list a .count { font-size:.9em; white-space: nowrap; margin:0 5px; font-weight:500;}
+.blog_b_list a .read i, .blog_b_list a .count i { font-size:1.2em;}
+.blog_b_list a .od_date  { margin-left: auto; font-size:.9em; white-space: nowrap;}
+.blog_b_list a i.bx-check  { color:var(--oday_fontHoverColor); font-size:1.3em;}
+@media screen and (max-width: 1200px){
+	.blog_b_list a { width:50%}
+}
+@media screen and (max-width: 1000px){
+	.blog_b_list a { width:100%}
+}
+@media screen and (max-width: 768px){
+
+}
+</style>

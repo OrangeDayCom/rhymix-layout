@@ -1,0 +1,25 @@
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+<include target="/_assets/__set_jscss.html" />
+<!--@end-->
+<load target="/_assets/js/owl.carousel.min.js" />
+<load target="/_assets/css/owl.theme.default.min.css" />
+<load target="./js/content_widget.js" cond="$widget_info->view_mode == 'box'" />
+<load target="./css/widget.css" />
+
+<div class="widgetContainer">
+<!--@if($widget_info->list_type == "default")-->
+    <include target="default.html" />
+<!--@elseif($widget_info->list_type == "simple")-->
+    <include target="simple.html" />
+<!--@elseif($widget_info->list_type == "circle")-->
+    <include target="circle.html" />
+<!--@elseif($widget_info->list_type == "masonry")-->
+    <include target="masonry.html" />    
+<!--@elseif($widget_info->list_type == "banner_one")-->
+    <include target="banner_one.html" />
+<!--@elseif($widget_info->list_type == "banner_several")-->
+    <include target="banner_several.html" />
+<!--@else-->
+    <include target="default.html" />
+<!--@end-->
+</div>

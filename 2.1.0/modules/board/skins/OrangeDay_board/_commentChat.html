@@ -1,0 +1,56 @@
+	<div  class="feedback com_chat" cond="$oDocument->getCommentcount()">
+		<h2><i class="xi-comment"></i>&nbsp;{$lang->comment}&nbsp;<em>{$oDocument->getCommentcount()}</em></h2>
+		<ul class="com_chat_list">
+			<li  loop="$oDocument->getComments()=>$key,$comment" 
+			class="comlist 
+			indent<!--@if($comment->get('depth'))-->{($comment->get('depth'))}<!--@end-->
+			<!--@if($comment->getUserID() === $oDocument->getUserID())--> onwer<!--@end-->"
+			 id="comment_{$comment->comment_srl}" 
+			>
+				<div class="profilewrap">
+					<img cond="$comment->getProfileImage()" src="{$comment->getProfileImage()}" alt="Profile" class="profile" />
+					<span cond="!$comment->getProfileImage()"  class="profile"><i class='bx bxs-ghost'></i></span>
+					<span class="comvote">
+						<a class="bd_login" title="{$lang->cmd_vote}"
+						onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}');return false"|cond="$is_logged" 
+						onclick="alert('로그인 후 이용 가능합니다.')"|cond="!$is_logged" 
+						>
+							<span class="material-symbols-sharp fill<!--@if($comment->get('voted_count')!=0)--> active<!--@end-->">favorite</span>
+							{$comment->get('voted_count')?$comment->get('voted_count'):0}
+						</a>
+					</span>					
+				</div>
+				<div class="com">
+					<div class="content">{$comment->getContent(false)|noescape}</div>
+					<div class="meta">
+						<a cond="!$comment->member_srl && $comment->homepage" href="{$comment->getHomepageUrl()}" rel="nofollow noopener"  class="name">{$comment->getNickName()}</a>
+						<span cond="!$comment->member_srl && !$comment->homepage" class="name">{$comment->getNickName()}</span>
+						<a cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl} name" onclick="return false">{$comment->getNickName()}</a>
+						<span class="od_link"><a href="{$oDocument->getUrl()}#comment_{$comment->comment_srl}" class="copy_comment_url"><i class='bx bx-copy'></i> #comment_{$comment->comment_srl}</a></span>
+						<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" class="modify" rel="nofollow"><i class='bx bxs-eraser'></i> {$lang->cmd_modify}</a>
+						<a cond="$oDocument->allowComment()" class="re_comment tooltip" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" 
+						onclick="<!--@if(!$grant->write_comment || !$oDocument->isEnableComment())-->alert('{$lang->msg_not_permitted}')<!--@else-->
+						reComment({$comment->get('document_srl')},{$comment->get('comment_srl')},
+						'{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}')
+						<!--@end-->;return false;" title="다음 일정 입력"><i class='bx bx-reply bx-rotate-180' ></i> 댓글</a>
+					</div>
+					<div class="meta">
+						<span class="ip">{$comment->getIpaddress()}</span>
+						<span class="date">{getTimeGap($comment->get('regdate'), "Y.m.d a h:i")}</span>						
+					</div>
+
+				</div>
+			</li>
+		</ul>
+		<div cond="$oDocument->comment_page_navigation" class="pagination">
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',1)}#comment" class="direction prev"><span></span><span></span><i class='bx bxs-chevron-left' ></i></a> 
+			<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+				<strong cond="$cpage==$page_no">{$page_no}</strong> 
+				<a cond="$cpage!=$page_no" href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$page_no)}#comment">{$page_no}</a>
+			</block>
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$oDocument->comment_page_navigation->last_page)}#comment" class="direction next"><i class='bx bxs-chevron-right'></i><span></span><span></span></a>
+		</div>			
+	<!--@if(!$oDocument->isEnableComment())-->
+		<div class="utilityMessage"><i class='bx bxs-message-square-dots' ></i> 댓글 참여가 중지된 글입니다.</div>
+	<!--@end-->
+	</div>

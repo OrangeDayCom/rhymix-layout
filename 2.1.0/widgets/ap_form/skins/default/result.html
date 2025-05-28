@@ -1,0 +1,63 @@
+<div class="ap_result">
+
+	<!--// 헤더 : 전송 확인 메시지 -->
+	<header class="is_blink">
+		<div class="ap_image_wrapper"><i class="xi xi-paper-plane"></i></div>
+		<div class="ap_text_wrapper">
+			<h3>{$lang->well_reveived}</h3>
+			<p>{$lang->msg_reveived}</p>
+			<p>{$lang->as_follows}</p>
+		</div>
+	</header>
+
+	<!--// 기본 정보 -->
+	<section>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->title}</div>
+			<div class="ap_result_basic_td" rel="title"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->name}</div>
+			<div class="ap_result_basic_td" rel="nick_name"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->email}</div>
+			<div class="ap_result_basic_td" rel="email_address"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->phone}</div>
+			<div class="ap_result_basic_td" rel="phone_number"></div>
+		</div>
+		<div class="ap_result_basic">
+			<div class="ap_result_basic_th">{$lang->category}</div>
+			<div class="ap_result_basic_td" rel="category_title"></div>
+		</div>
+	</section>
+
+	<!--// 확장변수 -->
+	<section cond="$wi->has_extra">
+		<table class="ap_result_extra">
+			<tr loop="$wi->target_extra_list => $key, $val">
+				<th>{$val->name}</th>
+				<td rel="extra_vars{$val->idx}"></td>
+			</tr>
+		</table>
+	</section>
+
+	<!--// 내용 -->
+	<section>
+		<div class="ap_result_content">
+			<div class="ap_result_content_th">{$lang->password}</div>
+			<div class="ap_result_content_td" rel="password"></div>
+		</div>
+		<div class="ap_result_content">
+			<div class="ap_result_content_th">{$lang->content}</div>
+			<div class="ap_result_content_td" rel="message"></div>
+		</div>
+	</section>
+
+	<!--// 푸터 : 게시판 바로가기 버튼 -->
+	<footer>
+		<div class="ap_result_footer"><a href="{getUrl('', 'mid', $wi->target_mid)}">{$lang->cmd_to_board} <i class="xi xi-angle-double-right"></i></a></div>
+	</footer>
+</div>

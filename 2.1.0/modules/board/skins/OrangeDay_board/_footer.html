@@ -1,0 +1,89 @@
+</div>
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+	<!--@if($mi->site_badge=='use')-->
+		<div class="powered">
+			<a href="https://www.orangeday.com/" target="_blank">by <span>OrangeDay</span></a>
+		</div>
+	<!--@else-->
+		<div style="display:none;">by OrangeDay</div>
+	<!--@end-->
+<include target="/_assets/version.html" />	
+<!--@end-->
+
+<!--@if($mi->con_bg_use == 'yes' && ($mi->con_bg || $mi->con_bg_dr))-->
+	 <!--@if($layout_info->layout =='Oday_horizon')-->
+		<script>		
+			$(document).ready(function () {
+				$('.gnbGap').after('<div class="insideTopBg" data-parallax="scroll" data-position="center" data-bleed="0" data-image-src="<!--@if($mi->con_bg)-->{$mi->con_bg}<!--@else-->{$mi->con_bg_dr}<!--@end-->" data-natural-width="2400"></div>');
+				 loadParallaxScript();
+			});
+		</script>
+	<!--@elseif($layout_info->layout =='Oday_blog')-->
+		<script>		
+			$(document).ready(function () {
+				$('.pagelocation').after('<div class="insideTopBg" data-parallax="scroll" data-position="center" data-bleed="0" data-image-src="<!--@if($mi->con_bg)-->{$mi->con_bg}<!--@else-->{$mi->con_bg_dr}<!--@end-->" data-natural-width="2400"></div>');
+				 loadParallaxScript();
+			});
+		</script>
+	<!--@else-->
+		<!--@if($_SERVER['HTTP_SEC_FETCH_DEST']=='document')-->
+			<script>			
+				$(document).ready(function () {
+					$('.no_oi').after('<div class="insideTopBg" data-parallax="scroll" data-position="center" data-bleed="0" data-image-src="<!--@if($mi->con_bg)-->{$mi->con_bg}<!--@else-->{$mi->con_bg_dr}<!--@end-->" data-natural-width="2400"></div>');
+					 loadParallaxScript();
+				});
+			</script>
+		<!--@end-->
+	<!--@end-->
+	<script>	
+		function loadParallaxScript() {
+			const script = document.createElement('script');
+			script.src = '/_assets/js/parallax.js';
+			script.type = 'text/javascript';
+			script.async = true;
+			document.body.appendChild(script);
+		}	
+	</script>
+<!--@end-->	
+
+ <!--@if($layout_info->layout =='Oday_horizon')-->
+ <script>
+	window.addEventListener("load", function () {
+		if($('.od-bord').find('.stickyTopBox').length){
+			const el = document.querySelector(".stickyTopBox");
+			const observer = new IntersectionObserver( 
+				([e]) => e.target.classList.toggle("is-pinned", e.intersectionRatio < 1),
+				{ rootMargin: "-61px 0px 0px 0px", threshold: [1] }
+			);
+			observer.observe(el);
+		};
+	});
+</script>
+<!--@elseif($layout_info->layout =='Oday_blog')-->
+ <script>
+	$(function(){
+		if($('.od-bord').find('.stickyTopBox').length){
+			const el = document.querySelector(".stickyTopBox");
+			const observer = new IntersectionObserver( 
+				([e]) => e.target.classList.toggle("is-pinned", e.intersectionRatio < 1),
+				{ rootMargin: "-1px 0px 0px 0px", threshold: [1] }
+			);
+			observer.observe(el);
+		};
+	});
+</script>
+<!--@else-->
+ <script>
+	$(function(){
+		if($('.od-bord').find('.stickyTopBox').length){
+			const el = document.querySelector(".stickyTopBox");
+			const observer = new IntersectionObserver( 
+				([e]) => e.target.classList.toggle("is-pinned", e.intersectionRatio < 1),
+				{ rootMargin: "-1px 0px 0px 0px", threshold: [1] }
+			);
+			observer.observe(el);
+		};
+	});
+</script>
+<!--@end-->
+

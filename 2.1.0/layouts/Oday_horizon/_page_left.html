@@ -1,0 +1,91 @@
+{@
+
+	if(!$oi->site_new_top_use) $oi->site_new_top_use ='yes';
+	if(!$oi->site_new_top_srl_use) $oi->site_new_top_srl_use ='no';
+	if(!$oi->site_new_top_num) $oi->site_new_top_num = 3;
+	if(!$oi->site_new_top_limit) $oi->site_new_top_limit =5;
+	if(!$oi->site_new_top_dura) $oi->site_new_top_dura = 0;
+	$site_new_top_dura = $oi->site_new_top_dura * 24;
+	if($oi->site_new_top_srl_use == 'yes') :
+		$site_new_top_srl = $oi->site_new_top_srl;
+	else :
+		$site_new_top_srl = $oi->site_new_con;
+	endif;
+
+	if(!$oi->site_new_sug_use) $oi->site_new_sug_use ='yes';
+	if(!$oi->site_new_sug_srl_use) $oi->site_new_sug_srl_use  ='no';
+	if(!$oi->site_new_sug_num) $oi->site_new_sug_num = 3;
+	if(!$oi->site_new_sug_limit) $oi->site_new_sug_limit = 3;
+	if(!$oi->site_new_sug_dura) $oi->site_new_sug_dura = 0;
+	$site_new_sug_dura = $oi->site_new_sug_dura * 24;
+	if($oi->site_new_sug_srl_use == 'yes') :
+		$site_new_sug_srl = $oi->site_new_sug_srl;
+	else :
+		$site_new_sug_srl = $oi->site_new_con;
+	endif;
+
+	if(!$oi->site_new_ran_use) $oi->site_new_ran_use ='yes';
+	if(!$oi->site_new_ran_srl_use) $oi->site_new_ran_srl_use  ='no';
+	if(!$oi->site_new_ran_num) $oi->site_new_ran_num = 3;
+	if(!$oi->site_new_ran_dura) $oi->site_new_ran_dura = 0;
+	$site_new_ran_dura = $oi->site_new_ran_dura * 24;
+	if($oi->site_new_ran_srl_use == 'yes') :
+		$site_new_ran_srl = $oi->site_new_ran_srl;
+	else :
+		$site_new_ran_srl = $oi->site_new_con;
+	endif;
+	
+	if(!$oi->site_rank_use) $oi->site_rank_use = 'yes';
+
+}
+
+<!--@if($oi->site_new_top_use=='yes')-->
+	<!-- 조회수 많은 글 -->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="fill" view_secret_document="not_show" content_type="document" subject_cut_size="" content_cut_size="300" order_target="readed_count" use_limit="readed_count_upper" order_type="asc" view_mode="1" show_thumbnail="Y" thumbnail_width="50" thumbnail_height="60" show_browser_title="N" show_category="N" show_title="Y" show_contents="Y" show_all_meta="Y" show_nickname="N" show_regdate="N" show_comment_count="N" show_vote_count="N" show_read_count="Y" 
+	duration_article="{$site_new_top_dura}"
+	limit_number="{$oi->site_new_top_limit}"
+	show_main_title="TOP VIEW"
+	show_main_title_icon="bx bxs-show"
+	module_srls="{$site_new_top_srl}" 
+	list_count="{$oi->site_new_top_num}" /> 
+<!--@end-->
+
+<!--@if($oi->site_new_sug_use=='yes')-->
+	<!-- 추처수 많은 글 -->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="fill" view_secret_document="not_show" content_type="document" subject_cut_size="" content_cut_size="300" order_target="voted_count" use_limit="voted_count_upper" order_type="asc" view_mode="1" show_thumbnail="Y" thumbnail_width="50" thumbnail_height="60" show_browser_title="N" show_category="N" show_title="Y" show_contents="Y" show_all_meta="Y" show_nickname="N" show_regdate="N" show_comment_count="N" show_vote_count="Y" show_read_count="N" 
+	duration_article="{$site_new_sug_dura}"
+	limit_number="{$oi->site_new_sug_limit}"
+	show_main_title="TOP SUGGEST" 
+	show_main_title_icon="bx bxs-heart"
+	module_srls="{$site_new_sug_srl}" 
+	list_count="{$oi->site_new_sug_num}" /> 
+<!--@end-->
+
+<!--@if($oi->site_new_ran_use=='yes')-->
+	<!-- 랜덤  -->	
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="fill" view_secret_document="not_show" content_type="document" subject_cut_size="" content_cut_size="300" order_target="rand()" order_type="desc" view_mode="1" show_thumbnail="Y" thumbnail_width="50" thumbnail_height="60" show_browser_title="N" show_category="N" show_title="Y" show_contents="Y" show_all_meta="Y" show_nickname="N" show_regdate="N" show_comment_count="N" show_vote_count="N" show_read_count="N" 
+	duration_article="{$site_new_ran_dura}"
+	show_main_title="RANDOM" 
+	show_main_title_icon="bx bxs-dice-5"
+	module_srls="{$site_new_ran_srl}" 
+	list_count="{$oi->site_new_ran_num}" /> 
+<!--@end-->
+	
+<!--@if($oi->site_new_ran_use=='yes')-->
+{@
+	if(!$oi->site_rank_target || $oi->site_rank_target=='random') :
+		$items = [
+		    "point",
+		    "friends",
+		    "documents",
+		    "comments",
+		    "votes"
+		];
+		$randomKey = array_rand($items);
+		$selectedItem = $items[$randomKey];
+	else :
+		$selectedItem = $oi->site_rank_target;
+	endif;
+}
+<img class="zbxe_widget_output" widget="elkha_rank" skin="OrangeDay_elkha_rank" list_count="10" left_members="I" rank_type="{$selectedItem}" />
+<!--@end-->

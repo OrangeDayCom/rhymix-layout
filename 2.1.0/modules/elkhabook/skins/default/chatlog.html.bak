@@ -1,0 +1,71 @@
+<load target="style.css" />
+<load target="script.js" />
+
+<article class="elkhabook elkhabook{Mobile::isFromMobilePhone()?'M':'PC'}">
+
+{@
+$oElkhabookModel = getModel('elkhabook');
+$output = $oElkhabookModel->getChatListByPk((INT)$pk);
+if(isset($output->oComment) && $output->oComment->get('valid')=='Y'):
+	Context::prependBrowserTitle( $output->oComment->get('content') );
+	$desc = htmlspecialchars(mb_strcut($output->oComment->get('content'), 0, 150, 'UTF-8'));
+	Context::addHtmlHeader('<meta name="description" content="'.$desc.'" /><meta name="og:description" content="'.$desc.'" /><meta name="og:title" content="'.strip_tags(Context::getBrowserTitle()).'" />');
+	Context::addHtmlHeader('<link rel="canonical" href="'.getFullUrl('', 'mid', $mid,'document_srl', (INT)$pk).'" />');
+endif;
+}
+
+<div class="whoami sidebar_r elkha_wrinkle_colorset_m elkha_wrinkle_background_m">
+	<aside class="signature2">
+		<h2 class="hx"><a href="{getUrl('','mid',$mid)}">대화 기록</a></h2>
+		<block cond="isset($output->oComment) && $output->oComment->get('valid')!='N'">
+			<a href="javascript:;" class="member_{$output->oComment->get('member_srl')}">{$output->oComment->getNickName()}</a>
+			<p class="signature">{@ if($output->oComment->roomName()) echo sprintf('[%s] ', $output->oComment->roomName()); } {$output->oComment->getContent2()}</p>
+		</block>
+	</aside>
+</div>
+
+<div class="chatlog">
+
+<div class="more">
+	<span class="li" cond="!count($output->data) || $prev_exists"> <a href="{getUrl('','mid',$mid)}">reset</a> </span>
+	<span class="li" cond="$prev_exists"> <a href="{getUrl('','mid',$mid,'epage', $epage + 1)}">prev</a> </span>
+	<!--//<span class="li"><input type="number" class="iText" value="{$epage}" min="1" /></span>-->
+	<strong class="li"> <a href="javascript:;" onclick="return go_to_epage({$epage});">{$epage}</a> </strong>
+	<span class="li" cond="$epage > 1"> <a href="{getUrl('','mid',$mid,'epage', $epage - 1)}">next</a> </span>
+</div>
+
+<ul class="chatlog_ul" cond="count($output->data)">
+<block loop="$output->data=>$obj">
+	<li class="li {$regdate==$obj->getRegdate('Y-m-d')?' date_hide':''}{$regdate2==$obj->getRegdate('ymdhi')?' time_hide':''}{$obj->get('valid')=='N'? ' valid_N':''}{$pk==$obj->get('pk')?' on':''}">
+	<div class="sidebar_l elkha_wrinkle_background_m">
+		<div class="ul">
+			<div class="hx">{$regdate = $obj->getRegdate('Y-m-d')}</div>
+			<div class="li">{$obj->getRegdate('H:i')}</div>
+		</div>
+		{@
+		$regdate2 = $obj->getRegdate('ymdhi');
+		}
+	</div>
+	<div class="sidebar_r elkha_wrinkle_background_m">
+		<div class="doc">
+			<block cond="!$_cond && isset($obj->elkhacord)">
+				<div class="profile_image">
+					<div class="image">
+						<img cond="$obj->getProfileImage()" src="{$obj->getProfileImage()}" alt="{$obj->getNickName()}" />
+						<span title="프로필 이미지가 등록되지 않았습니다." class="non_img" cond="!$obj->getProfileImage()"></span>
+					</div>
+				</div>
+				<div class="hx">
+					<a href="javascript:;" onclick="return false;" class="nick member_{$obj->get('member_srl')}">{$obj->getNickName()}</a>
+					<div class="content"><block cond="$obj->get('valid')!='N'">{@ if($obj->roomName()) echo sprintf('<span class="room_name">[%s]</span> ', $obj->roomName()); }<a href="{$obj->getPermanentUrl()}">{$obj->getContent2()}</a> <a cond="$obj->isGranted()" href="javascript:;" onclick="return procElkhatalk2Delete({$obj->get('pk')});" class="delete">삭제</a></block><block cond="$obj->get('valid')=='N'">{$obj->getContent2()}</block></div>
+				</div>
+			</block>
+		</div>
+	</div>
+	</li>
+</block>
+</ul>
+</div>
+
+<span class="background elkha_wrinkle_background"></span>
+</article>

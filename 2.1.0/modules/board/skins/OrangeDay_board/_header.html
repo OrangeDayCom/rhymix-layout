@@ -1,0 +1,502 @@
+<div class="no_oi"></div>
+{@ Context::addMetaTag('viewport', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');}
+{@ $mi = $module_info; }
+<!--@if($order_type == "desc")-->
+{@ $order_type = "asc"; }
+<!--@else-->
+{@ $order_type = "desc"; }
+<!--@end-->
+{@ 
+
+	/* 레이아웃 제어 */
+	if(!$mi->use_sidewing) $mi->use_sidewing = 'yes';
+	if(!$mi->use_site_width) $mi->use_site_width = 'no';
+	if($layout_info->layout =='Oday_horizon' && $mi->use_site_width == 'yes') :
+		$layout_info->layout_align_sub =  $mi->page_align;
+		$layout_info->site_width_sub = $mi->page_width;
+	endif;
+	
+	/* 테마 */
+	if(!$mi->use_darkMode) $mi->use_darkMode = 'yes';
+	if(!$mi->use_darkMode_set) $mi->use_darkMode_set = 'dark';
+	if(!$mi->use_colorTheme) $mi->use_colorTheme = 'yes';
+	if(!$mi->use_colorTheme_set) $mi->use_colorTheme_set = 'orange';
+	if(!$mi->use_colorTheme_set) $mi->use_brightTheme_set = 'd2';
+	
+	/* 게시판 유형 */
+	/* 공통설정 */
+	if(!$mi->use_btitle) $mi->use_btitle = 'yes';
+	if(!$mi->site_badge) $mi->site_badge = "use";	
+	if(!$mi->preview) $mi->preview = "use_no";
+	if(!$mi->search_sticky) $mi->search_sticky = 0;
+	if(!$mi->list_in_read) $mi->list_in_read = "use_no";
+	if(!$mi->normal_list_height) $mi->normal_list_height = 60;
+		$mi->thumbnail_width2 = $mi->normal_list_height - 10;
+		$mi->thumbnail_height2 = $mi->normal_list_height - 10;
+	if(!$mi->page_align) $mi->page_align = "full";
+	if(!$mi->page_width) $mi->page_width = "1000";	
+	if(!$mi->use_backbg) $mi->use_backbg = "yes";
+	if(!$mi->category_type) $mi->category_type = "B";
+	if(!$mi->con_searchbg) $mi->con_searchbg = "no_use";
+	
+	/* 읽기 페이지 설정 */
+	if(!$mi->read_location) $mi->read_location = "use";
+	if(!$mi->read_title) $mi->read_title = "use";
+	if(!$mi->read_meta) $mi->read_meta = "use";
+	if(!$mi->read_meta_name) $mi->read_meta_name = "use";
+	if(!$mi->read_meta_ip) $mi->read_meta_ip = "no_use";
+	if(!$mi->read_meta_date) $mi->read_meta_date = "use";
+	if(!$mi->read_meta_count) $mi->read_meta_count = "use";
+	if(!$mi->extravar_locaion) $mi->extravar_locaion = "bottom";	
+	if(!$mi->read_vote) $mi->read_vote = "use";
+	if(!$mi->read_tag) $mi->read_tag = "use";
+	if(!$mi->read_download) $mi->read_download = "use";
+	if(!$mi->read_utility) $mi->read_utility = "use";
+	if(!$mi->read_sns) $mi->read_sns = "use";
+
+	if(!$mi->read_sign) $mi->read_sign = "use";
+	if(!$mi->read_alist) $mi->read_alist = "use";	
+	if(!$mi->read_bnavi) $mi->read_bnavi = "use";	
+
+			
+	/* 댓글 설정 */
+	if(!$mi->comment_style) $mi->comment_style = "default_tree";
+	if(!$mi->comment_count) $mi->comment_count = "4";
+	
+	/* 공통 설정 - 갤러리, 웹진, 북마크 등의 목록 박스 */
+	/* 갤러리형 게시판 설정 */
+	/* 블로그 게시판 설정 */
+	/* 히스토리 게시판 설정 */
+	/* 입력폼 게시판 설정 */
+	/* 배경 이미지 */
+	if(!$mi->con_bg_use) $mi->con_bg_use = "yes";
+	if(!$mi->con_font_color) $mi->con_font_color = "white";
+	
+	/* 기타 */
+	$mi->detect_iframe = 'N';
+	$mi->duration_new = 24;	
+	$oday_srl = $layout_info->author[0];	
+}
+{@
+/**
+	$query = $_SERVER['QUERY_STRING'];
+	if($query) $Fquery = '?'.$query;
+**/
+}
+<!--@if($mi->use_sidewing=='no')-->
+{@
+	$layout_info->site_column_c1 = 'no';
+	$layout_info->site_column_c3 = 'no';
+}
+<!--@end-->
+{@
+	if(!$mi->cmt_wrt) $mi->cmt_wrt = "simple";
+	if(isset($_COOKIE['bd_editor'])) $mi->cmt_wrt = $_COOKIE['bd_editor'];
+}
+<!--@if($onlyimg=='all')-->
+{@ $mi->view_cell = 'all'}
+<!--@elseif($onlyimg=='thum')-->
+{@ $mi->view_cell = 'thum'}
+<!--@elseif($onlyimg=='sum')-->
+{@ $mi->view_cell = 'sum'}
+<!--@elseif(!in_array($mi->view_cell,array('all','thum','sum')))-->
+{@ $mi->view_cell = 'all'}
+<!--@end-->
+
+<!--@if($listStyle=='list')-->
+{@ $mi->default_style = 'list'}
+<!--@elseif($listStyle=='listtable')-->
+{@ $mi->default_style = 'listtable'}
+<!--@elseif($listStyle=='gallery')-->
+{@ $mi->default_style = 'gallery'}
+<!--@elseif($listStyle=='galleryView')-->
+{@ $mi->default_style = 'galleryView'}
+<!--@elseif($listStyle=='webzine')-->
+{@ $mi->default_style = 'webzine'}
+<!--@elseif($listStyle=='webzinelist')-->
+{@ $mi->default_style = 'webzinelist'}
+<!--@elseif($listStyle=='bookmark')-->
+{@ $mi->default_style = 'bookmark'}
+<!--@elseif($listStyle=='guest')-->
+{@ $mi->default_style = 'guest'}
+<!--@elseif($listStyle=='guestView')-->
+{@ $mi->default_style = 'guestView'}
+<!--@elseif($listStyle=='inputform')-->
+{@ $mi->default_style = 'inputform'}
+<!--@elseif($listStyle=='blog')-->
+{@ $mi->default_style = 'blog'}
+<!--@elseif($listStyle=='history')-->
+{@ $mi->default_style = 'history'}
+<!--@elseif($listStyle=='youtube')-->
+{@ $mi->default_style = 'youtube'}
+<!--@elseif($listStyle=='history_step')-->
+{@ $mi->default_style = 'history_step'}
+<!--@elseif($listStyle=='simple')-->
+{@ $mi->default_style = 'simple'}
+<!--@elseif($listStyle=='classic')-->
+{@ $mi->default_style = 'classic'}
+<!--@elseif(!in_array($mi->default_style,array('list','listtable','gallery','webzine','webzinelist','bookmark','guest','inputform','blog','history','youtube','history_step','simple','classic')))-->
+{@ $mi->default_style = 'list'}
+<!--@end-->
+
+{@
+	$fontsize_list = isset($_COOKIE['fontSizeList']) ? $_COOKIE['fontSizeList'] : null;
+	$fontsize_read = isset($_COOKIE['fontSizeRead']) ? $_COOKIE['fontSizeRead'] : null;  
+	$fontsize_readG = isset($_COOKIE['fontSizeReadG']) ? $_COOKIE['fontSizeReadG'] : null;  
+
+	if ($fontsize_list) :
+	    $viewfont_list = $fontsize_list;
+	elseif (!$fontsize_list) :
+	    $viewfont_list = 14;
+	endif;
+	if ($fontsize_read) :
+	    $viewfont_read = $fontsize_read;
+	elseif (!$fontsize_read) :
+	    $viewfont_read = 14;
+	endif;
+}
+<style>
+	.get_font,
+	.set_font {font-size:{$viewfont}px; }
+	
+	.get_font_list,
+	.set_font_list {font-size:{$viewfont_list}px; }
+	
+	.get_font_read,
+	.set_font_read {font-size:{$viewfont_read}px; }
+</style>
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+<include target="__set_jscss.html" />
+<!--@end-->
+
+<load target="../../../editor/skins/xpresseditor/js/xe_textarea.min.js" type="body" />
+<load target="asset/board.js" type="body" />
+<load target="asset/autosize.min.js" type="body" />
+<load target="css/default.css" />
+
+<script>
+var lang_type = "{$lang_type}";
+$(function(){
+	//autosize($('textarea'));
+	board('#bd_{$mi->module_srl}_{$oDocument->document_srl}');
+
+	$('textarea').focusin(function() {
+		autosize($(this));
+	});
+	<!--@if(Mobile::isMobileCheckByAgent())-->
+		$('textarea').focusout(function() {
+			autosize.destroy(document.querySelectorAll('textarea'));
+		});
+	<!--@end-->
+});
+
+</script>
+
+
+<!--@if($layout_info->layout =='Oday_horizon')-->
+	<style>
+		:root {
+			--oday_listHeight:{$mi->normal_list_height}px;
+			--oday_maxWidth: 100%;
+		}
+		.stickyTopBox { top:59px; } 
+		<!--@if($mi->use_site_width == 'yes' &&  $mi->page_align=='left')-->
+		#contents {margin:0; }
+		<!--@end-->		
+		@media screen and (max-width:768px){
+			.stickyTopBox { top:0; } 
+		}
+	</style>
+
+<!--@elseif($layout_info->layout =='Oday_blog')-->
+
+	<style>
+	:root {
+		--oday_listHeight:{$mi->normal_list_height}px;
+		--oday_maxWidth: 100%;
+	}
+	.stickyTopBox { top:0; } 
+	</style>
+
+<!--@else-->
+	<style>
+	.stickyTopBox { top:0; } 
+	</style>
+	<!--@if($mi->page_align=='center')-->
+		<style>
+		:root {
+			--oday_listHeight:{$mi->normal_list_height}px;
+			--oday_maxWidth:  {$mi->page_width}px;
+		}
+		</style>
+	<!--@elseif($mi->page_align=='left')-->
+		<style>
+		:root {
+			--oday_listHeight:{$mi->normal_list_height}px;
+			--oday_maxWidth:  {$mi->page_width}px;
+		}
+		.od-bord {margin:0}
+		</style>	
+	<!--@elseif($mi->page_align=='full')-->
+		<style>
+		:root {
+			--oday_listHeight:{$mi->normal_list_height}px;
+			--oday_maxWidth: 100%;
+		}
+		</style>
+	<!--@end-->
+<!--@end-->
+
+<!--@if($mi->default_style=='history')-->
+	<style>
+		.pagelocation {display:none; }
+		.greetinginpage .sum { opacity:.8}	
+	</style>
+<!--@end-->
+
+<!--@if($mi->con_searchbg == 'use')-->
+	<style>
+		.stickyTopBox { background-color: var(--oday_listBgColor); border-radius: var(--oday_listBorderRadius); border: var(--oday_listBorderUp); margin-bottom:5px; padding: 10px 10px; }
+		.stickyTopBox:has(+ .list-notice) { border-radius: var(--oday_listBorderRadius) var(--oday_listBorderRadius) 0 0; border-bottom:none; margin-bottom:0px; }
+		.stickyTopBox + .list-notice { border-radius:0 0 var(--oday_listBorderRadius) var(--oday_listBorderRadius);  }
+	</style>
+<!--@end-->
+		
+<!--@if($mi->con_bg_use == 'yes' && ($mi->con_bg || $mi->con_bg_dr))-->
+
+	<style>
+		.pagelocation { padding:120px 0 100px 0}
+		.parallax-mirror:after { content:"";position:absolute; top: 0; left: 0; width: 100%; height: 100%;}
+		.insideTopBg { position:absolute; top: 0px; left: 0; width: 100%;  margin: 0 0 50px 0; }
+
+		<!--@if($mi->default_style=='history')-->
+			.insideTopBg {height: 80vh;}
+			.parallax-mirror:after { background:linear-gradient( transparent 30%, var(--oday_bodyBgColor) ); }
+			:is(.color_scheme_dark),
+			:root[color-theme='dark'] {
+				.parallax-mirror:after { background:linear-gradient( transparent, var(--oday_bodyBgColor) ); }
+			}
+		<!--@else-->
+			.insideTopBg {height: 60vh;}
+			.parallax-mirror:after { background:linear-gradient( transparent 30%, var(--oday_bodyBgColor) ); }
+		<!--@end-->
+		
+		<!--@if( $mi->con_font_color == "white")-->
+			.greetinginpage li.title h1,
+			.b_title a,
+			.pagelocation > a { color:#fff; 
+			text-shadow: 
+				-10px 0 10px rgba(0,0,0,.2), 
+				10px 0 10px rgba(0,0,0,.2), 
+				0 -5px 10px rgba(0,0,0,.2),  
+				0 5px 10px rgba(0,0,0,.2); 
+			}
+			.greetinginpage { color:#fff; text-shadow: 0 0 5px rgba(0,0,0,.5);}
+
+		<!--@elseif( $mi->con_font_color == "black")-->
+			.greetinginpage li.title h1,
+			.b_title a,
+			.pagelocation > a { color:#000; 
+			text-shadow: 
+				-10px 0 10px rgba(255,255,255,.2), 
+				10px 0 10px rgba(255,255,255,.2), 
+				0 -5px 10px rgba(255,255,255,.2),  
+				0 5px 10px rgba(255,255,255,.2); 
+			}
+			.greetinginpage { color:#000; text-shadow: 0 0 5px rgba(255,255,255,.5);}
+		<!--@end-->
+		
+	</style>
+<!--@end-->
+
+<!--@if($grant->manager)-->
+<div class="bd_num vp" cond="isset($oDocument, $mi->default_style) && ((!$oDocument->isExists() && $mi->default_style !='blog') || ($oDocument->isExists() && $mi->default_style =='blog'))">{$mi->module_srl}</div>
+<!--@end-->
+
+<!--@if($mi->preview=='use' || $mi->theme_use == 'use')-->
+<div class="preview_btn" cond="isset($oDocument, $mi->default_style) && ((!$oDocument->isExists() && $mi->default_style !='blog') || ($oDocument->isExists() && $mi->default_style =='blog'))">
+	<a class="view_opt"><i class='bx bx-cog' ></i></a>
+	<!--@if($mi->preview=='use')-->
+		<ul class="cate1" style="display:none">
+			<li class="on"|cond="$mi->default_style=='listtable'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','listtable','act','','document_srl','')}" title="기본-table"><i class='bx bx-table' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='list'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','list','act','','document_srl','')}" title="기본-ul"><i class='bx bx-menu' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='classic'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','classic','act','','document_srl','')}" title="클래식"><i class='bx bx-border-all'></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='guest'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','guest','act','','document_srl','')}" title="방명록"><i class='bx bxs-user' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='webzinelist'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','webzinelist','act','','document_srl','')}" title="웹진리스트"><i class='bx bx-list-ul' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='webzine'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','webzine','act','','document_srl','')}" title="웹진박스"><i class='bx bxs-grid' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='bookmark'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','bookmark','act','','document_srl','')}" title="북마크"><i class='bx bxs-star' ></i></a>
+			</li>	
+			<li class="on"|cond="$mi->default_style=='inputform'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','inputform','act','','document_srl','')}" title="입력폼"><i class='bx bx-edit' ></i></a>
+			</li>
+			<li class="on"|cond="$mi->default_style=='blog'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','blog','act','','document_srl','')}" title="블로그(매뉴얼/강좌)"><i class='bx bx-file' ></i></a>
+			</li>			
+			<li class="on"|cond="$mi->default_style=='history'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','history','act','','document_srl','')}" title="히스토리"><i class='bx bx-history' ></i></a>
+			</li>
+			<li class="on gall"|cond="$mi->default_style=='gallery'">
+				<a class="bubble tooltip tooltipTheme" href="{getUrl('listStyle','gallery','act','','document_srl','')}" title="갤러리"><i class='bx bx-image-alt' ></i></a>
+				
+				<!--@if($mi->default_style=='gallery')-->
+					<ul class="date2">
+						<li class="on"|cond="$mi->view_cell=='all'">
+							<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','all','act','','document_srl','')}" title="썸네일 + 제목">A</a>
+						</li>
+						<li class="on"|cond="$mi->view_cell=='thum'">
+							<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','thum','act','','document_srl','')}" title="썸네일">T</a>
+						</li>
+						<li class="on"|cond="$mi->view_cell=='sum'">
+							<a class="bubble tooltip tooltipTheme" href="{getUrl('onlyimg','sum','act','','document_srl','')}" title="제목">C</a>
+						</li>
+					</ul>
+				<!--@end-->
+				
+			</li>
+		</ul>
+	<!--@end-->
+	
+	<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+	
+		<!--@if($mi->use_darkMode == 'yes')-->
+			<ul class="cate1" style="display:none">
+				<li><a onclick="setThemeDark()" class="viewDark "><i class='bx bxs-moon'></i></a></li>
+				<li><a onclick="setThemeLight()" class="viewLight "><i class='bx bxs-sun' ></i></a> </li>
+			</ul>
+		<!--@end-->
+		
+		<!--@if($mi->use_colorTheme == 'yes')-->
+			<ul class="cate1" style="display:none">
+				<li class="titlecon mod-theme color">
+					<div>
+						<a onclick="setTheme_color('white');"><i class='bx bxs-palette white' ></i></a> 
+						<a onclick="setTheme_color('gray');"><i class='bx bxs-palette gray' ></i></a>
+						<a onclick="setTheme_color('orange');"><i class='bx bxs-palette orange' ></i></a> 
+						<a onclick="setTheme_color('blue');"><i class='bx bxs-palette blue' ></i></a> 
+						<a onclick="setTheme_color('green');"><i class='bx bxs-palette green' ></i></a>
+						<a onclick="setTheme_color('red');"><i class='bx bxs-palette red' ></i></a>
+						<a onclick="setTheme_color('purple');"><i class='bx bxs-palette purple' ></i></a>
+					</div>
+				</li>
+				<li class="titlecon mod-theme bright">
+					<div>
+						<a onclick="setTheme_bright('d1');"><i class='bx bx-signal-1 d1' ></i></a> 
+						<a onclick="setTheme_bright('d2');"><i class='bx bx-signal-3 d2' ></i></a> 
+						<a onclick="setTheme_bright('d3');"><i class='bx bx-signal-5 d3' ></i></a>
+					</div>
+				</li>
+			</ul>
+		<!--@end-->
+		
+	<!--@end-->
+	
+	<script>		
+		$(function(){
+		   $(".tooltipTheme").tooltip({
+			delay:0,
+			opacity:1,
+			position: { my: "left center", at: "right center" } 
+		   });	   
+		});	
+		$(".view_opt").click(function(){
+			$(this).parent().find('ul').slideUp(200);
+			if(!$(this).parent().find('ul').is(":visible")){
+				$(this).parent().find('ul').slideDown(200);
+			}
+		});
+	</script>
+</div>
+<!--@end-->
+
+<!--@if(isset($oDocument, $mi->default_style) && ((!$oDocument->isExists() && $mi->default_style !='blog') || ($oDocument->isExists() && $mi->default_style =='blog')))-->
+	<!--@if($mi->default_style=='guest')-->
+		<ul class="font-size hon">
+			<li><a class="font-btn read" id="switcher-small"><i class='bx bx-minus' ></i></a></li>
+			<li class="sizeview fread">{$viewfont_read}px</li>
+			<li><a class="font-btn read" id="switcher-large"><i class='bx bx-plus'></i></a></li>
+		</ul>
+	<!--@elseif($mi->default_style=='blog')-->
+	<!--@else-->
+		<ul class="font-size hon">
+			<li><a class="font-btn list" id="switcher-small"><i class='bx bx-minus' ></i></a></li>
+			<li class="sizeview flist">{$viewfont_list}px</li>
+			<li><a class="font-btn list" id="switcher-large"><i class='bx bx-plus'></i></a></li>
+		</ul>
+	<!--@end-->
+<!--@end-->
+
+<script>
+	var num_list = {$viewfont_list};
+	var num_read = {$viewfont_read};
+	$(function(){
+		$('a.font-btn.list').click(function() {
+			
+			if(this.id == 'switcher-large'){
+				num_list = num_list + 1;
+				changeFontSizeList();
+			} else if(this.id == 'switcher-small') {
+				num_list = num_list - 1;
+				changeFontSizeList();
+			}
+			$('.get_font_list, .set_font_list').css('fontSize', num_list + 'px');
+			$('.sizeview.flist').html( num_list + 'px');
+			Cookies.set('fontSizeList', num_list, { expires: 1 });
+		});
+		function changeFontSizeList() {
+			var targetId = $('.get_font_list').attr('id');
+			if (targetId === 'list-book' || targetId === 'list-gall' || targetId === 'list-webzine') {
+				setTimeout(function () {
+					 $inficon.masonry();
+				}, 500);
+			}
+		}			
+		$('a.font-btn.read').click(function() {
+			
+			if(this.id == 'switcher-large'){
+				num_read = num_read + 1;	
+				changeFontSizeRead(1);
+			} else if(this.id == 'switcher-small') {
+				num_read = num_read - 1;	
+				changeFontSizeRead(-1);
+			}
+			$('.get_font_read, .set_font_read').css('fontSize', num_read + 'px');
+			$('.sizeview.fread').html( num_read + 'px');
+			numfix = num_read - 14;
+			Cookies.set('fontSizeRead', num_read, { expires: 1 });
+			Cookies.set('fontSizeReadG', numfix, { expires: 1 });
+		});
+		function changeFontSizeRead(newFontSize) {
+			$('.get_font_read [style*="font-size"]').each(function () {
+				let style = $(this).attr('style');  
+				style = style.replace(/font-size:\s*(\d+)px/gi, function (match, size) {  
+					let newSize = parseInt(size, 10) + parseInt(newFontSize, 10); 
+					return `font-size:${newSize}px`;
+				});
+				$(this).attr('style', style);
+			});
+		}		
+	});
+</script>
+
+
+
+<div class="od-bord<!--@if($mi->use_backbg=='no' && $_SERVER['HTTP_SEC_FETCH_DEST']=='document')--> no_bd_bg<!--@end-->" id="bd_{$mi->module_srl}_{$oDocument->document_srl}" data-default_style="{$mi->default_style}">
+<!--@if(strpos($layout_info->layout,"Oday") === false && $_SERVER['HTTP_SEC_FETCH_DEST']=='document' && $mi->use_btitle == 'yes')-->
+<div class="pagelocation"><!--@if($oDocument && $oDocument->isExists())--><i class='bx bxs-arrow-from-right' ></i><!--@end--><a href="{getFullUrl('','mid',Context::get('mid'))}" target="_top">{$mi->browser_title}</a></div>
+<!--@end-->
+<!--@if(strpos($layout_info->layout,"Oday") === false && $_SERVER['HTTP_SEC_FETCH_DEST']=='document' && $mi->use_btitle == 'no')-->
+<div class="pagelocation empty">&nbsp;</div>
+<!--@end-->
