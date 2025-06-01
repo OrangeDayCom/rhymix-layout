@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+
+	<item name="recent_document">
+		<value xml:lang="ko"><![CDATA[최근 글]]></value>
+		<value xml:lang="en"><![CDATA[Recent Document]]></value>
+	</item>
+	<item name="thisissecret">
+		<value xml:lang="ko"><![CDATA[비밀 글입니다.]]></value>
+		<value xml:lang="en"><![CDATA[This is a secret document.]]></value>
+	</item>
+	<item name="recent_comment">
+		<value xml:lang="ko"><![CDATA[최근 댓글]]></value>
+		<value xml:lang="en"><![CDATA[Recent Comment]]></value>
+	</item>
+	<item name="no_signature">
+		<value xml:lang="ko"><![CDATA[등록된 소개글이 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[There are no registered texts.]]></value>
+	</item>
+
+	<item name="follow">
+		<value xml:lang="ko"><![CDATA[팔로우]]></value>
+		<value xml:lang="en"><![CDATA[Following]]></value>
+	</item>
+	<item name="follow_sum">
+		<value xml:lang="ko"><![CDATA[총 팔로우 수]]></value>
+		<value xml:lang="en"><![CDATA[Following Count]]></value>
+	</item>
+	<item name="following">
+		<value xml:lang="ko"><![CDATA[등의 회원님을 팔로우하고 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[whom the member is following.]]></value>
+	</item>
+	<item name="follower">
+		<value xml:lang="ko"><![CDATA[팔로워]]></value>
+		<value xml:lang="en"><![CDATA[Followed by]]></value>
+	</item>
+	<item name="follower_sum">
+		<value xml:lang="ko"><![CDATA[총 팔로워 수]]></value>
+		<value xml:lang="en"><![CDATA[Followed Count]]></value>
+	</item>
+	<item name="followed">
+		<value xml:lang="ko"><![CDATA[등의 회원님이 이 회원님을 팔로우하고 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[... now follwing this member.]]></value>
+	</item>
+	<item name="followcount">
+		<value xml:lang="ko"><![CDATA[명]]></value>
+		<value xml:lang="en"><![CDATA[people]]></value>
+	</item>
+
+	<item name="total_document_count">
+		<value xml:lang="ko"><![CDATA[총 게시글 수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="total_comment_count">
+		<value xml:lang="ko"><![CDATA[총 댓글 수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+
+	<item name="voting_document_count">
+		<value xml:lang="ko"><![CDATA[추천한 게시글수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="voting_comment_count">
+		<value xml:lang="ko"><![CDATA[추천한 댓글수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="voted_document_count">
+		<value xml:lang="ko"><![CDATA[추천받은 게시글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="voted_document_sum">
+		<value xml:lang="ko"><![CDATA[게시글 추천받은 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="voted_comment_count">
+		<value xml:lang="ko"><![CDATA[추천받은 댓글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="voted_comment_sum">
+		<value xml:lang="ko"><![CDATA[댓글 추천받은 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+
+	<item name="blaming_document_count">
+		<value xml:lang="ko"><![CDATA[비추천한 게시글수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="blaming_comment_count">
+		<value xml:lang="ko"><![CDATA[비추천한 댓글수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="blamed_document_count">
+		<value xml:lang="ko"><![CDATA[비추천받은 게시글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="blamed_document_sum">
+		<value xml:lang="ko"><![CDATA[게시글 비추천받은 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="blamed_comment_count">
+		<value xml:lang="ko"><![CDATA[비추천받은 댓글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="blamed_comment_sum">
+		<value xml:lang="ko"><![CDATA[댓글 비추천받은 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+
+	<item name="accusing_document_count">
+		<value xml:lang="ko"><![CDATA[신고한 게시글수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="accusing_comment_count">
+		<value xml:lang="ko"><![CDATA[신고한 댓글수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="accused_document_count">
+		<value xml:lang="ko"><![CDATA[신고당한 게시글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="accused_document_sum">
+		<value xml:lang="ko"><![CDATA[게시글 신고당한 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+	<item name="accused_comment_count">
+		<value xml:lang="ko"><![CDATA[신고당한 댓글 개수]]></value>
+		<value xml:lang="en"><![CDATA[Document Count]]></value>
+	</item>
+	<item name="accused_comment_sum">
+		<value xml:lang="ko"><![CDATA[댓글 신고당한 횟수]]></value>
+		<value xml:lang="en"><![CDATA[Comment Count]]></value>
+	</item>
+
+</lang>

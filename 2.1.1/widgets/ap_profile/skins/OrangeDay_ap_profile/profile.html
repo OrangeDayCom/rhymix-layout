@@ -1,0 +1,24 @@
+<load target="./src/default.css" />
+<block loop="$options => $key, $option" cond="$option->list">
+		<div class="author_list set_font">
+			<block loop="$option->list => $opt">
+			<div class="ap_profile_document" cond="$opt === 'document' && $profile_item->document">
+				<h3><i class='bx bxs-file-blank'></i> <span>{$oDocument->getNickName()}</span> 님의 {$lang->recent_document}</h3>
+				<a loop="$profile_item->document => $no, $document" href="{getUrl('', 'document_srl', $document->document_srl)}">
+					<span class="ap_profile_title">{$document->title} 
+						<span cond="$document->readed_count"><i class='bx bxs-show' ></i>{$document->readed_count} </span>
+						<span cond="$document->comment_count"><i class='bx bxs-message-rounded-dots'></i>{$document->comment_count}</span>
+					</span>
+					<span class="ap_profile_regdate">{zdate($document->regdate, 'Y m.d')}</span>
+				</a>
+			</div>
+			<div class="ap_profile_comment" cond="$opt === 'comment' && $profile_item->comment">
+				<h3><i class='bx bxs-message-dots' ></i> <span>{$oDocument->getNickName()}</span> 님의 {$lang->recent_comment}</h3>
+				<a loop="$profile_item->comment => $no, $comment" href="{getUrl('', 'document_srl', $comment->document_srl, 'comment_srl', $comment->comment_srl)}#comment_{$comment->comment_srl}">
+					<span class="ap_profile_title">{strip_tags($comment->content)}</span>
+					<span class="ap_profile_regdate">{zdate($comment->regdate, 'Y m.d')}</span>
+				</a>
+			</div>
+			</block>
+		</div>
+</block>
