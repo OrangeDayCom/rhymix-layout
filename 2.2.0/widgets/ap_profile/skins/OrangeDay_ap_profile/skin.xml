@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">프로필 위젯 기본 스킨</title>
+    <title xml:lang="en">Default Skin of Profile Widget</title>
+    <version>0.1</version>
+    <date>2020-05-02</date>
+    <link>https://xetown.com</link>
+
+    <author email_address="cydemo@gmail.com">
+        <name xml:lang="ko">cydemo</name>
+        <name xml:lang="en">cydemo</name>
+    </author>
+</skin>

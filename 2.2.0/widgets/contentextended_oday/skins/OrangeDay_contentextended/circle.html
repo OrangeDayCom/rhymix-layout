@@ -1,0 +1,83 @@
+<h2 cond="$widget_info->show_main_title" class="main_title gallery">
+	<!--@if($widget_info->show_main_title_icon)-->
+	<i class='{$widget_info->show_main_title_icon}' ></i>
+	<!--@end-->
+	<span>{$widget_info->show_main_title}</span> <a href="{$widget_info->go_url}" cond="$widget_info->go_url"><i class='bx bx-plus'></i></a>
+</h2>
+<ul class="circle">
+<!--@if(!Mobile::isMobileCheckByAgent())-->
+{@
+$thumbnail_width = $widget_info->thumbnail_width;
+$thumbnail_height = $widget_info->thumbnail_height;
+}
+<!--@else-->
+{@
+$thumbnail_width = $widget_info->thumbnail_width * 0.8;
+$thumbnail_height = $widget_info->thumbnail_height * 0.8;
+}
+<!--@end-->
+	{@
+		$icon_size = $widget_info->thumbnail_width * 0.5;
+		$font_size = $widget_info->thumbnail_width * 0.3;
+		$gap_size = $widget_info->thumbnail_height * 0.5;
+	}
+<!--@foreach($widget_info->content_items as $key => $item)-->
+	{@
+		$time_make =  zDate($item->get('regdate'), "YmdHis");
+		$time_up =   zDate($item->get('last_update'), "YmdHis");
+		$time_gap = (int)(1000000);
+		$time_now = date("YmdHis");
+		$ntime =  (int)($time_now - $time_make);
+		$utime =  (int)($time_now - $time_up);
+	}
+    <li class="<!--@if($time_gap > $ntime || $time_gap > $utime)-->showNew<!--@end--><!--@if($time_gap > $utime)--> U<!--@end--><!--@if($time_gap > $ntime)--> N<!--@end-->" 
+    style="padding-right:calc({$gap_size}px + 5px); border-radius:calc(({$thumbnail_width}px + 10px) * .5); ">
+    
+    <!--@if($item->getThumbnail())-->
+	<a href="{$item->getLink()}" class="thumb" style="width:{$thumbnail_width}px;height:{$thumbnail_height}px; border-radius:{$thumbnail_height}px" target="_blank"|cond="$widget_info->new_window">
+	    <img src="{$item->getThumbnail()}" alt="{html_entity_decode($item->getTitle())}" style="width:{$thumbnail_width}px;height:{$thumbnail_height}px; " />
+	</a>
+	<!--@else-->
+	    <div style="width:{$gap_size}px; height:{$thumbnail_height}px" class="thumb-blank"></div>
+	<!--@end-->
+	<!-- i class='bx bx-camera-off' style="font-size:{$icon_size}px"></i -->
+	<div>
+		<a href="{$item->getLink()}" class="title" target="_blank"|cond="$widget_info->new_window">{html_entity_decode($item->getTitle())|autoescape}
+			<!--@if($time_gap > $ntime)--><span class="widget_newicon new">N</span><!--@end-->
+			<!--@if($time_gap > $utime && $time_gap < $ntime)--><span class="widget_newicon update">U</span><!--@end-->		
+		</a>
+	
+		<div class="newconbox"  cond="$widget_info->show_all_meta!='N'">
+			<a href="#" onclick="return false;" class="author member_{$item->getMemberSrl()}" target="_blank"|cond="$widget_info->new_window" cond="$widget_info->show_nickname!='N'">{$item->getNickName($widget_info->nickname_cut_size)}</a>
+
+			<!--@if($widget_info->show_browser_title=='Y' && $item->getBrowserTitle())-->
+			<a href="{getSiteUrl($item->domain, '', 'mid', $item->get('mid'))}" class="btitle" target="_blank"|cond="$widget_info->new_window">{$item->getBrowserTitle()}</a>
+				<!--@if($widget_info->show_category=='Y' && $item->get('category_srl') )-->
+				<span>
+				<i class='bx bxs-arrow-from-left' ></i><a href="{getSiteUrl($item->domain,'','mid',$item->get('mid'),'category',$item->get('category_srl'))}" target="_blank"|cond="$widget_info->new_window">{html_entity_decode($item->getContent())|autoescape}</a>
+				</span>
+				<!--@end-->      
+			<!--@end-->
+			<span class="date" cond="$widget_info->show_regdate!='N'">
+				<!--@if($widget_info->content_type=='comment')-->
+				{getTimeGap($item->getRegdate($item->getRegdate('YmdHi')), "m.d")}
+				<!--@else-->
+				{getTimeGap($item->getRegdate($item->getRegdate('YmdHi')), "Y.m.d")}
+				<!--@end-->
+			</span>
+			<span class="countbox" cond="$item->getCommentCount() || $item->getTrackbackCount() || $item->getVotedCount() || $item->getReadedCount()">
+				<!--@if($widget_info->show_comment_count!='N' && $item->getCommentCount())--><a href="{$item->getLink()}#comment" class="st" target="_blank"|cond="$widget_info->new_window"><i class='bx bxs-message-rounded-dots'></i>{$item->getCommentCount()}</a><!--@end-->
+				<!--@if($widget_info->show_trackback_count!='N' && $item->getTrackbackCount())--><a href="{$item->getLink()}#trackback" class="st" target="_blank"|cond="$widget_info->new_window">{$item->getTrackbackCount()}</a><!--@end-->
+				<!--@if($widget_info->show_vote_count!='N' && $item->getVotedCount())--><span class="st"><i class='bx bxs-heart'></i>{$item->getVotedCount()}</span><!--@end-->
+				<!--@if($widget_info->show_read_count!='N' && $item->getReadedCount())--><span class="st"><i class='bx bxs-show' ></i>{$item->getReadedCount()}</span><!--@end-->
+			</span>
+
+		</div>
+	</div>
+    </li>
+<!--@end-->
+</ul>
+
+<style>
+
+</style>

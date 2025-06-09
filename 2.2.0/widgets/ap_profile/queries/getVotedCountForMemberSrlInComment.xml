@@ -1,0 +1,13 @@
+<query id="getVotedCountForMemberSrlInComment" action="select">
+    <tables>
+        <table name="comments" />
+    </tables>
+    <columns>
+        <column name="count(*)" alias="count" />
+        <column name="sum(voted_count)" alias="sum" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<condition operation="more" column="voted_count" default="1" filter="number" pipe="and" />
+    </conditions>
+</query>

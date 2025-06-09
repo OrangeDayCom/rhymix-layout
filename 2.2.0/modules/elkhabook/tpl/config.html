@@ -1,0 +1,295 @@
+<config autoescape="on" />
+{@
+\Context::loadLang('modules/member/lang');
+\Context::loadLang('modules/document/lang');
+$elkhabook_config->doc_list[''] = [
+'label' => '',
+'more' => 5
+];
+$idx = 0;
+
+$oLayoutModel = getModel('layout');
+$layout_list = $oLayoutModel->getLayoutList();
+$mlayout_list = $oLayoutModel->getLayoutList(0, 'M');
+}
+<div class="x_page-header">
+	<h1><a href="{getUrl('','mid',$elkhabook_config->source_mid)}">mylog</a></h1>
+</div>
+
+<form class="x_form-horizontal" action="./" method="post" id="elkhabook" onsubmit="return confirm('{$lang->confirm_submit}');">
+	<input type="hidden" name="module" value="elkhabook" />
+	<input type="hidden" name="act" value="procElkhabookAdminInsertConfig" />
+	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+	<input type="hidden" name="xe_validator_id" value="modules/elkhabook/tpl/config/1" />
+
+	<div class="message {$XE_VALIDATOR_MESSAGE_TYPE}" cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/elkhabook/tpl/config/1'">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+
+	<section class="section">
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_skin">skin</label>
+			{@
+			$readDir = FileHandler::readDir(\RX_BASEDIR.'modules/elkhabook/skins');
+			}
+			<div class="x_controls">
+				<select id="elkhabook_skin" name="skin">
+					<!--@foreach($readDir as $val)-->
+					<!--@if(is_dir(\RX_BASEDIR . 'modules/elkhabook/skins/' . $val))-->
+					<option value="{$val}" selected="selected"|cond="$elkhabook_config->skin==$val">{$val}</option>
+					<!--@endif-->
+					<!--@endforeach-->
+				</select>
+			</div>
+
+			<label class="x_control-label" for="elkhabook_skin_colorset">skin colorset</label>
+			<div class="x_controls">
+				<input type="text" name="skin_colorset" value="{$elkhabook_config->skin_colorset}" id="elkhabook_skin_colorset" placeholder="#2c3e50" />
+			</div>
+
+			<!--// 코드 복붙 -->
+			<label class="x_control-label" for="layout">{$lang->layout}</label>
+			<div class="x_controls">
+				<select id="layout" name="layout_srl">
+					<option value="0">{$lang->notuse}</option>
+					<option loop="$layout_list => $key,$val" value="{$val->layout_srl}" selected="selected"|cond="$val->layout_srl == $elkhabook_config->layout_srl">{$val->title} ({$val->layout})</option>
+				</select>
+			</div>
+			<label class="x_control-label" for="mlayout">{$lang->mobile_layout}</label>
+			<div class="x_controls">
+				<select id="mlayout" name="mlayout_srl">
+					<option value="0">{$lang->notuse}</option>
+					<option loop="$mlayout_list => $key,$val" value="{$val->layout_srl}" selected="selected"|cond="$val->layout_srl == $elkhabook_config->mlayout_srl">{$val->title} <block cond="$val->layout">({$val->layout})</block></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_source_mid">mid (dispMemberInfo)</label>
+			<div class="x_controls">
+				<input type="text" name="source_mid" value="{$elkhabook_config->source_mid}" id="elkhabook_source_mid" placeholder="mylog" />
+			</div>
+			<label class="x_control-label" for="lang_elkhabook_browser_title">browser_title_prefix</label>
+			<div class="x_controls">
+				<input class="lang_code" type="text" name="browser_title" value="{@
+				if(strlen($elkhabook_config->source_mid) && is_object($_module_info = \ModuleModel::getModuleInfoByMid($elkhabook_config->source_mid)) && $_module_info->mid == $elkhabook_config->source_mid)
+					echo htmlentities($_module_info->browser_title);
+				}" id="elkhabook_browser_title" />
+			</div>
+
+			<label class="x_control-label" for="elkhabook_user_id_open">user_id open</label>
+			<div class="x_controls">
+				<select id="elkhabook_user_id_open" name="user_id_open">
+					<option value="N">N</option>
+					<option value="Y" selected="selected"|cond="$elkhabook_config->user_id_open == 'Y'">user_id</option>
+					<option value="nick_name" selected="selected"|cond="$elkhabook_config->user_id_open == 'nick_name'">nick_name</option>
+				</select>
+			</div>
+
+			<label class="x_control-label" for="elkhabook_view">view permission</label>
+			<div class="x_controls">
+				<select id="elkhabook_view" name="view">
+					<option value="N">guest</option>
+					<option value="Y" selected="selected"|cond="$elkhabook_config->view == 'Y'">member</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_friend_notify">friend notify</label>
+			<div class="x_controls">
+				<select id="elkhabook_friend_notify" name="friend_notify">
+					{@
+					$communication_config = \CommunicationModel::getConfig();
+					}
+					<!--@if(class_exists('elkhatalk3'))--><option selected="selected"|cond="$elkhabook_config->friend_notify == 'elkhatalk3'" value="elkhatalk3">{$lang->elkhatalk3} (elkhatalk3)</option><!--@endif-->
+					<!--@if(($communication_config->enable_message ?? 'Y') == 'Y')--><option selected="selected"|cond="$elkhabook_config->friend_notify == 'communication'" value="communication">{$lang->communication} (communication)</option><!--@endif-->
+					<!--@if(!class_exists('elkhatalk3'))--><option value="elkhatalk3" disabled="disabled">elkhatalk3</option><!--@endif-->
+					<!--@if(($communication_config->enable_message ?? 'Y') != 'Y')--><option value="communication" disabled="disabled">communication</option><!--@endif-->
+					<option value="disabled" selected="selected"|cond="$elkhabook_config->friend_notify == 'disabled'">disabled</option>
+				</select>
+				<div>
+					friend events:
+					<label style="display:inline;"><input type="checkbox" disabled="disabled" checked="checked" /> follow</label>
+					<label style="display:inline;"><input type="checkbox" name="friend_unfollow_use" value="Y" checked="checked"|cond="($elkhabook_config->friend_unfollow_use ?? 'N') === 'Y'" /> unfollow</label>
+				</div>
+			</div>
+
+			<label class="x_control-label" for="lang_elkhabook_friend_follow_message">friend follow message</label>
+			<div class="x_controls">
+				<textarea name="friend_follow_message" id="elkhabook_friend_follow_message" class="lang_code">{$elkhabook_config->friend_follow_message}</textarea>
+				<p style="font-size:.85em;">{@ echo nl2br(\ElkhabookController::followMessage($elkhabook_config->friend_follow_message, true)); }</p>
+			</div>
+
+			<label class="x_control-label" for="lang_elkhabook_friend_unfollow_message">friend unfollow message</label>
+			<div class="x_controls">
+				<textarea name="friend_unfollow_message" id="elkhabook_friend_unfollow_message" class="lang_code">{$elkhabook_config->friend_unfollow_message}</textarea>
+				<p style="font-size:.85em;">{@ echo nl2br(\ElkhabookController::followMessage($elkhabook_config->friend_unfollow_message, true)); }</p>
+			</div>
+
+			<label class="x_control-label" for="elkhabook_notify_member_srl">notify user_id (or member_srl)</label>
+			<div class="x_controls">
+				{@
+				$notify_info = \ElkhabookController::notifyInfo();
+				}
+				<input type="text" name="notify_member_srl2" value="{$notify_info->user_id ?? ''}" id="elkhabook_notify_member_srl" placeholder="e.g. {$logged_info->user_id}" />
+				<p style="font-size:.85em;">({@ echo $notify_info->nick_name ?? $logged_info->nick_name; })</p>
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_list_count">list_count (documents, comments)</label>
+			<div class="x_controls">
+				<input type="number" name="list_count" value="{$elkhabook_config->list_count}" id="elkhabook_list_count" placeholder="10" min="1" />
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_follow_point">follow point</label>
+			<div class="x_controls">
+				<input type="number" name="follow_point" value="{$elkhabook_config->follow_point}" id="elkhabook_follow_point" placeholder="15" />
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_follow_add_limit">follow add limit</label>
+			<div class="x_controls">
+				<input type="number" name="follow_add_limit" value="{$elkhabook_config->follow_add_limit}" id="elkhabook_follow_add_limit" placeholder="(hours)" min="0" />
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_follow_delete_limit">follow delete limit</label>
+			<div class="x_controls">
+				<input type="number" name="follow_delete_limit" value="{$elkhabook_config->follow_delete_limit}" id="elkhabook_follow_delete_limit" placeholder="(hours)" min="0" />
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_point_level_icon">point level icon</label>
+			<div class="x_controls">
+				<select id="elkhabook_point_level_icon" name="point_level_icon">
+					{@
+					$point_level_icon = ['auto' => 'addon config', 'on' => 'force', 'off' => 'force'];
+					}
+					<!--@foreach($point_level_icon as $key => $val)-->
+					<option value="{$key}" selected="selected"|cond="$elkhabook_config->point_level_icon == $key">{$key} ({$val})</option>
+					<!--@endforeach-->
+				</select>
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<span class="x_control-label">content groups<br />(1.0.9)</span>
+			{@
+			$content_groups = [
+				['문서', $lang->document],
+				['댓글', $lang->comment],
+				['문서_친구', $lang->document . ' (' . $lang->friend . ')'],
+				['문서_팔로잉', $lang->document . ' (' . $lang->elkhabook_following . ' + '.$lang->friend . ')'],
+				['문서_팔로워', $lang->document . ' (' . $lang->elkhabook_follower . ' + '.$lang->friend . ')'],
+				['문서_추천', $lang->document . ' (' . $lang->cmd_vote . ')'],
+				['문서_스크랩', $lang->document . ' (' . $lang->cmd_scrap . ')'],
+				['댓글_친구', $lang->comment . ' (' . $lang->friend . ')'],
+				['댓글_팔로잉', $lang->comment . ' (' . $lang->elkhabook_following . ' + '.$lang->friend . ')'],
+				['댓글_팔로워', $lang->comment . ' (' . $lang->elkhabook_follower . ' + '.$lang->friend . ')']
+			];
+			if(class_exists('\elkhatalk3')):
+				$content_groups[] = ['채팅', $lang->elkhatalk3 . ' (elkhatalk3)'];
+			endif;
+			$elkhabook_config->content_groups[] = ['', '', '', []];
+			$options = ['open', 'logged', 'friends', 'follower', 'following', 'hide'];
+			$i = 0;
+			}
+
+			<!--@foreach($elkhabook_config->content_groups as $order => $arr)-->
+			<div class="x_controls content_groups_{$order}">
+				{@
+				if($i++) echo '<hr />';
+				}
+				<ul>
+					<li>
+						<input type="text" name="content_groups[{$order}][1]" value="{$arr[1] ?? ''}" class="lang_code" placeholder="group name" />
+						<input type="number" name="content_groups_order[{$order}]" value="{$order}" placeholder="order" />
+						<label style="display:inline;"><input type="checkbox" onclick="jQuery('.content_groups_{$order} input').not(this).prop('disabled', this.checked);" /> {$lang->cmd_delete}</label>
+					</li>
+					<li>
+						<!--@foreach($content_groups as $key => $val)-->
+						<label style="display:inline-block;"><input name="content_groups[{$order}][0]" type="radio" value="{$val[0]}" checked="checked"|cond="$arr[0] == $val[0]" /> {$val[1]}</label>
+						<!--@endforeach-->
+					</li>
+					<li>
+						{$lang->elkhabook_contents_help}
+						<br />
+						options:
+						<!--@foreach($options as $val)-->
+						<label style="display:inline-block;"><input name="content_groups[{$order}][3][]" type="checkbox" value="{$val}" checked="checked"|cond="in_array($val, $arr[3])" onclick="jQuery('#content_groups_{$order}_2_{$val}').prop('disabled', !this.checked);" /> {@ echo \Context::getLang('elkhabook_contents_' . $val); }</label>
+						<!--@endforeach-->
+						<br />
+						default:
+						<!--@foreach($options as $val)-->
+						<label style="display:inline-block;" for="content_groups_{$order}_2_{$val}"><input id="content_groups_{$order}_2_{$val}" name="content_groups[{$order}][2]" type="radio" value="{$val}" checked="checked"|cond="$arr[2] == $val" disabled="disabled"|cond="!in_array($val, $arr[3])" /> {@ echo \Context::getLang('elkhabook_contents_' . $val); }</label>
+						<!--@endforeach-->
+					</li>
+				</ul>
+			</div>
+			<!--@endforeach-->
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_exclude_list">exclude list</label>
+			<div class="x_controls">
+				<textarea name="exclude_list" id="elkhabook_exclude_list" rows="{count($elkhabook_config->exclude_list) + 3}" placeholder="mid1&#10;mid2">{implode("\n", $elkhabook_config->exclude_list)}</textarea>
+			</div>
+		</div>
+
+		<!--@foreach($elkhabook_config->doc_list as $regex => $val)-->
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_doc_list_regex{$idx}">document list {$idx + 1} regex</label>
+			<div class="x_controls">
+				<input type="text" name="doc_list_regex[{$idx}]" value="{@ echo htmlentities($regex);}" id="elkhabook_doc_list_regex{$idx}" placeholder="/./" />
+			</div>
+			<label class="x_control-label" for="lang_elkhabook_doc_list_label{$idx}">document list {$idx + 1} label</label>
+			<div class="x_controls">
+				<input type="text" name="doc_list_label[{$idx}]" value="{@ echo htmlentities($val['label']); }" id="elkhabook_doc_list_label{$idx}" placeholder="{$lang->document_list}" class="lang_code" />
+			</div>
+			<label class="x_control-label" for="elkhabook_doc_list_more{$idx}">document list {$idx + 1} more</label>
+			<div class="x_controls">
+				<input type="number" name="doc_list_more[{$idx}]" value="{@ echo htmlentities($val['more']); }" id="elkhabook_doc_list_more{$idx}" placeholder="5" min="1" max="10" />
+			</div>
+			{@ $idx++; }
+		</div>
+		<!--@endforeach-->
+
+		{@
+		$elkhabook_config->elkhatalk_rooms[''] = '';
+		$idx = 0;
+		}
+		<!--@foreach($elkhabook_config->elkhatalk_rooms as $room => $val)-->
+		<div class="x_control-group">
+			<label class="x_control-label" for="elkhabook_elkhatalk_rooms_name{$idx}">elkhatalk room name</label>
+			<div class="x_controls">
+				<input type="text" name="elkhatalk_rooms_name[{$idx}]" value="{@ echo htmlentities($room); }" id="elkhabook_elkhatalk_rooms_name{$idx}" placeholder="public{$idx + 1}" />
+			</div>
+			<label class="x_control-label" for="lang_elkhabook_elkhatalk_rooms_label{$idx}">elkhatalk room's label</label>
+			<div class="x_controls">
+				<input type="text" name="elkhatalk_rooms_label[{$idx}]" value="{@ echo htmlentities($val); }" id="elkhabook_elkhatalk_rooms_label{$idx}" placeholder="채팅 기록" class="lang_code" />
+			</div>
+			{@ $idx++; }
+		</div>
+		<!--@endforeach-->
+	</section>
+
+	<div class="btnArea x_clearfix">
+		<button type="submit" class="x_btn x_btn-primary x_pull-right">{$lang->cmd_submit}</button>
+	</div>
+
+</form>
+
+<h2>database multi index (optional)</h2>
+Current:
+<!--@if(count($comments_index_info->columns) == 1)-->
+<strong style="color:red;">Off</strong> <button type="button" class="x_btn x_btn-primary" onclick="if(confirm('go?')) { jQuery.exec_json('elkhabook.procElkhabookAdminAlterIndex', { 'index':'Y' }, function(p){ location.reload(); }); }">ALTER TABLE `comments` DROP INDEX `idx_member_srl`, ADD INDEX `idx_member_srl` (`member_srl`, `module_srl`);</button>
+<!--@else-->
+<strong style="color:blue;">On</strong> <button type="button" class="x_btn" onclick="if(confirm('go?')) { jQuery.exec_json('elkhabook.procElkhabookAdminAlterIndex', { 'index':'N' }, function(p){ location.reload(); }); }">ALTER TABLE `comments` DROP INDEX `idx_member_srl`, ADD INDEX `idx_member_srl` (`member_srl`);</button>
+<!--@endif-->

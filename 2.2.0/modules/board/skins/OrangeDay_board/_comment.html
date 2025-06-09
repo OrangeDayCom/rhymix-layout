@@ -1,0 +1,215 @@
+<!--@if($oDocument->isEnableComment())-->
+	<div class="feedback" id="comment" cond="$oDocument->getCommentcount()">		
+		
+		<h2><i class='bx bxs-message-rounded-dots'></i> {$lang->comment}<em>{$oDocument->getCommentcount()}</em></h2>
+
+		<ul class="comList<!--@if($mi->comment_style == 'chat' || $mi->comment_style == 'chat_tree')--> com_chat<!--@end--><!--@if($mi->comment_style == 'default')--> basic<!--@end-->">
+			
+			<!--@foreach($oDocument->getComments() as $key => $comment)-->				
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				{@
+					$c_base_gap = .5;
+				}
+				<!--@else-->
+				{@
+					$c_base_gap = 1.2;
+				}
+				<!--@end-->
+				<!--@if(!$comment->get('depth'))-->
+				{@
+					$c_profile_gap = 1;
+				}
+				<!--@else-->
+				{@
+					$c_profile_gap = .8;
+				}
+				<!--@end-->
+				<!--@if($mi->comment_style == 'default' || $mi->comment_style == 'default_tree')-->
+				{@
+					$c_tree_gap = 20;
+				}
+				<!--@else-->
+				{@
+					$c_tree_gap = 10;
+				}
+				<!--@end-->
+			
+				<li id="comment_{$comment->comment_srl}" class="indent
+				<!--@if($comment->get('depth'))--> indent_{$comment->get('depth')} reple<!--@else--> no_reple<!--@end-->
+				<!--@if($comment->getUserID())--><!--@if($comment->getUserID() === $oDocument->getUserID())--> owner<!--@else--><!--@end--><!--@end-->"
+				style="padding-left:calc({$comment->get('depth')}5px * {$c_base_gap});"				
+				>
+					<!--@if($mi->comment_style == 'chat_tree' || $mi->comment_style == 'default_tree')-->
+						<!--@if($comment->get('depth'))-->
+						<span class="depth"
+						style="top : calc({$c_tree_gap}px + (((var(--oday_com_profileW) * {$c_profile_gap}) * .5) - 7px))"
+						><span>{$comment->get('depth')}</span></span>
+						<!--@end-->
+						<div class="c_tree"
+						style="
+						left : calc( ({$comment->get('depth')}5px * {$c_base_gap}) - (( var(--oday_com_profileW) * {$c_profile_gap} ) * .25) ) ; 
+						top : calc( {$c_tree_gap}px + (var(--oday_com_profileW) * {$c_profile_gap} * .5)); 
+						width : 10px;
+						"></div>
+					<!--@end-->
+					<!--@if($mi->comment_style == 'default' && $comment->get('depth') > 1)-->
+						<div class="c_tree_b" style="width: calc(({$comment->get('depth')}0px * {$c_base_gap}) - 5px)"></div>
+					<!--@end-->
+					
+					<div class="c_wrap">
+						<div class="c_meta">
+							<a href="/@{$comment->getNickName()}">					
+							<span cond="$comment->getProfileImage()" class="profile"><img src="{$comment->getProfileImage()}" alt="Profile" /></span>
+							<span cond="!$comment->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+							</a>
+							<a class="c_vote<!--@if($comment->get('voted_count')!=0)--> active<!--@end-->" title="{$lang->cmd_vote}"
+							onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}');return false"|cond="$is_logged" 
+							onclick="alert('로그인 후 이용 가능합니다.')"|cond="!$is_logged">
+							<i class="bx bxs-heart"></i> {$comment->get('voted_count')?$comment->get('voted_count'):0}</a>
+							
+						</div>
+						<div class="c_all">								
+							<a cond="!$comment->member_srl && $comment->homepage" href="{$comment->getHomepageUrl()}" rel="nofollow noopener"  class="author">{$comment->getNickName()}</a>
+							<span cond="!$comment->member_srl && !$comment->homepage" class="author">{$comment->getNickName()}</span>
+							<a cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl} author" onclick="return false">{$comment->getNickName()}</a>								
+							<span class="c_opt"  cond="$mi->read_meta_ip == 'use' || $grant->manager">{$comment->getIpaddress()}</span>
+							<!--@if($comment->getUserID())--><!--@if($comment->getUserID() === $oDocument->getUserID())--> <i class='bx bxs-crown'></i><!--@end--><!--@end-->
+							<!--@if($mi->comment_style == 'default' || $mi->comment_style == 'default_tree')-->
+								<div class="c_opt_wrap">
+									<!--@if($comment->get('regdate') != $comment->get('last_update'))-->
+										<span>{getTimeGap($comment->get('last_update'), "Y.m.d - H:i")}</span>
+										<span><i class='bx bxs-chevron-left' ></i></span>
+									<!--@end-->									
+									<span>{getTimeGap($comment->get('regdate'), "Y.m.d - H:i")}</span> 
+									<span><a href="{$oDocument->getUrl()}#comment_{$comment->comment_srl}" class="copy_comment_url"><i class='bx bx-copy'></i> #{$comment->comment_srl}</a></span>
+								</div>
+							<!--@end-->
+						
+							<!--@if(!$comment->isAccessible())-->
+								<form action="./" method="get" class="secretForm" onsubmit="return procFilter(this, input_password)">
+									<input type="hidden" name="mid" value="{$mid}" />
+									<input type="hidden" name="page" value="{$page}" />
+									<input type="hidden" name="document_srl" value="{$comment->get('document_srl')}" />
+									<input type="hidden" name="comment_srl" value="{$comment->get('comment_srl')}" />
+									<div class="utilityMessage">{$lang->msg_is_secret} {$lang->msg_input_password}</div>
+									<div class="formBoxCenter">
+										<input type="password" name="password" id="cpw_{$comment->comment_srl}" class="iText" />
+										<input type="submit" class="obtn" value="{$lang->cmd_input}" />
+									</div>
+								</form>
+							<!--@else-->
+
+								<div class="c_con set_font_read">
+									{$comment->getContent(false)|noescape}
+									<!--@if($mi->comment_style == 'chat' || $mi->comment_style == 'chat_tree')-->
+										<div class="c_opt_wrap">
+											<!--@if($comment->get('regdate') != $comment->get('last_update'))-->
+												<span>{getTimeGap($comment->get('last_update'), "Y.m.d - H:i")}</span>
+												<span><i class='bx bxs-chevron-left' ></i></span>
+											<!--@end-->									
+											<span>{getTimeGap($comment->get('regdate'), "Y.m.d - H:i")}</span> 
+											<span><a href="{$oDocument->getUrl()}#comment_{$comment->comment_srl}" class="copy_comment_url"><i class='bx bx-copy'></i> #{$comment->comment_srl}</a></span>
+										</div>
+									<!--@end-->										
+								</div>
+								<!--@if($mi->comment_style == 'default' || $mi->comment_style == 'default_tree')-->
+									<div cond="$comment->hasUploadedFiles()" class="c_file">
+										<a class="down_onoff">Attached file <i class='bx bxs-plus-square'></i></a>
+										<div class="down_file" style="display:none;">
+											<a loop="$comment->getUploadedFiles()=>$key,$file" href="{getUrl('')}{$file->download_url}" rel="nofollow"  class="tooltipimg"  data-photo="{$file->uploaded_filename}">{$file->source_filename} 
+												<span class="fileSize">{FileHandler::filesize($file->file_size)} <i class='bx bxs-downvote'></i>{number_format($file->download_count)}</span>
+											</a>
+										</div>
+									</div>
+								<!--@end-->	
+								<div class="c_act">
+									<!--@if($grant->write_comment && $mi->comment_count > $comment->get('depth'))-->
+										<a class="re_comment" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" 
+										onclick="<!--@if(!$grant->write_comment || !$oDocument->isEnableComment())-->alert('{$lang->msg_not_permitted}')<!--@else-->
+										reComment({$comment->get('document_srl')},{$comment->get('comment_srl')},
+										'{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}')
+										<!--@end-->;return false;">
+										<i class='bx bx-subdirectory-right' ></i>댓글</a>
+									<!--@elseif($grant->write_comment)-->
+										<span class="re_comment end">{$mi->comment_count}단까지 댓글 가능</span>
+									<!--@end-->									
+									<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" class="c_act_child" rel="nofollow"><i class='bx bxs-eraser'></i> {$lang->cmd_modify}</a>
+									<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardDeleteComment','comment_srl',$comment->comment_srl)}" class="c_act_child" rel="nofollow"><i class='bx bxs-trash' ></i> {$lang->cmd_delete}</a>
+									<a cond="$is_logged" class="comment_{$comment->comment_srl} this c_act_child" href="#popup_menu_area" onclick="return false"><i class='bx bx-check' ></i> {$lang->cmd_comment_do}</a>
+									<!--@if($mi->comment_style == 'chat' || $mi->comment_style == 'chat_tree')-->
+										<div cond="$comment->hasUploadedFiles()" class="c_file_s">
+											<a loop="$comment->getUploadedFiles()=>$key,$file" href="{getUrl('')}{$file->download_url}" rel="nofollow"  class="tooltipimg c_act_child"  data-photo="{$file->uploaded_filename}">
+											{$file->source_filename} <span class="fileSize">{FileHandler::filesize($file->file_size)}<i class='bx bxs-downvote'></i>{number_format($file->download_count)}</span>
+											</a>
+										</div>
+									<!--@end-->											
+								</div>
+							<!--@end-->
+						</div>
+					</div>
+				</li>
+			<!--@end-->
+		</ul>
+		<script>
+			$(function(){
+				$('.indent').each(function () {
+				    if ($(this).next('.no_reple').length > 0) {
+					   $(this).find('.c_tree').hide();
+				    }
+				});
+				if($('.basic').length > 0) {
+					$('.reple').each(function () {
+					    if ($(this).next('.no_reple').length > 0) {
+						   $(this).css({
+								'border-bottom-left-radius' : '10px',
+								'border-bottom-right-radius' : '10px',
+								'border-bottom':'var(--oday_listBorder)'
+						   });
+					    }
+					});
+				}
+			});			
+		</script>
+		
+		<div cond="$oDocument->comment_page_navigation" class="pagination for_commet">
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',1)}#comment" class="direction prev"><i class='bx bxs-chevron-left' ></i></a> 
+			<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+				<strong cond="$cpage==$page_no">{$page_no}</strong> 
+				<a cond="$cpage!=$page_no" href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$page_no)}#comment">{$page_no}</a>
+			</block>
+			<a href="{getUrl('document_srl',$oDocument->document_srl,'cpage',$oDocument->comment_page_navigation->last_page)}#comment" class="direction next"><i class='bx bxs-chevron-right'></i></a>
+		</div>
+		
+		
+	</div>
+<!--@else-->
+	<div class="utilityMessage" style="padding:10px 0;">
+		<i class='bx bxs-message-square-dots' ></i> 댓글 참여가 중지된 글입니다.
+	</div>
+<!--@end-->
+
+<script>
+	function adjustScrollPosition() {
+		const hashValue = window.location.hash; 
+		const offsetmargin = 200; // 조정할 위치 값
+		if (hashValue) {
+			const elementId = hashValue;
+			const elementPosition = $(elementId).offset().top - offsetmargin;
+			window.scrollTo({
+				top: elementPosition,
+				behavior: 'smooth',
+			});
+		}
+	}
+
+	// 페이지 로드 시 해시 처리
+	window.addEventListener('DOMContentLoaded', function () {
+		if (location.hash) {
+			setTimeout(adjustScrollPosition, 100); // 약간의 지연 추가
+		}
+	});
+
+	// 해시 변경 시 처리
+	window.addEventListener('hashchange', adjustScrollPosition);
+</script>
+

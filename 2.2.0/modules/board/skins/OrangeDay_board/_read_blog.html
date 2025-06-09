@@ -1,0 +1,680 @@
+<!--@if($layout_info->layout =='Oday_horizon')-->	
+{@
+	$oi = $layout_info;
+	if(!$oi->site_column_c1) $oi->site_column_c1 = 'no';
+	if(!$oi->site_column_c3) $oi->site_column_c3 = 'no';
+}
+<!--@end-->
+{@
+	if(!$mi->blog_top_gap) $mi->blog_top_gap = 0;
+	if(!$mi->blog_layout) $mi->blog_layout = "right";
+	if(!$mi->blog_menu_width) $mi->blog_menu_width = 200;
+
+	$layout_apply_width = $layout_info->layout_width - $layout_info->gnb_width;
+}
+<style>
+	.gototopboard {position: fixed; bottom:5px; right:5px; z-index:3 }
+	.gototopboard a {display:flex; align-items: center; justify-content: center; height:40px; width:40px; background-color:var(--oday_mainColor); color:var(--oday_primaryBtnColor); font-size:2em; transition: 0.3s; border-radius:100%}
+	.gototopboard a:hover {background-color:var(--oday_mainColorDark); ; color:var(--oday_primaryBtnColor); }
+</style>
+<style>
+:root {
+	--cmenu_width : {$mi->blog_menu_width}px;
+	--cmenu_size : 35px;
+	--cmenu_topGap:{$mi->blog_top_gap}px;
+	
+	<!--@if($layout_info->layout =='Oday_horizon')-->
+		--blogTopGap : 0;
+	<!--@else-->
+		--blogTopGap : 0;
+	<!--@end-->	
+}
+.iCheck { margin-left:2px; width:1em !important }
+.formBox,
+ul.naviBtn li,
+.tags { justify-content: flex-start; align-items: flex-start; }
+.formBox .end { margin-left:10px}
+.feedback h2 { margin-left:30px; }
+
+.board-message, 
+.gototopboard { display:none;}
+
+.blogHeader { background-color:var(--oday_bodyBgColor); margin-top:0; border-top:none; width: -webkit-fill-available; z-index:2; bottom:unset; border-bottom:var(--oday_listBorder); padding:.5em 0; display:flex; justify-content: space-between;  position:sticky; top:0; height:55px; 
+}
+.blogHeader:after {content:""; display:block; position:absolute; bottom:-5px; height:5px; width:100%; background: linear-gradient(rgba(0, 0, 0, .1), transparent); }
+.blogHeader.use_set { padding-right:30px}
+:is(.color_scheme_dark),
+:root[color-theme='dark'] {
+	.blogHeader:after { bottom:-10px; height:10px; background: linear-gradient(rgba(0, 0, 0, .3), transparent); }
+}
+
+.no_bd_bg .blogHeader { background-color: ; box-shadow: ; border: ; }
+.blogHeader li { padding:0 20px}
+<!--@if($layout_info->layout =='Oday_horizon')-->
+	.blogHeader { top:60px}
+<!--@end-->
+
+.blogHeader li {display: flex; align-items: center; }
+.blogHeader li.blogbtnbox {margin-left:auto}
+
+.blogHeader .page-t { padding:0 .5em; font-weight:700; font-size:1.2em;}
+.blogHeader .page-t a span:not(:last-child) {display:none}
+.board_search { display:flex; align-items: center;  }
+.board_search button,
+.board_search a {display:flex; align-items: center; justify-content: center; border: none; background-color:transparent !important; height: var(--oday_iptHeight); flex-shrink: 0; padding-left:10px;}
+.board_search i { font-size:1.4em}
+
+#list-blog  { display:flex; margin-top:var(--cmenu_topGap);}
+#list-blog li.dlist-menu { width:var(--cmenu_width); height: calc(100vh - 55px); position: sticky; top: 55px; }
+<!--@if($layout_info->layout =='Oday_horizon')-->
+	#list-blog li.dlist-menu { height: calc(100vh - 150px); top: 115px; }
+<!--@end-->
+#list-blog li.dlist-content { width: calc(100% - var(--cmenu_width)); display:flex }
+<!--@if($mi->blog_layout == "right")-->
+	#list-blog li.dlist-menu { order:2}
+	#list-blog li.dlist-content  { order:1;  }
+<!--@else-->
+	#list-blog li.dlist-menu { order:1}
+	#list-blog li.dlist-content  { order:2; }
+	.gototopboard {right: 5px }
+<!--@end-->
+
+.v-wrap {  }
+.v-stretch { width: 100%; height:100vh; height: -webkit-fill-available; min-height: -webkit-fill-available; display: flex; flex-direction: column; justify-content: space-between; width:var(--cmenu_width); position: ; }
+.v-scroll { overflow-y: auto; flex: auto;}
+.v-scroll:after { content:""; display:block; position:absolute; bottom:0; width:100%; height:20px; background: linear-gradient(transparent, var(--oday_bodyBgColor)); z-index:5}
+.v-scroll::-webkit-scrollbar { width: 1px; }
+.v-scroll::-webkit-scrollbar-thumb { border:none; }
+.v-start { padding-top:var(--blogTopGap);}
+.v-end { }
+
+#list-blog .wrap_c_menu { 
+	position:fixed;  z-index:2; 
+	background-color:var(--oday_listBgColorUp1);
+	width:var(--cmenu_width); padding-top:5px;
+	overflow-y:auto; overflow-x:hidden; 
+	box-shadow:var(--oday_listShadowUp);
+	height:calc(100vh - var(--cmenu_topGap) ); top:var(--cmenu_topGap);
+}
+#list-blog .dlist_menu_opt { display:flex; justify-content: space-between; align-items: center;  padding:1em .5em .5em 1em;  }
+#list-blog .dlist_menu_opt div {display:flex;  align-items: center; line-height: 1;}
+#list-blog .dlist_menu_opt div.font-size { font-size:12px;}
+#list-blog .dlist_menu_opt div.font-size > * + * {margin-left:4px; }
+#list-blog .dlist_menu_opt span {font-size:.8em}
+#list-blog .dlist_menu_opt label { 
+	--onoff_height: 10px;
+	height: var(--onoff_height);
+	font-size: var(--onoff_height);
+}
+#list-blog .dlist_menu { padding:0 5px 20px 5px; position:relative; overflow: hidden;}
+#list-blog .dlist_menu a + a {border-top:var(--oday_listBorder);}
+#list-blog .dlist_menu_notice_list {  }
+#list-blog .dlist_menu_notice_list a { display:flex; align-items: center; height:var(--cmenu_size);  width:100%; padding:0 10px}
+#list-blog .dlist_menu_notice_list a i.bx {color:#f00; font-size:1.3em; }
+
+#list-blog .dlist_menu_list {display:flex; flex-direction: column; border:var(--oday_listBorder); border-radius:6px; overflow:hidden; box-shadow:var(--oday_listShadow); background-color:var(--oday_listBgColor)}
+#list-blog .dlist_menu_list  + .dlist_menu_list  { margin-top:10px;}
+#list-blog .dlist_menu_list.active { border-color:var(--oday_mainColorDark); position: relative; z-index: 1; box-shadow:var(--oday_listShadowUp);  }
+#list-blog .dlist_menu_list .nocate_t {order:1}
+#list-blog .dlist_menu_list .nocate_c { order:2}
+#list-blog .dlist_menu_list span i { opacity:.7; margin-right:1px}
+#list-blog .dlist_doc_list.slide { }
+
+#list-blog .dlist_menu_title { display:flex; align-items: center; height:calc(var(--cmenu_size) * 1.1); font-weight:500; font-size:.9em; padding-left:10px; padding-right:10px; cursor: pointer; box-shadow:var(--oday_listShadow); position:relative; z-index:1}
+#list-blog .dlist_doc_list_sub li { border-top:var(--oday_listBorderDown);  }
+#list-blog .dlist_menu_title.dep2 + .dlist_menu_title.dep2 { border-top:none;}
+#list-blog .dlist_menu_title.dep2 { height:calc(var(--cmenu_size) * 1); box-shadow:var(--oday_listShadow); position:relative; z-index:1;background-color:var(--oday_listBgColor) }
+#list-blog .csdep { padding-left:5px; }
+#list-blog .csdep1 { padding-left:10px; }
+#list-blog .csdep2 { padding-left:20px; }
+#list-blog .csdep3 { padding-left:30px; }
+#list-blog .csdep4 { padding-left:40px; }
+#list-blog .csdep5 { padding-left:50px; }
+#list-blog .csdep6 { padding-left:60px; }
+#list-blog .csdep7 { padding-left:70px; }
+#list-blog .csdep8 { padding-left:80px; }
+#list-blog .csdep9 { padding-left:90px; }
+#list-blog .morecatelist_cate { margin-left:auto;}
+#list-blog .dlist_menu_link {display:flex; align-items: center; height: var(--cmenu_size);    font-size:1em; padding-right:10px; line-height:1}
+#list-blog .dlist_menu_link.active {  font-weight:500; background-color:var(--oday_listBgColorDown2); }
+
+#list-blog .dlist_menu_notice_list span.title,
+#list-blog .dlist_menu_link span.title {white-space:nowrap; overflow:hidden; text-overflow: ellipsis; padding:0 5px; line-height:1 }
+
+#list-blog .dlist_doc_list.slide,
+#list-blog .dlist_doc_list + ul {display:none;}
+#list-blog .dlist_doc_list {background-color:var(--oday_listBgColorDown);   }
+#list-blog .dlist_doc_list.active { background-color:var(--oday_listBgColorDown2); }
+#list-blog .dlist_menu .count,
+#list-blog .dlist_menu .read { white-space:nowrap; font-size:10px; font-weight:500; display: flex; align-items: center;}
+#list-blog .dlist_menu .count i,
+#list-blog .dlist_menu .read i { font-size:1.2em}
+#list-blog .dlist_menu .count.star i { color:var(--oday_mainColorOpt)}
+#list-blog .dlist_menu span:not(.title) + span {margin-left:5px}
+
+#list-blog .dlist_menu .dlist_menu_title i.bx { font-size:1.2em; margin-right:5px;}
+#list-blog .dlist_menu em {color:var(--oday_mainColorOpt); margin: -5px 0 0 2px; font-size:.8em; font-weight:500}
+#list-blog .dlist_menu i.bxs-folder,
+#list-blog .dlist_menu i.bx-folder  { color:var(--oday_mainColorDark);  opacity:.8}
+#list-blog .dlist_menu i.bxs-folder-open{ color:var(--oday_mainColorLight);  opacity:.5}
+#list-blog .dlist_menu i.bx-subdirectory-right { color:var(--oday_mainColor); }
+#list-blog .dlist_menu i.bxs-badge-check { color:#00a4ff; font-size:1.2em;}
+#list-blog .dlist_menu i.bx-check { color:var(--oday_fontHoverColor); font-size:1.3em;}
+#list-blog .dlist_menu i.bxs-lock  { color:#ff0000; font-size:1.2em;}
+#readBox.nolimit {
+	background-color:var(--oday_listBgColor) ; border-radius: 0 0 var(--oday_readRadius) var(--oday_readRadius);
+	margin-bottom:0; padding-bottom: 30px; width:100%; overflow:unset; 
+	padding-top:var(--blogTopGap); 
+	border-top:none;
+}
+#readBox.nolimit .comList { background-color: unset; }
+.close_catemenu,
+.open_catemenu { display:none}
+#write_comment { max-width: var(--oday_maxWidth);}
+@media screen and (max-width: 768px){
+	:root {
+		--cmenu_size : 50px;
+	}
+	.preview_btn { display:none; }
+	.od-bord { border-left:none; max-width: 100%; }
+	#readBox.nolimit {padding-top:0; }
+	
+	.blogHeader { position:unset; width:100%; flex-direction: column;   height: auto;}
+	.blogHeader:after { display:none; }
+	.blogHeader li + li { padding-top:5px; border-top:var(--oday_listBorder)}
+	.blogHeader li {justify-content: space-between; height:40px}
+	.blogHeader li .obtn.primary { margin-left:auto;}
+	.blogHeader li.blogbtnbox { margin-left:0;}
+	.blogHeader.use_set { padding-right:0}
+	
+	#list-blog .dlist_menu_opt { padding:2em 0 0 0; background-color:var(--oday_listBgColor) ;}
+	#list-blog .dlist_menu_opt span {font-size:.9em}
+	#list-blog .dlist_menu_opt label { 
+		--onoff_height: 15px;
+	    height: var(--onoff_height);
+	    font-size: var(--onoff_height);
+	}
+	
+	<!--@if($mi->blog_layout == "right")-->
+		#list-blog li.dlist-menu { order:1}
+		#list-blog li.dlist-content  { order:2}
+	<!--@else-->
+		#list-blog li.dlist-menu { order:1}
+		#list-blog li.dlist-content  { order:2}
+	<!--@end-->
+	
+	#list-blog li.dlist-menu {
+		position:fixed;
+		z-index:4;
+		background-color: var(--oday_popoupBg); 
+		backdrop-filter: blur(5px);		
+		top:0;
+		left: 0;
+		width:100%;
+		transition: 0.3s ease;
+		visibility: hidden;
+		opacity:0;
+		transform: translateY(-10px) ;
+	}
+
+	#list-blog li.dlist-menu.open-cmenu {
+		visibility: visible;
+		opacity:1;
+		transform: translateY(0) ;
+		z-index: 99;
+		top: 0;
+		left: 0;
+		height: -webkit-fill-available;
+	}
+	.v-stretch {width:-webkit-fill-available; position: fixed; top:0; background-color:var(--oday_listBgColor) ; box-shadow: 5px 0px 16px 0px rgba(0,0,0,.2); }
+	.v-start {box-shadow:var(--oday_listShadow); padding:50px 50px 20px 50px}
+	.v-start li.vm { display:flex; justify-content: center; align-items: center;}
+	#list-blog .wrap_c_menu {position:relative; width:100%; padding:20px;}
+	#list-blog li.dlist-content  { width:100%;  flex-direction: column;}
+	.naviBoxSide > ul {margin-top:0}
+	
+	.open_catemenu { 
+		position:fixed; right:10px;
+		display:inline-block; margin-left: auto;
+		font-size: 1.5em;
+		width: 40px;
+		height: 40px;
+		border-radius: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 80;
+		<!--@if($oi->layout =='Oday_horizon')-->
+		 top:65px;
+		<!--@else-->
+		 top:5px;
+		<!--@end-->
+	} 
+	.open_catemenu.scrollchange2 { background-color: var(--oday_mainColorDark); color: var(--oday_primaryBtnColor); }
+	.close_catemenu { display:inline-block; font-size:30px; position:fixed; top:5px; right:5px; color: var(--oday_mainColorDark);} 
+}
+
+</style>
+<ul class="blogHeader<!--@if($mi->preview=='use' || $mi->theme_use == 'use')--> use_set<!--@end-->">
+	<li>
+		<div class="page-t">
+			<a href="{getUrl('document_srl','')}">
+				<block loop="$GNB->list=>$key1,$val1" cond="$val1['selected']">
+					<span>{$val1['text']}</span>
+					<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+						<span>{$val2['text']}</span>
+						<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+							<span>{$val3['text']}</span>
+							<block loop="$val3['list']=>$key4,$val4" cond="$val4['selected']">
+								<span>{$val4['text']}</span>
+							</block>
+						</block>
+					</block>
+				</block>
+				<block loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+					<span>{$val1['text']}</span>
+					<block loop="$val1['list']=>$key2,$val2" cond="$val2['selected']">
+						<span>{$val2['text']}</span>
+						<block loop="$val2['list']=>$key3,$val3" cond="$val3['selected']">
+							<span>{$val3['text']}</span>
+						</block>
+					</block>
+				</block>
+			</a>
+		</div>
+		<a class="open_catemenu"><i class='bx bx-right-indent'></i></a>		
+	</li>	
+	<li  cond="$grant->write_document" class="blogbtnbox">
+		<a cond="$grant->write_document" href="{getUrl('act','dispBoardWrite','document_srl','')}" class="obtn primary middle"><i class='bx bxs-pencil'></i> 글쓰기</a>				
+		<a cond="$grant->manager" href="{getUrl('','module','document','act','dispDocumentManageDocument')}"  class="obtn middle" onclick="popopen(this.href,'manageDocument'); return false;"><i class='bx bx-select-multiple'></i>게시글 관리</a>
+		<a cond="$grant->manager" href="{getUrl('act','dispBoardAdminBoardInfo')}" class="obtn middle"><i class='bx bx-slider'></i> 설정</a>	
+	</li>
+	<!--@if(!Mobile::isMobileCheckByAgent())-->
+	<li class="vp">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<form  action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+			<input type="hidden" name="search_target" value="title_content" />
+			<input type="hidden" name="vid" value="{$vid}" />
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="category" value="{$category}" />
+			<input type="hidden" name="listStyle" value="{$listStyle}" />
+			<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class=" searchBox" placeholder="Search... " />
+			<button type="submit" class=" middle" onclick="xGetElementById('board_search').submit();return false;"><i class='bx bx-search' ></i></button>
+			<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><i class='bx bx-revision' ></i></a>
+			<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn"><i class='bx bxs-chevrons-right' ></i></a>
+		</form>
+	</li>
+	<!--@end-->	
+</ul>
+<ul id="list-blog">	
+	<li class="dlist-menu v-wrap">
+		<div class="nav v-stretch">
+			<ul class="v-start">
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<li class="vm">
+					<form  action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+						<input type="hidden" name="search_target" value="title_content" />
+						<input type="hidden" name="vid" value="{$vid}" />
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="category" value="{$category}" />
+						<input type="hidden" name="listStyle" value="{$listStyle}" />
+						<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="" placeholder="Search... " />
+						<button type="submit" class="" onclick="xGetElementById('board_search').submit();return false;"><i class='bx bx-search' ></i></button>
+						<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><i class='bx bx-revision' ></i></a>
+						<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn"><i class='bx bxs-chevrons-right' ></i></a>
+					</form>
+				</li>
+				<!--@end-->
+				<li class="dlist_menu_opt">
+					<div class="font-size">
+						<a class="font-btn list" id="switcher-small"><i class='bx bx-minus' ></i></a>
+						<span class="sizeview flist">{$viewfont_list}px</span>
+						<a class="font-btn list" id="switcher-large"><i class='bx bx-plus'></i></a>
+					</div>
+					<div>
+						<span>ALL OPEN : {$total_count}</span><input type="checkbox" class="checkonoff" id="catemenuopen" /><label for="catemenuopen"></label>
+					</div>
+				</li>
+			</ul>
+			<div class="navlist v-scroll">
+				{@ 
+					$cate_list = array(); $current_key = null; 
+				}
+				<!--@foreach($category_list as $key=>$val)-->
+					<!--@if(!$val->depth)-->
+						{@
+							$cate_list[$key] = $val;
+							$cate_list[$key]->children = array();
+							$current_key = $key;
+						}
+					<!--@elseif($current_key)-->
+						{@ $cate_list[$current_key]->children[] = $val }
+					<!--@end-->
+				<!--@end-->
+				
+				<ul class="dlist_menu set_font_list">
+					<li class="dlist_menu_notice_list" cond="$notice_list">
+						<a loop="$notice_list=>$no,$document" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" title="{strip_tags($document->getTitle())}">
+							<!--@if($document_srl==$document->document_srl)-->
+							<i class='bx bx-check'></i>
+							<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+							<i class='bx bx-check'></i>
+							<!--@else-->
+							<i class='bx bxs-microphone bx-flip-horizontal'></i>
+							<!--@end-->
+							<!--@if($document->isSecret())-->
+								<i class='bx bxs-lock'></i>
+							<!--@end-->
+							<span class="title">{strip_tags($document->getTitle())}</span>
+						</a>
+					</li>
+					<li loop="$cate_list=>$key,$val" class="dlist_menu_list">
+						<div class="dlist_menu_title">
+							<i class='bx bxs-folder'></i> {$val->title} <em cond="$val->document_count">{$val->document_count}</em>
+							<span class="morecatelist_cate"><i class='bx bx-plus'></i></span>
+						</div>
+						<div class="dlist_doc_list slide">
+							<a loop="$document_list =>$no,$document" cond="$val->category_srl == $document->get('category_srl')" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" class="dlist_menu_link  csdep{$item->depth}<!--@if($document_srl==$document->document_srl)--> active<!--@end-->" 
+							title="{strip_tags($document->getTitle())}
+							<span>
+								<!--@if($document->get('readed_count'))--> <i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}<!--@end-->
+								<!--@if($document->getCommentCount() && $mi->comment_use == 'yes')--> <i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}<!--@end-->
+								<!--@if($document->get('voted_count')!=0)--> <i class='bx bxs-heart'></i>{$document->get('voted_count')}<!--@end-->
+							</span>
+							">
+								
+								<!--@if($document_srl==$document->document_srl)-->
+									<i class='bx bx-check'></i>
+								<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+									<i class='bx bx-check'></i>
+								<!--@else-->
+									<!-- i class='bx bx-file-blank' ></i -->
+								<!--@end-->
+								<!--@if($document->isSecret())-->
+									<i class='bx bxs-lock'></i>
+								<!--@end-->
+								<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+									<span class="title">{$lang->msg_is_secret} </span>
+								<!--@else-->
+									<span class="title">{strip_tags($document->getTitle())}</span>
+								<!--@end-->
+								
+								<span cond="$list_config['readed_count']->idx && $document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+								<span cond="$list_config['comment_count']->idx && $document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+								<span cond="$list_config['voted_count']->idx && $document->get('voted_count')!=0" class="count"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+								{@
+									$oStarPointModel = getModel('starpoint');
+									$total_point = $oStarPointModel->getDocumentRatedTotalPoint($document->document_srl);
+								}								
+								<span cond="$total_point->avg > 0"  class="count starpoint"><i class='bx {$mi->starpoint_icon}' ></i>{number_format($total_point->avg, 1)}</span>
+								<!--@if($grant->manager)--><input type="checkbox" name="cart" value="{$document->document_srl}" class="iCheck" onclick="doAddDocumentCart(this)" checked="checked"|cond="$document->isCarted()" /><!--@end-->
+							</a>
+							
+						</div>
+						<ul cond="count($val->children)" class="dlist_doc_list_sub">
+
+							<li loop="$val->children=>$idx,$item" class=" " >
+						
+								<div class="dlist_menu_title dep2 csdep{$item->depth}">
+									<i class="bx bxs-folder-open"></i> {$item->title} <em cond="$item->document_count">{$item->document_count}</em>
+								</div>
+								<div class="dlist_doc_list<!--@if($document_srl==$document->document_srl)--> active<!--@end-->">
+							
+									<a loop="$document_list =>$no,$document" cond="$item->category_srl == $document->get('category_srl')"  href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" class="dlist_menu_link dep2 csdep{$item->depth} <!--@if($document_srl==$document->document_srl)--> active<!--@end-->"
+									title="{strip_tags($document->getTitle())}
+									<span>
+										<!--@if($document->get('readed_count'))--> <i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}<!--@end-->
+										<!--@if($document->getCommentCount() && $mi->comment_use == 'yes')--> <i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}<!--@end-->
+										<!--@if($document->get('voted_count')!=0)--> <i class='bx bxs-heart'></i>{$document->get('voted_count')}<!--@end-->
+									</span>
+									">
+
+										<!--@if($document_srl==$document->document_srl)-->
+											<i class='bx bx-check'></i>
+										<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+											<i class='bx bx-check'></i>
+										<!--@else-->
+											<!-- i class='bx bx-file-blank' ></i -->
+										<!--@end-->
+										<!--@if($document->isSecret())-->
+											<i class='bx bxs-lock'></i>
+										<!--@end-->
+										<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+											<span class="title">{$lang->msg_is_secret} </span>
+										<!--@else-->
+											<span class="title">{strip_tags($document->getTitle())}</span>
+										<!--@end-->
+
+										<span cond="$list_config['readed_count']->idx && $document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+										<span cond="$list_config['comment_count']->idx && $document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+										<span cond="$list_config['voted_count']->idx && $document->get('voted_count')!=0" class="count"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+										<!--@if($grant->manager)--><input type="checkbox" name="cart" value="{$document->document_srl}" class="iCheck" onclick="doAddDocumentCart(this)" checked="checked"|cond="$document->isCarted()" /><!--@end-->
+									</a>
+								</div>
+
+							</li>
+
+						</ul>
+					</li>
+					<li class="dlist_menu_list">
+						<div class="dlist_doc_list slide nocate_c<!--@if($document_srl==$document->document_srl)--> active<!--@end-->">
+							{@ $nocate_list_count = 0;  <!--// 비카테고리글 숫자 체크 -->}
+							<a  loop="$document_list =>$no,$document" cond="!$val->category_srl == $document->get('category_srl') || !$val->category_srl" href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow" class="dlist_menu_link csdep<!--@if($document_srl==$document->document_srl)--> active<!--@end-->" 
+							title="{strip_tags($document->getTitle())}
+							<span>
+								<!--@if($document->get('readed_count'))--> <i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}<!--@end-->
+								<!--@if($document->getCommentCount() && $mi->comment_use == 'yes')--> <i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}<!--@end-->
+								<!--@if($document->get('voted_count')!=0)--> <i class='bx bxs-heart'></i>{$document->get('voted_count')}<!--@end-->
+							</span>
+							">
+								
+								{@ $nocate_list_count = $nocate_list_count +1; }
+								<!--@if($document_srl==$document->document_srl)-->
+									<i class='bx bx-check'></i>
+								<!--@elseif(!$document_srl && $no == number_format($total_count))-->
+									<i class='bx bx-check'></i>
+								<!--@else-->
+									<!-- i class='bx bx-file-blank' ></i -->
+								<!--@end-->
+								<!--@if($document->isSecret())-->
+									<i class='bx bxs-lock'></i>
+								<!--@end-->
+								<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+									<span class="title">{$lang->msg_is_secret} </span>
+								<!--@else-->
+									<span class="title">{strip_tags($document->getTitle())}</span>
+								<!--@end-->
+								<span cond="$list_config['readed_count']->idx && $document->get('readed_count')" class="read"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+								<span cond="$list_config['comment_count']->idx && $document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+								<span cond="$list_config['voted_count']->idx && $document->get('voted_count')!=0" class="count"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+								{@
+									$oStarPointModel = getModel('starpoint');
+									$total_point = $oStarPointModel->getDocumentRatedTotalPoint($document->document_srl);
+								}								
+								<span cond="$total_point->avg > 0"  class="count starpoint"><i class='bx {$mi->starpoint_icon}' ></i>{number_format($total_point->avg, 1)}</span>								
+								<!--@if($grant->manager)--><input type="checkbox" name="cart" value="{$document->document_srl}" class="iCheck" onclick="doAddDocumentCart(this)" checked="checked"|cond="$document->isCarted()" /><!--@end-->
+							</a>
+						</div>
+						<div class="dlist_menu_title nocate_t">
+							<i class='bx bx-folder' ></i> No Category <em>{$nocate_list_count}</em>
+							<span class="morecatelist_cate"><i class='bx bx-plus'></i></span>
+						</div>	
+					</li>
+				</ul>
+			</div>
+			<div class="v-end">
+				<a class="close_catemenu"><i class='bx bxs-x-circle'></i></a>
+			</div>				
+		</div>
+		
+	</li>
+	<li class="dlist-content">
+	
+		<!--@if(!$document_list && !$notice_list)-->
+			<div class="no_documents" style="padding-top: var(--blogTopGap);">
+			<!--@if($search_keyword)-->
+				검색된 글이 없습니다.
+			<!--@else-->
+				{$lang->no_documents}
+			<!--@end-->
+			</div>
+		<!--@else-->		
+			<article id="readBox" class="nolimit">
+				<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+					<include target="opt_read/_read_opt_secret.html" />
+					<include target="opt_read/_read_opt_navi_bottom.html" cond="$mi->read_bnavi == 'use'" />
+				<!--@else--><!-- 비밀글 분기 -->
+					<include target="opt_read/_read_opt_location.html" cond="$mi->read_location == 'use'" />	
+					<include target="opt_read/_read_opt_title.html" cond="$mi->read_title == 'use'" />	
+					<include target="opt_read/_read_opt_meta.html" cond="$mi->read_meta == 'use'"/>
+					
+					<include target="opt_read/_read_opt_extravar.html" cond="$mi->extravar_locaion == 'top'" />
+					<div class="rMain get_font_read">
+					{$oDocument->getContent(false)|noescape}
+					</div>
+					<include target="opt_read/_read_opt_extravar.html" cond="$mi->extravar_locaion == 'bottom'" />
+					<include target="/modules/starpoint/tpl/OrangeDay_starpoint/rating.html" cond="$mi->starpoint_use == 'use'" />
+					<include target="opt_read/_read_opt_download.html" cond="$mi->read_download == 'use'" />
+					<include target="opt_read/_read_opt_doNsns.html" cond="$mi->read_utility == 'use' || $mi->read_sns == 'use'"/>						
+					<include target="opt_read/_read_opt_vote.html" cond="$mi->read_vote == 'use'" />
+					<include target="opt_read/_read_opt_tags.html" cond="$mi->read_tag == 'use'" />
+			
+					<include target="opt_read/_read_opt_sign.html" cond="$mi->read_sign == 'use' || $mi->read_alist == 'use'" />
+
+					<include target="opt_read/_read_opt_navi_blog.html" cond="$mi->read_bnavi == 'use'" />
+					<include target="_comment.html" cond="$mi->comment_use == 'yes'" />
+					<include target="_comment_write.html" cond="$mi->comment_use == 'yes'" />
+				<!--@end-->
+			</article>
+			<include target="opt_read/_read_opt_navi_side_blog.html" />
+		<!--@end-->
+	</li>
+</ul>
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+	<div class="gototopboard" style="display:none;"><a><i class='bx bx-chevron-up'></i></a></div>
+	<script>
+		$(".gototopboard").click(function(){
+			$('html, body').animate({scrollTop: 0}, 500);
+		});
+		$(window).scroll(function () {
+			$(".gototop.layout").removeClass("layout");
+			Yposition2 = $(this).scrollTop();
+			if (Yposition2 >= 100) {
+				$(".gototopboard").fadeIn();
+			}else {
+				$(".gototopboard").fadeOut();
+			}
+		});
+	</script>	
+<!--@end-->
+<script>
+	$(window).scroll(function () {
+		Yposition = $(this).scrollTop();
+		if (Yposition > 100) {
+			$("a.open_catemenu").addClass("scrollchange2");
+		}else {
+			$("a.open_catemenu").removeClass("scrollchange2");
+		}		
+	});
+	$(".gototop-blog").click(function(){$('html, body').animate({scrollTop: 0}, 500);});
+	
+	$(".dlist_menu_title").click(function(){
+		$(".dlist_doc_list.slide, .dlist_doc_list.slide + ul").slideUp();
+		$(".morecatelist_cate").html("<i class='bx bx-plus'></i>");
+		if(!$(this).parent().find(".dlist_doc_list").is(":visible")){
+			$(this).parent().find(".dlist_doc_list").slideDown();
+			$(this).parent().find(".dlist_doc_list").next().slideDown();
+			$(this).find(".morecatelist_cate").html("<i class='bx bx-minus'></i>");
+		}
+	});	
+	//서브 메뉴 이동시 해당 메뉴 열어 놓기
+	$(".dlist_menu_list").has(".active").find(".dlist_doc_list, .dlist_doc_list_sub").show();
+	$(".dlist_menu_list").has(".active").addClass("active");
+	$(".dlist_menu_list").has(".active").find(".morecatelist_cate").html("<i class='bx bx-minus'></i>");
+
+	var $getCateopen = XE.cookie.get('setOdayCateopen_{$mid}');
+	if( $getCateopen == "open" ) {
+		$(".dlist_doc_list, .dlist_doc_list_sub").show();
+		$(".morecatelist_cate").html("<i class='bx bx-minus'></i>");
+		setCookie( "setOdayCateopen_{$mid}", "open" , 365 );
+		$("input:checkbox[id='catemenuopen']").prop("checked", true);
+	}
+
+	$(function(){
+		$("#catemenuopen").change(function(){
+			if($(this).is(":checked")){
+				$(".dlist_doc_list, .dlist_doc_list_sub").slideDown();
+				$(".morecatelist_cate").html("<i class='bx bx-minus'></i>");
+				setCookie( "setOdayCateopen_{$mid}", "open" , 365 );
+			}else{
+				$(".dlist_doc_list.slide,.dlist_doc_list_sub").slideUp();
+				$(".morecatelist_cate").html("<i class='bx bx-plus'></i>");
+				$(".dlist_menu_list").has(".active").find(".dlist_doc_list, .dlist_doc_list_sub").slideDown();
+				$(".dlist_menu_list").has(".active").addClass("active");
+				$(".dlist_menu_list").has(".active").find(".morecatelist_cate").html("<i class='bx bx-minus'></i>");
+				setCookie( "setOdayCateopen_{$mid}", "" , 365 );
+			}
+		});
+<!--@if($mi->blog_layout == "right")-->
+		$(".dlist_menu_link").tooltip({
+			delay:0,
+			opacity:1,
+			track: true,
+			position: { 
+				my: "right-20 center", at: "left-10 top",
+				using: function( position ) {
+					$( this ).css( position );
+					$( "<div>" )
+					.addClass( "ui-tooltip-arrow" )
+					.addClass( "left" )
+					.appendTo( this );
+				}			
+			},
+			content: function () {
+				// title 속성의 내용을 HTML로 반환
+				return $(this).attr("title");
+			}
+		});	   
+<!--@else-->
+		$(".dlist_menu_link").tooltip({
+			delay:0,
+			opacity:1,
+			track: true,
+			position: { 
+				my: "left+20 center", at: "right top",
+				using: function( position ) {
+					$( this ).css( position );
+					$( "<div>" )
+					.addClass( "ui-tooltip-arrow" )
+					.addClass( "right" )
+					.appendTo( this );
+				}						
+			},
+			content: function () {
+				// title 속성의 내용을 HTML로 반환
+				return $(this).attr("title");
+			}
+		});	   
+<!--@end-->
+
+
+	});
+
+	$(".morecatelist").click(function(){
+		$(".dlist_nocate_list").slideUp();
+		$(".morecatelist").html("<i class='bx bx-plus'></i>");
+		if(!$(".dlist_nocate_list").is(":visible")){
+			$(".dlist_nocate_list").slideDown();
+			$(this).html("<i class='bx bx-minus'></i>");
+		}
+	});
+	$(".open_catemenu").click(function(){
+		scrollDisable();
+		$(".dlist-menu").addClass("open-cmenu")
+	});
+	$(".close_catemenu").click(function(){
+		scrollAble();
+		$(".dlist-menu").removeClass("open-cmenu")
+	});
+	
+</script>

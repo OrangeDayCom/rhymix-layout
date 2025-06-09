@@ -1,0 +1,150 @@
+<aside loop="$output=>$_class,$_output" class="docs icon-{$_class}">
+	<h3 class="hx">{$_output[0]} ({$_output[1]->page_navigation->total_count})</h3>
+
+	<div class="more">
+		<!--@if($module_srl || (INT)$cpage || (INT)$page || (INT)$epage)-->
+		<span class="li">
+			{@
+			$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl'); // 단, reset 링크는 치환하지 않고 기존대로 유지함.
+			if((INT)$cpage || (INT)$page || (INT)$epage):
+				if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board)
+					$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+			endif;
+			}
+			<a href="{$url}" class="getElkhabookList">reset</a>
+		</span>
+		<!--@end-->
+
+		{@
+		$page_name = $_output[2];
+		}
+		<!--@if($_output[1]->page_navigation->cur_page >= 3)-->
+		<span class="li">
+			{@
+			$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl', $_output[3][0] ?? '');
+			if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+				$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+			endif;
+			$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+			$url .= ($_output[1]->page_navigation->cur_page -1);
+			}
+			<a href="{$url}" class="getElkhabookList">prev</a>
+		</span>
+		<!--@end-->
+
+		<!--@if($_output[1]->page_navigation->cur_page >= 2)-->
+		<strong class="li"> <a href="javascript:;" onclick="return window.go_to_page('{$page_name}', {$_output[1]->page_navigation->cur_page}, '{$lang->elkhabook_go_to_page}');">{$_output[1]->page_navigation->cur_page}</a></strong>
+		<!--@end-->
+
+		<!--@if($_output[1]->page_navigation->cur_page < $_output[1]->page_navigation->last_page)-->
+		<span class="li">
+			{@
+			$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl', $_output[3][0] ?? '');
+			if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+				$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+			endif;
+			$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+			$url .= ($_output[1]->page_navigation->cur_page + 1);
+			}
+			<a href="{$url}" class="getElkhabookList">next</a>
+		</span>
+		<!--@end-->
+
+		<!--// 1.0.9 신규 기능: 공개 옵션 (단, 설정 가능한 값이 2개 이상일 때 공개 옵션을 지정할 수 있게.) -->
+		<!--@if($_member_info->member_srl == ($logged_info->member_srl ?? 0) && count($my_config = $_output[4] ?? []) && strlen($name = $_output[3][1] ?? ''))-->
+		<include target="procElkhabookMyConfig.html" />
+		<!--@endif-->
+	</div>
+
+	<div class="docs-ajax">
+		<!--@if(!$_output[1]->toBool())-->
+		<p class="msg">
+			{@
+			echo $_output[1]->getMessage();
+			if(strlen($_output[4][0] ?? '')):
+				echo ' [' . \Context::getLang('elkhabook_contents_'.$_output[4][0]) . ']';
+			endif;
+			}
+		</p>
+		<!--@else if(is_array($_output[1]->data) && count($_output[1]->data))-->
+		{@
+		$regdate = 0;
+		$regdate2= 0;
+		}
+		<ul class="ul">
+			<!--@foreach($_output[1]->data as $obj)-->
+			<li class="{$regdate==$obj->getRegdate('Y-m-d')?'line':'circle'}{$regdate2==$obj->getRegdate('ymdhi')?' time_hide':''}{$obj->get('valid')=='N'? ' valid_N':''}">
+				<div class="left">
+					<!--//<span class="thumb"><img src="" alt="" /></span>-->
+					<div class="regdate">{$regdate = $obj->getRegdate('Y-m-d')}</div>
+					<div class="time">{$obj->getRegdate('H:i')}</div>
+				</div>
+				<!--@if($oModel->isAccessible($obj))-->
+				<div class="doc">
+					<!--// 문서 -->
+					<!--@if(method_exists($obj, 'getTitleText'))-->
+					<h4 class="hx"><span>
+						<block cond="$board!=$oModel->getMid($obj->get('module_srl') ?: 0)">[<a href="{getUrl('','mid',$oModel->getMid($obj->get('module_srl') ?: 0))}">{@ echo $oModel->getBrowserTitle($obj->get('module_srl')); }</a>]</block>
+						<a href="{$obj->getPermanentUrl()}">{$obj->getTitleText()}</a>
+					</span></h4>
+					<p class="p">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</p>
+					<!--@else if(isset($obj->elkhatalk))-->
+					<h4 class="hx"><span>
+						<block cond="$obj->get('valid')!='N'">
+							{@ if($obj->roomName()) echo sprintf('<span class="room_name">[%s]</span> ', $obj->roomName()); }
+							<!--//<a href="{$obj->getPermanentUrl()}">{$obj->getContent2()}</a>-->{$obj->getContent2()}
+							<a cond="$obj->isGranted()" href="javascript:;" onclick="return procElkhatalk3Delete('{$lang->confirm_delete}', {$logged_info->member_srl}, {$obj->get('pk')});" class="delete">{$lang->cmd_delete}</a>
+						</block>
+						<block cond="$obj->get('valid')=='N'">{$obj->getContent2()}</block>
+					</span></h4>
+					<!--@else-->
+					<!--// 댓글 -->
+					<h4 class="hx"><span><a href="{$obj->getPermanentUrl()}">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</a></span></h4>
+					<p class="p">[<a href="{getUrl('','mid',$oModel->getMid($obj->oDocument->get('module_srl') ?: 0))}">{@
+						echo $oModel->getBrowserTitle($obj->get('module_srl'));
+						}</a>] <a href="{$obj->oDocument->getPermanentUrl()}">{$s = $obj->oDocument->getTitleText(100,'...')}{@ if(!strlen(trim($s))) echo '-'; }</a></p>
+					<!--@endif-->
+					{@
+					$buff = [];
+					if($_member_info->member_srl != $obj->get('member_srl')):
+						$nick_name = '';
+						if($obj->get('member_srl') > 0):
+							$author_info = \MemberModel::getMemberInfoByMemberSrl($obj->get('member_srl'));
+							if(($author_info->member_srl ?? 0) == $obj->get('member_srl'))
+								$nick_name = $author_info->nick_name;
+						endif;
+						if(!strlen($nick_name))
+							$nick_name = $obj->getNickName();
+						$buff[] = sprintf('<span class="tooltip author"><span class="label">%s </span><a href="%s" onclick="return false;" class="member_%d">%s</a></span> ', $lang->author, $oModel->getUrl('dispMemberInfo', $obj->get('member_srl'), 'getUrl'), $obj->get('member_srl'), $nick_name);
+					endif;
+					if(!isset($obj->elkhatalk)):
+						$info_arr = [
+							'voted_count' => $obj->get('voted_count') ?: 0,
+							'blamed_count' => abs($obj->get('blamed_count') ?: 0),
+							'comment_count' => $obj->get('comment_count') ?: 0,
+							'readed_count' => $obj->get('readed_count') ?: 0,
+						];
+						foreach($info_arr as $info_arr_key => $info_arr_val)
+							if($info_arr_val)
+								$buff[] = sprintf('<span class="tooltip %s"><span class="label">%s </span>%s</span> ', $info_arr_key, \Context::getLang($info_arr_key), number_format($info_arr_val));
+					endif;
+					if(count($buff)):
+						echo '<p class="p info">' . implode(' ', $buff). '</p>';
+					endif;
+					}
+				</div>
+				<!--@else-->
+				<div class="doc">
+					<h4 class="hx"><span>{$lang->msg_not_permitted}</span></h4>
+					<p class="p">-</p>
+				</div>
+				<!--@endif-->
+				{@
+				$regdate2 = $obj->getRegdate('ymdhi');
+				}
+			</li>
+			<!--@endforeach-->
+		</ul>
+		<!--@end-->
+	</div>
+</aside>

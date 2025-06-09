@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon version="0.2">
+    <title xml:lang="ko">게시판 목록에서 카테고리/확장변수 바로 수정 애드온</title>
+    <description xml:lang="ko">게시판 스킨에서 간단한 조작만 하고, 이 애드온을 사용하면 게시판 목록에서 카테고리 및 확장변수를 바로 업데이트할 수 있습니다.</description>
+    <version>0.1.5</version>
+    <date>2023-06-08</date>
+    <author email_address="cydemo@gmail.com" link="https://www.xetown.com/">
+        <name xml:lang="ko">cydemo</name>
+    </author>
+	
+	<extra_vars>
+		<var name="category" type="select">
+			<title xml:lang="ko">카테고리 수정</title>
+			<description xml:lang="ko">목록에서 카테고리를 바로 수정할 것인지 결정합니다.</description>
+			<options value="">
+				<title xml:lang="ko">수정 대상에 포함 (기본)</title>
+			</options>
+			<options value="N">
+				<title xml:lang="ko">수정 대상에 포함하지 않음</title>
+			</options>
+		</var>
+		<var name="eid" type="select">
+			<title xml:lang="ko">확장변수 수정</title>
+			<description xml:lang="ko">목록에서 확장변수를 바로 수정할 것인지 결정합니다.</description>
+			<options value="">
+				<title xml:lang="ko">수정 대상에 포함 (기본)</title>
+			</options>
+			<options value="N">
+				<title xml:lang="ko">수정 대상에 포함하지 않음</title>
+			</options>
+		</var>
+		<var name="eids" type="text">
+			<title xml:lang="ko">확장변수 ID</title>
+			<description xml:lang="ko">목록에서 바로 수정할 확장변수의 ID(일명 eid)를 쉼표 단위로 입력합니다. 아무 것도 입력하지 않으면 게시판 목록 설정에 삽입된 모든 확장변수가 수정 대상이 됩니다.</description>
+		</var>
+		<var name="skin" type="text">
+			<title xml:lang="ko">수정 입력창 스킨</title>
+			<description xml:lang="ko">수정 내용을 입력할 스킨 폴더의 이름을 지정합니다. 입력하지 않으면 default 스킨이 출력됩니다.</description>
+		</var>
+	</extra_vars>
+</addon>

@@ -1,0 +1,117 @@
+<div style="position:  ; top:   " class="snbwrap">
+<!--@if($oi->use_sub_page == 'no' && $oi->use_snb_force == 'yes')-->
+	<div class="sticky_menu"><label for="menu_sticky">고정</label><input type="checkbox" class="checkonoff small" id="menu_sticky" /><label for="menu_sticky"></label></div>
+	<script>
+		var $getMenuSticky = XE.cookie.get('setMenuSticky');
+		if( $getMenuSticky == 'open' ) {
+			$('.snbwrap').addClass('fix');
+			setCookie( 'setMenuSticky', 'open' , 365 );
+			$('input:checkbox[id="menu_sticky"]').prop('checked', true);
+		}
+		$(function(){ 
+			$('#menu_sticky').change(function(){
+				if($(this).is(':checked')){
+					$('.snbwrap').addClass('fix');
+					setCookie( 'setMenuSticky', 'open' , 365 );
+				}else{
+					$('.snbwrap').removeClass('fix');
+					setCookie( 'setMenuSticky', '' , 365 );
+				}
+			});
+
+		});
+	</script>
+<!--@end-->	
+	<div id="SNB" class="depth0 widget_wrap" loop="$GNB->list=>$key1,$val1" cond="$val1['selected']" >
+		<a href="{$val1['href']}" class="{$val1['class']}"|cond="!empty($val1['class'])" target="_blank"|cond="$val1['open_window']=='Y'">
+			<i cond="$val1['icon']" class="{$val1['icon']}"></i> 
+			<span>{$val1['link']|noescape}</span>
+		</a>
+		<ul loop="$GNB->list=>$key1,$val1" cond="$val1['selected'] && $val1['list']" class="depth2">
+			<li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
+				<a href="{$val2['href']}" class="active"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+					<span>{$val2['link']}</span>
+					<i cond="$val2['open_window'] == 'Y'" class='bx bx-link-external'></i>
+				</a>
+				<ul cond="$val2['list']" class="depth3">
+					<li loop="$val2['list'] => $key3, $val3">
+						<a href="{$val3['href']}" class="active"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+							<i class="bx bx-subdirectory-right"></i><span>{$val3['link']|noescape}</span>
+							<i cond="$val3['open_window'] == 'Y'" class='bx bx-link-external'></i>
+						</a>
+						<ul cond="$val3['list']" class="depth4">
+							<li loop="$val3['list'] => $key4, $val4">
+								<a href="{$val4['href']}" class="active"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+									<i class="bx bx-subdirectory-right"></i><span>{$val4['link']|noescape}</span>
+									<i cond="$val4['open_window'] == 'Y'" class='bx bx-link-external'></i>
+								</a>
+								<ul cond="$val4['list']" class="depth5">
+									<li loop="$val4['list'] => $key5, $val5">
+										<a href="{$val5['href']}" class="active"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+											<i class="bx bx-subdirectory-right"></i><span>{$val5['link']|noescape}</span>
+											<i cond="$val5['open_window'] == 'Y'" class='bx bx-link-external'></i>
+										</a>
+									</li>
+								</ul>												
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div id="SNB" class="depth0 widget_wrap" loop="$LNB->list=>$key1,$val1" cond="$val1['selected']">
+		<a href="{$val1['href']}" class="{$val1['class']}"|cond="!empty($val1['class'])" target="_blank"|cond="$val1['open_window']=='Y'">
+			<i cond="$val1['icon']" class="{$val1['icon']}"></i> 
+			<span>{$val1['link']|noescape}</span>
+		</a>
+		<ul loop="$LNB->list=>$key1,$val1" cond="$val1['selected'] && $val1['list']" class="depth2">
+			<li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
+				<a href="{$val2['href']}" class="active"|cond="$val2['selected']" target="_blank"|cond="$val2['open_window'] == 'Y'">
+					<span>{$val2['link']}</span>
+					<i cond="$val2['open_window'] == 'Y'" class='bx bx-link-external'></i>
+				</a>
+				<ul cond="$val2['list']" class="depth3">
+					<li loop="$val2['list'] => $key3, $val3">
+						<a href="{$val3['href']}" class="active"|cond="$val3['selected']" target="_blank"|cond="$val3['open_window'] == 'Y'">
+							<i class="bx bx-subdirectory-right"></i><span>{$val3['link']|noescape}</span>
+							<i cond="$val3['open_window'] == 'Y'" class='bx bx-link-external'></i>
+						</a>
+						<ul cond="$val3['list']" class="depth4">
+							<li loop="$val3['list'] => $key4, $val4">
+								<a href="{$val4['href']}" class="active"|cond="$val4['selected']" target="_blank"|cond="$val4['open_window'] == 'Y'">
+									<i class="bx bx-subdirectory-right"></i><span>{$val4['link']|noescape}</span>
+									<i cond="$val4['open_window'] == 'Y'" class='bx bx-link-external'></i>
+								</a>
+								<ul cond="$val4['list']" class="depth5">
+									<li loop="$val4['list'] => $key5, $val5">
+										<a href="{$val5['href']}" class="active"|cond="$val5['selected']" target="_blank"|cond="$val5['open_window'] == 'Y'">
+											<i class="bx bx-subdirectory-right"></i><span>{$val5['link']|noescape}</span>
+											<i cond="$val5['open_window'] == 'Y'" class='bx bx-link-external'></i>
+										</a>
+									</li>
+								</ul>												
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	
+{@
+	$oi->site_new_com_num = 10;
+	if(!$oi->site_new_com_srl_use) $oi->site_new_com_srl_use  ='no';
+	if($oi->site_new_com_srl_use == 'yes') :
+		$site_new_com_srl_use = $oi->site_new_com_srl_use;
+	else :
+		$site_new_com_srl_use = $oi->site_new_con;
+	endif;	
+}	
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" list_type="simple" markup_type="list" page_count="1" option_view="title,regdate,nickname,thumbnail,content" show_trackback_count="N" show_icon="Y" duration_new="24" thumbnail_type="crop" view_secret_document="not_show" content_type="comment" subject_cut_size="" content_cut_size="300" order_target="update_order" use_limit="" limit_number="" order_type="desc" view_mode="1" show_thumbnail="N" thumbnail_width="30" thumbnail_height="30" show_browser_title="N" show_category="N" show_title="Y" show_contents="N" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="N" show_vote_count="N" show_read_count="N" 
+	show_main_title_icon="bx bxs-message-rounded-dots" 
+	show_main_title="COMMENT" 
+	module_srls="{$site_new_com_srl_use}" 
+	list_count="{$oi->site_new_com_num}" />
+	<include target="banner.html" />
+</div>

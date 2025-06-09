@@ -1,0 +1,12 @@
+<query id="updateDocumentCategorySrl" action="update">
+    <tables>
+        <table name="documents" />
+    </tables>
+    <columns>
+        <column name="category_srl" var="category_srl" filter="number" default="0" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="module_srl" var="module_srl" notnull="notnull" />
+        <condition operation="equal" column="document_srl" var="document_srl" notnull="notnull" />
+    </conditions>
+</query>

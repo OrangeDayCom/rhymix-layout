@@ -1,0 +1,10 @@
+<query action="insert" update-duplicate="true">
+	<tables>
+		<table name="elkhabook_config" />
+	</tables>
+	<columns>
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="name" var="name" notnull="notnull" />
+		<column name="contents" var="contents" notnull="notnull" />
+	</columns>
+</query>

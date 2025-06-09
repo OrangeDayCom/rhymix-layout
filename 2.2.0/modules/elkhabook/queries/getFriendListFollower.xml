@@ -1,0 +1,43 @@
+<!--
+내가 일방적으로 상대를 친추 했다. (=단방향)
+-->
+<query action="select">
+	<tables>
+		<table name="member_friend" alias="f" />
+		<table name="member_friend" alias="f2" type="left join">
+			<conditions>
+				<condition operation="equal" column="f2.target_srl" default="f.member_srl" />
+				<condition operation="equal" column="f2.member_srl" default="f.target_srl" />
+			</conditions>
+		</table>
+		<table name="member" alias="m" type="left join">
+			<conditions>
+				<condition operation="equal" column="m.member_srl" default="f.member_srl" />
+			</conditions>
+		</table>
+	</tables>
+	<conditions>
+		<condition operation="equal" column="f.target_srl" var="target_srl" filter="number" notnull="notnull" />
+		<condition operation="null" column="f2.target_srl" pipe="and" />
+	</conditions>
+	<navigation>
+		<index default="f.friend_srl" order="desc" />
+		<page_count var="page_count" />
+		<page var="page" />
+		<list_count var="list_count" />
+	</navigation>
+</query>
+
+<!--
+"(SELECT f.member_srl AS `member_srl`, m.nick_name AS `nick_name`, '팔로워' AS `type`
+					FROM `member_friend` AS `f`
+					LEFT JOIN `member_friend` AS `f2`
+						ON f2.target_srl = f.member_srl
+						AND f2.member_srl = f.target_srl
+					LEFT JOIN `member` AS `m`
+						ON m.member_srl = f.member_srl
+					WHERE f.target_srl = ?
+						AND f2.target_srl IS NULL
+					ORDER BY f.friend_srl DESC
+					LIMIT ?, ?)"
+-->

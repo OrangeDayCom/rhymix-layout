@@ -1,0 +1,214 @@
+{@
+// 위젯에서 그대로 쓰져다 쓸 수 있도록 dispElkhabookIndex 메소드를 비워둠.
+
+$oModel = getModel('elkhabook');
+//$oModel->setMemberInfo();
+
+$elkhabook_config = $oModel->getConfig();
+
+\Context::setCanonicalUrl( $oModel->getUrl('dispMemberInfo', $_member_info->member_srl ?? 0, 'getNotEncodedFullUrl') );
+
+$oModel->getElkhabookFriendList($_member_info->member_srl ?? 0);
+$count_info = $oModel->getElkhabookCountInfo($_member_info->member_srl ?? 0);
+
+$oModuleModel = getModel('module');
+//$point_config = $oModuleModel->getModuleConfig('point');
+list($point, $level, $point_name) = $oModel->level($_member_info->member_srl);
+\Context::loadLang(\RX_BASEDIR . 'modules/point/lang');
+$board = $board ?? '';
+
+$member_config = \MemberModel::getMemberConfig();
+$_mid = $member_config->mid ?: $mid;
+require_once($tpl_path . 'invertColor.func.php');
+ob_start();
+}
+<style>
+.elkhabook { --elkhabook-color:{$elkhabook_config->skin_colorset}; }
+.color_scheme_dark .elkhabook { --elkhabook-color:{@ echo elkhabook\invertColor($elkhabook_config->skin_colorset); }; }
+</style>
+<script>
+window.elkhabook_member_srl = {$_member_info->member_srl};
+</script>
+{@
+\Context::addHtmlHeader(ob_get_clean());
+}
+<load target="style.css" />
+<load target="script.min.js" />
+
+<div class="elkhabook elkhabook{Mobile::isFromMobilePhone()?'M':'PC'}">
+
+<!--@if($is_logged && $logged_info->member_srl == $_member_info->member_srl)-->
+<div class="sidebar_r navi">
+	<ul>
+		<!--@foreach($logged_info->menu_list as $key=>$val)-->
+		<!--@if(strlen($act ?? '') && ($key==$act || $oModel->getAct($key) == $act))--> <li class="on">{lang($val)}</li> <!--@else--> <li><a href="{getUrl('', 'act', $key, 'mid', $_mid)}">{lang($val)}</a></li> <!--@end-->
+		<!--@endforeach-->
+	</ul>
+	<ul class="hr">
+		<li><a href="{getUrl('','mid',$_mid,'act','dispMemberModifyInfo')}">{lang('cmd_modify_member_info')}</a></li>
+		<li><a href="{getUrl('','mid',$_mid,'act','dispMemberModifyPassword')}">{lang('cmd_modify_member_password')}</a></li>
+		<li><a href="{getUrl('','mid',$_mid,'act','dispMemberLeave')}">{lang('cmd_leave')}</a></li>
+	</ul>
+</div>
+<!--@end-->
+
+<div class="sidebar_l">
+	<aside>
+		<div class="profile_image">
+			<div class="image">
+				<!--@if(isset($_member_info->profile_image) && isset($_member_info->profile_image->src))-->
+				<img src="{$_member_info->profile_image->src}" alt="" />
+				<!--@else-->
+				<span title="{$lang->elkhabook_no_profile_image}" class="non_img"></span>
+				<!--@endif-->
+			</div>
+		</div>
+
+		<div class="hx">
+			<h2><a href="javascript:void(0);" onclick="jQuery(this).addClass('member_'+{$_member_info->member_srl});return false;">{$_member_info->nick_name}</a></h2>
+		</div>
+
+		<!--// 팔로우 | 언 팔로우 -->
+		<div class="follow">
+			<!--@if(($is_logged && $logged_info->member_srl != $_member_info->member_srl))-->
+			<span class="elkhabook_tpl_button">{@
+			$oModel->getElkhabookFriendButton($_member_info->member_srl);
+			echo $oModel->get('tpl_button');
+			}</span>
+			<!--@else-->
+			<span class="tooltip tooltip-follow on">
+				<span class="label">{$lang->elkhabook_follower}</span>
+				<span class="num follow_count">{$count_info['팔로워'] + $count_info['친구']}</span>
+			</span>
+			<!--@end-->
+			<span style="display:inline-block;width:3px;height:1px;overflow:hidden;"></span>
+			<span class="tooltip tooltip-vote"><span class="label label-star">{$lang->voted_count}</span> <span class="num voted_count">{$oModel->voted_count($_member_info->member_srl)}</span></span>
+			<span style="display:inline-block;width:3px;height:1px;overflow:hidden;"></span>
+			<span class="tooltip tooltip-level"><span class="label label-lv">{$lang->level}: {$level}<br />{$point_name}: {@ echo number_format($point); }</span> <span class="num">{$level}</span></span>
+		</div>
+
+		{@
+		$signature = $_member_info->signature ?? '';
+		$signature = str_ireplace(['<\/div>', '<\/p>', '<\/li>'], '<br />', $signature);
+		$signature = preg_replace('/<(?!br\s*\/?)[\s\S]*?>|^(?:\s|&nbsp;|<br \/>)+|(?:<br \/>|&nbsp;|\s)+$/uis', '', $signature);
+		$signature = preg_replace('/(<br\s*\/?>\s*)+/ius', '<br />', $signature);
+		}
+		<!--@if(strlen($signature))-->
+		<div class="signature li"><p class="ib">{$signature}</p></div>
+		<!--@end-->
+	</aside>
+
+	<div class="friend_tpl_{$_member_info->member_srl}">
+		{@
+		$target_member_srl = $_member_info->member_srl;
+		$friend_types = ['친구' => $lang->friend,'팔로워' => $lang->elkhabook_follower, '팔로잉' => $lang->elkhabook_following];
+		}
+		<aside>
+			<div class="hx"><h3>{$lang->friend}</h3></div>
+
+			<!--@foreach($friend_types as $friend_type => $label)-->
+			<div class="li" style="overflow:hidden;"><div class="ib">
+				<strong>{$label} ({$count_info[$friend_type]})</strong>
+				<div><include target="getElkhabookFriendList.html" /></div>
+			</div></div>
+			<!--@end-->
+		</aside>
+	</div>
+
+	<aside>
+		<div class="hx"><h3>{$lang->member_info}</h3></div>
+		<ul>
+			<li class="li"><span class="ib">
+				<strong>{$lang->signup_date}</strong>
+				<br />{@ echo zdate($_member_info->regdate,'Y-m-d'); }
+			</span></li>
+
+			<!--@if($is_logged && ($logged_info->member_srl == $_member_info->member_srl || $logged_info->is_admin=='Y'))-->
+			<li class="li icon icon-locked"><span class="ib">
+				<strong>{$lang->last_login} </strong>
+				<br />{zdate($_member_info->last_login,'Y-m-d')}
+			</span></li>
+			<!--@end-->
+
+			<!--@if(count($nick_list = array_reverse($oModel->getNickList($_member_info->member_srl))))-->
+			<li class="li"><span class="ib">
+				<strong>{$lang->cmd_modify_nickname_log}</strong>
+				<!--@foreach($nick_list as $val)--><br /><span class="tooltip">{$val->before_nick_name}<span class="label">{date('Y-m-d', strtotime($val->regdate))}</span></span><!--@endforeach)-->
+			</span></li>
+			<!--@end-->
+		</ul>
+	</aside>
+
+	{@
+	$list = [];
+	$doc_list = $oModel->getCategory($_member_info->member_srl ?: 0);
+	$cmt_list = $oModel->getCategoryCmt($_member_info->member_srl ?: 0);
+
+	// 하나로 합치기.
+	foreach($doc_list as $regex => $val):
+		if(strpos($regex, '__') === 0)
+			continue;
+		$list[$regex] = $val;
+	endforeach;
+	foreach($cmt_list as $regex => $val):
+		if(strpos($regex, '__') === 0)
+			continue;
+		if(isset($list[$regex])):
+			$i = 0;
+			foreach($val['docs'] as $v):
+				if(isset($doc_list['__module_srls'][$v->module_srl]))
+					continue;
+				while(isset($list[$regex]['docs'][$i]))
+					$i++;
+				$list[$regex]['docs'][$i] = $v;
+			endforeach;
+		else:
+			$list[$regex] = $val;
+		endif;
+
+		krsort($list[$regex]['docs']);
+	endforeach;
+
+	foreach($list as $regex => $val):
+		$class = 'hide_'.md5($regex);
+		$i = 0;
+	}
+	<aside>
+		<div class="hx">
+			<h3>{$val['label']}</h3>
+			<!--@if(count($val['docs']) > $val['more'])-->
+			<div class="more">
+				<a href="javascript:;" onclick="jQuery('.{$class}').toggle(); return false;">more</a>
+			</div>
+			<!--@endif-->
+		</div>
+		<ul>
+		<li loop="$val['docs']=>$v" style="display:none;"|cond="$i >= $val['more']" class="li li2 {@ echo $i >= $val['more'] ? $class : ''; }">
+			{@
+			$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl');
+			$url .= strpos($url, '?')===FALSE? '?board='.$v->mid : '&amp;board='.$v->mid;
+			}
+			<a href="{$url}" class="on"|cond="$board != '' && $v->mid==$board" class="getElkhabookList">{@
+				echo $oModel->getBrowserTitle($v->module_srl);
+				}</a> <span class="span">({@
+				echo $doc_list['__module_srls'][$v->module_srl] ?? 0;
+				echo isset($cmt_list['__module_srls'][$v->module_srl])? ', ' . $cmt_list['__module_srls'][$v->module_srl] : '';
+			})</span>
+			{@ $i++; }
+		</li>
+		</ul>
+	</aside>
+	{@
+	endforeach;
+	}
+</div>
+{@
+// $show_count = 1; // 초기 화면이 탭 형태로 1개만 보여진다면 이 값에 1 선언합니다. 예를들어 2 값을 넣으면 3번째 목록부터 빈 값을 제공하여 부하가 덜 발생합니다.
+$oModel->getElkhabookList();
+echo '<div class="sidebar_r getElkhabookList" data-show_count="'.($show_count ?? 99).'">' . $oModel->get('getElkhabookList') . '</div>';
+}
+</div>
+{@
+$document_srl = 0;
+$member_srl = 0;
+}

@@ -1,0 +1,156 @@
+.rating-container {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.rating-widget {
+	margin:10px;
+	padding: 15px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+	max-width:450px;
+}
+
+.rating-widget .rating-title {
+	font-size: 15px;
+	font-weight: bold;
+	color: #333;
+}
+
+.rating-widget .rating-stats {
+	background: #f0f0f0;
+	border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+.rating-widget .rating-average {
+	display: flex;
+	align-items: center;
+	margin: 20px 0;
+	border-top: 1px solid #e0e0e0;
+	padding-top:15px;
+}
+
+.rating-widget .label {
+	min-width:80px; 
+	color:#666; 
+	font-size:14px; 
+}
+
+.rating-widget .stars {
+	display: flex;
+	align-items: center;
+}
+
+.rating-widget .star {
+	font-size: 20px;
+	color: #ddd;
+	margin-right: 5px;
+	cursor: default;
+}
+
+.rating-widget .star.filled {
+	color: #ffb400;
+}
+
+.rating-widget .star.half-filled {
+	position: relative;
+	color: #ddd;
+}
+
+.rating-widget .star.half-filled:before {
+	content: '★';
+	position: absolute;
+	left: 0;
+	width: 50%;
+	overflow: hidden;
+	color: #ffb400;
+}
+
+.rating-widget .score {
+	margin-left: 8px;
+	font-weight: bold;
+	color: #333;
+	font-size: 16px;
+}
+
+.rating-widget .rating-form {
+	margin-top: 20px;
+}
+
+.rating-widget .my-rating {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.rating-widget .star-select {
+	position: relative;
+	cursor: pointer;
+	transition: transform 0.1s, color 0.2s;
+}
+
+.rating-widget .hover-score {
+	position: absolute;
+	top: -50%;
+	left: 50%;
+	transform: translateX(-50%);
+	color: black;
+	font-size: 12px;
+	white-space: nowrap;
+	display: none;
+}
+
+.rating-widget .star-select:hover .hover-score {
+	display: block;
+}
+
+.rating-widget .star-select:hover, 
+.rating-widget .star-select.hover {
+	color: #ffb400;
+	transform: scale(1.2);
+}
+
+.rating-widget .star-select.selected {
+	color: #ffb400;
+}
+
+.rating-widget .selected-rating {
+	margin-left: 10px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.rating-widget .submit-button {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.rating-widget .submit-button .spb {
+	padding: 8px 20px !important;
+	background-color: #4a89dc !important;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	margin:0 auto;
+}
+
+.rating-widget .submit-button .spb:hover {
+	background-color: #3a79cc !important;
+}
+
+.rating-widget .already-rated,
+.rating-widget .login-required {
+	margin-top: 15px;
+	padding: 10px;
+	background-color: #f1f1f1;
+	border-radius: 4px;
+	color: #666;
+	text-align: center;
+	font-size: 14px;
+}

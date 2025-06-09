@@ -1,0 +1,147 @@
+<include target="_setting.html" />
+
+<form class="ap_form floating-labels rx_ajax" action="./" method="post" onsubmit="return sendMessage(jQuery(this));">
+	<input type="hidden" name="act" value="procBoardInsertDocument" />
+	<input type="hidden" name="mid" value="{$wi->target_mid}" />
+	<input type="hidden" name="password" value="{$wi->rand_password}" cond="!$is_logged && $wi->use_password != 'O'" />
+	<input type="hidden" name="title" value="" cond="$wi->use_title=='Y'" />
+	<input type="hidden" name="content" value="" />
+	<input type="hidden" name="category_srl" value="{$wi->target_category_srls}"|cond="!$wi->has_category" />
+	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!empty($wi->target_category_list) && !$wi->has_category" />
+	<input type="hidden" name="comment_status" value="ALLOW" cond="$wi->comment_status == 'A'" />
+	<input type="hidden" name="status" value="{$wi->status}" cond="$wi->status != 'O'" />
+	<input type="hidden" name="redirect" value="{$wi->redirect}" />
+	<input type="hidden" name="redirect_url" value="{$wi->redirect_url}" cond="$wi->redirect == 'U' && $wi->redirect_url" />
+
+	<!--// 기본 정보 -->
+	<fieldset class="ap_basic_info">
+		<legend>Basic Info</legend>
+
+		<!--// 이름 -->
+		<div class="ap_item ap_basic" rel="nick_name">
+			<label for="nick_name" class="required">{$lang->name}</label>
+			<input type="text" name="nick_name" value="{$logged_info->nick_name}" required="required"|cond="!$is_logged" disabled="disabled"|cond="$is_logged" />
+		</div>
+
+		<!--// 이메일 -->
+		<div class="ap_item ap_basic" rel="email">
+			<label for="email_address" class="required">{$lang->email}</label>
+			<input type="email" name="email_address" value="{$logged_info->email_address}" required="required"|cond="!$is_logged && $wi->use_email != 'O'" disabled="disabled"|cond="$is_logged" />
+		</div>
+
+		<!--// 전화번호 -->
+		<h4 cond="$wi->international" class="required">{$lang->phone}</h4>
+		<div class="ap_item ap_basic<!--@if($wi->international)--> rx_phone_country {$wi->default_country}<!--@end-->" rel="phone_number" disabled="disabled"|cond="$wi->phone_number">
+			{$wi->countries}
+			<label for="phone_number" cond="!$wi->international" class="required">{$lang->phone}</label>
+			<input type="tel" name="phone_number" class="use_international"|cond="$wi->international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone != 'O'" disabled="disabled"|cond="$wi->phone_number" />
+		</div>
+	</fieldset>
+
+	<!--// 확장 변수 -->
+	<fieldset class="ap_extra_info" cond="$wi->has_extra">
+		<legend>Extra Info</legend>
+
+		{@ $is_fixed = array('tel', 'tel_v2', 'tel_intl', 'tel_intl_v2', 'checkbox', 'radio', 'date', 'time', 'kr_zip', 'file'); }
+		<block loop="$wi->target_extra_list => $key, $val">
+		<h4 cond="in_array($val->type, $is_fixed)" class="required"|cond="$val->is_required === 'Y'">{$val->name}</h4>
+		<div class="ap_item ap_extra<!--@if($val->is_required == 'Y')--> is_required<!--@end-->" rel="{$val->type}" data-idx="{$val->idx}">
+			<label for="extra_vars{$val->idx}" cond="!in_array($val->type, $is_fixed)" class="required"|cond="$val->is_required === 'Y'">{$val->name}</label>
+			{$val->getFormHTML()}
+		</div>
+		</block>
+	</fieldset>
+
+	<!--// 메시지 -->
+	<fieldset class="ap_message_info" cond="$wi->use_title != 'Y' || $wi->has_category || $wi->use_content != 'Y' || !$is_logged && $wi->use_password == 'O'">
+		<legend>Message</legend>
+
+		<!--// 제목 -->
+		<div class="ap_item ap_message" rel="title" cond="$wi->use_title != 'Y'">
+			<label for="title" class="required">{$lang->title}</label>
+			<input type="text" name="title" id="ap_title" required />
+		</div>
+
+		<!--// 분류 -->
+		<div class="ap_item ap_message" rel="category" cond="$wi->has_category">
+			<label for="category" class="required">{$lang->category}</label>
+			<select name="category" required>
+				<option value=""></option>
+				<option loop="$wi->target_category_list => $key, $val" value="{$key}">{$val}</option>
+			</select>
+		</div>
+
+		<!--// 내용 -->
+		<div class="ap_item ap_message" rel="content" cond="$wi->use_content != 'Y'">
+			<label for="message" class="required">{$lang->content}</label>
+			<textarea name="message" class="rx_ev_textarea" rows="8" cols="42" required></textarea>
+		</div>
+
+		<!--// 비밀번호 -->
+		<div class="ap_item ap_message" rel="password" cond="!$is_logged && $wi->use_password == 'O'">
+			<label for="password" class="required">{$lang->password}</label>
+			<input type="password" name="password" required />
+		</div>
+	</fieldset>
+
+	<!--// 기타 -->
+	<fieldset class="ap_submit_info">
+		<!--// 개인정보 안내문 -->
+		<ul class="ap_section ap_privacy" cond="$wi->privacy != 'N' && count($wi->privacy_title_arr)">
+			<li loop="$wi->privacy_title_arr => $key, $val" cond="!empty($val)">
+				<input type="checkbox" name="privacy{$key+1}" value="" required />
+				<label for="privacy{$key+1}">{$val}</label><sup>•</sup>
+				<a href="#open" class="ap_popup_trigger"> ({$lang->content} {$lang->cmd_view})</a>
+				<div class="ap_privacy_content">
+					<div class="ap_privacy_title_container">
+						<span class="ap_privacy_title">{$val}</span>
+						<a href="#close" class="ap_popup_close">Close</a>
+					</div>
+					<div class="ap_privacy_desc">
+						<!--// 직접 입력한 안내문 -->
+						<block cond="$wi->privacy == 'I'">
+						{$wi->privacy_desc_arr[$key]}
+						</block>
+						<!--// 파일로 연결한 안내문 -->
+						<block cond="$wi->privacy == 'F'">
+						{TemplateHandler::getInstance()->compile(_XE_PATH_ . 'widgets/ap_form/skins/'. $wi->skin .'/privacy/', $wi->privacy_desc_arr[$key])}
+						</block>
+					</div>
+					<div class="ap_privacy_command_container">
+						<input class="ap_privacy_check" name="ap_privacy_check{$key+1}" type="checkbox" />
+						<label for="ap_privacy_check{$key+1}">{$lang->cmd_agree_and_close}</label>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+		<div class="document_captcha" cond="$wi->use_recaptcha !== 'N' && SpamfilterModel::isCaptchaEnabled('document')">
+			{SpamfilterModel::getCaptcha('document')|noescape}
+		</div>
+
+		<!--// 댓글 허용 여부 -->
+		<div class="ap_section" cond="$wi->comment_status == 'O'">
+			<input type="checkbox" name="comment_status" value="ALLOW" checked="checked" />
+			<label for="comment_status">{$lang->allow_comment}</label>
+		</div>
+
+		<!--// 공개/비밀 선택 -->
+		<ul class="ap_section" cond="$wi->status == 'O'">
+			<li>
+				<input type="radio" name="status" value="PUBLIC" checked="checked" />
+				<label for="PUBLIC">{$lang->public}</label>
+			</li>
+			<li>
+				<input type="radio" name="status" value="SECRET"  />
+				<label for="SECRET">{$lang->secret}</label>
+			</li>
+		</ul>
+
+		<!--// 보내기 버튼 -->
+		<input type="submit" value="{$lang->send}">
+	</fieldset>
+
+</form>
+
+<!--// 현재 페이지 처리시 결과 출력 부분 -->
+<include target="result.html" cond="$wi->redirect == 'N'" />

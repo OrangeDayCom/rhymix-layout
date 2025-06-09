@@ -1,0 +1,16 @@
+<query action="select">
+	<tables>
+		<table name="elkhatalk_public" />
+	</tables>
+	<conditions>
+		<condition operation="in" column="member_srl" var="member_srl" notnull="notnull" />
+		<condition operation="in" column="room" var="room" pipe="and" />
+	</conditions>
+
+	<navigation>
+		<index var="sort_index" default="pk" order="desc" />
+		<list_count var="list_count" />
+		<page_count var="page_count" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

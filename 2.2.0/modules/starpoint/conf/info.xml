@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+	<title xml:lang="ko">게시글 별 평점</title>
+	<description xml:lang="ko">게시글에 별모양 평점을 부여하는 모듈입니다.</description>
+	<version>1.4</version>
+	<date>2025-03-25</date>
+	<author email_address="icetea@wonder-rabbit.com" link="https://wonder-rabbit.com">
+		<name xml:lang="ko">ICETEA</name>
+	</author>
+	<author email_address="80san@moonhouse.co.kr" link="https://moonhouse.co.kr">
+		<name xml:lang="ko">80san</name>
+	</author>
+</module>

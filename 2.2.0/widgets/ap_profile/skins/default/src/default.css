@@ -1,0 +1,233 @@
+@charset "utf-8";
+
+.ap_profile,
+.ap_profile * {
+	font-size: 15px;
+	box-sizing: border-box;
+}
+.ap_profile a {
+	color: #669;
+	text-decoration: none;
+}
+.ap_profile img {
+	max-width: 100%;
+	height: auto;
+}
+
+.ap_profile nav {
+	margin : 16px auto;
+}
+.ap_profile nav ul {
+	margin : 0;
+	padding: 0;
+	text-align: center;
+	list-style: none;
+}
+.ap_profile nav ul .ap_profile_option {
+	display: inline-block;
+	margin: 4px auto;
+	margin-right: 4px;
+	padding: 4px 16px;
+	border: 1px solid #8a96a6;
+	border-radius: 3px;
+	color: #8a96a6;
+	cursor: pointer;
+}
+.ap_profile nav ul .ap_profile_option.active {
+	font-weight: bold;
+	background: #8a96a6;
+	color: #fff;
+}
+.ap_profile nav ul .ap_profile_option span {
+	font-size: 12px;
+}
+.ap_profile nav ul .ap_profile_option:last-child {
+	margin-right: 0;
+}
+
+.ap_profile_info {
+	margin: 0;
+	list-style: none;
+	text-align: left;
+	vertical-align: top;
+}
+.ap_profile_info h3 {
+	display: inline-block;
+	margin: 30px auto 15px;
+	background: #8a96a6;
+	color: #fff;
+	padding: 6px 24px;
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.ap_profile_info section {
+	column-count: 2;
+	margin-bottom: 2em;
+}
+.ap_profile_info section:last-of-type {
+	margin-bottom: auto;
+}
+.ap_profile_info section.ap_profile_basic,
+.ap_profile_info section.ap_profile_stat {
+	column-count: 3;
+}
+.ap_profile_info section.ap_profile_content,
+.ap_profile_info section.ap_profile_intro {
+	column-count: auto;
+}
+.ap_profile_info section.ap_profile_content {
+	font-size: 0;
+}
+
+.ap_profile_img_profile {
+	display: block;
+	margin: 0 auto;
+	border-radius: 50%;
+}
+.ap_profile_name {
+	text-align: center;
+}
+.ap_profile_name a {
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 2;
+}
+.ap_profile_info section > div {
+	display: inline-block;
+	margin: .5em 0;
+	width: 100%;
+}
+.ap_profile_info .ap_profile_img_profile {
+	display: block;
+	margin: 0 auto;
+	border-radius: 50%;
+}
+.ap_profile_info .ap_profile_name {
+	margin-top: -0.5em;
+	text-align: center;
+}
+.ap_profile_info .ap_profile_document,
+.ap_profile_info .ap_profile_comment {
+	vertical-align: top;
+}
+.ap_profile_info .ap_profile_name a {
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 2;
+}
+.ap_profile_info .ap_profile_document a,
+.ap_profile_info .ap_profile_comment a {
+	display: block;
+	position: relative;
+	margin: -1px 16px 0;
+	padding: 12px;
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	text-decoration: none;
+}
+.ap_profile_info .ap_profile_document .ap_profile_img_thumb {
+	overflow: hidden;
+	float: left;
+	max-height: 60px;
+	margin-right: 8px;
+	border: 1px solid #DDD;
+}
+.ap_profile_info .ap_profile_document .ap_profile_img_thumb img {
+	display: block;
+	width: 60px;
+	height: 40px;
+}
+.ap_profile_info .ap_profile_document .ap_profile_document_title,
+.ap_profile_info .ap_profile_comment .ap_profile_comment_title {
+	display: flex !important;
+	padding-bottom: 2px;
+}
+.ap_profile_info .ap_profile_document .ap_profile_document_title b,
+.ap_profile_info .ap_profile_comment .ap_profile_comment_title b {
+	flex: 1;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: normal;
+}
+.ap_profile_info .ap_profile_document .ap_profile_document_title sup {
+	padding-left: 5px;
+	font-size: 11px;
+	color: darkOrange;
+}
+.ap_profile_info .ap_profile_document .ap_profile_document_regdate {
+	display: block;
+	font-size: 12px;
+	color: #999;
+}
+.ap_profile_info .ap_profile_comment .ap_profile_comment_regdate {
+	padding-left: 5px;
+	font-size: 12px;
+	color: #999;
+}
+.ap_profile_info .ap_profile_signature .ap_profile_signature_content {
+	margin: 1em 0;
+	overflow-y: auto;
+	line-height: 1.5;
+	height: 15em;
+	min-height: 7.5em;
+	max-height: 24em;
+	resize: vertical;
+}
+.ap_profile_info .ap_profile_signature p {
+	margin: 0;
+}
+.ap_profile_info .ap_profile_signature .ap_profile_signature_none {
+	text-align: center;
+}
+
+/* 탭 네비게이션 */
+.is_tab {
+	text-align: center;
+}
+.is_tab header {
+	display: inline-block;
+	margin: 15px 30px 0;
+	vertical-align: middle;
+}
+.is_tab nav {
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: 0;
+}
+.is_tab section {
+	display: none;
+	margin-bottom: auto;
+	text-align: left;
+}
+.is_tab section.active {
+	display: block;
+}
+
+@media only screen and (max-width: 720px) {
+	.ap_profile_info section.ap_profile_basic {
+		column-count: 2;
+	}
+}
+
+@media only screen and (max-width: 640px) {
+	.ap_profile_info section.ap_profile_content {
+		column-count: auto;
+	}
+	.ap_profile_info .ap_profile_document,
+	.ap_profile_info .ap_profile_comment {
+		width: 100% !important;
+	}
+	.ap_profile_info section.ap_profile_stat {
+		column-count: 2;
+	}
+	.is_tab header {
+		display: block;
+		margin: auto;
+	}
+	.is_tab nav {
+		display: block;
+		margin-top: 12px;
+	}
+}

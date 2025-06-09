@@ -1,0 +1,40 @@
+<include target="header.html" />
+<!--@if($where)--><div class="searchbox"><!--@end-->
+<h3 class="subTitle">{$lang->comment} <span>{number_format($output->total_count)}</span> </h3>
+
+<!--@if(!$output->data)-->
+    <span class="noResult">{$lang->msg_no_result}</span>
+<!--@else-->
+    <ul class="searchResult comment">
+    <!--@foreach($output->data as $no => $comment)-->
+        <li>
+            <!--@if($comment->thumbnailExists(80))-->
+            <a href="{$comment->getPermanentUrl()}" target="_blank"><img src="{$comment->getThumbnail(80)}" alt="" width="80" height="80" class="thumb" /></a>
+            <!--@end-->
+            <ul>
+                <li class="con"><a href="{$comment->getPermanentUrl()}" target="_blank">{$comment->getSummary(400)}</a></li>
+			 <li class="opt">
+				<span>{$comment->getNickName()}</strong>
+				<span class="time">{$comment->getRegdate("Y-m-d H:i")}</span>
+			</li>
+            </ul>
+            
+        </li>
+    <!--@end-->
+    </ul>
+
+    <!--@if($where == 'comment' && $output->page_navigation)-->
+        <div class="pagination a1">
+            <a href="{getUrl('page','')}" class="prevEnd"><i class='bx bxs-chevron-left' ></i></a>
+            <!--@while($page_no = $output->page_navigation->getNextPage())-->
+                <!--@if($page == $page_no)-->
+                    <strong>{$page_no}</strong>
+                <!--@else-->
+                    <a href="{getUrl('page',$page_no)}">{$page_no}</a>
+                <!--@end-->
+            <!--@end-->
+            <a href="{getUrl('page',$output->page_navigation->last_page)}" class="nextEnd"><i class='bx bxs-chevron-right'></i></a>
+        </div>
+    <!--@end-->
+<!--@end-->
+<!--@if($where)--></div><!--@end-->

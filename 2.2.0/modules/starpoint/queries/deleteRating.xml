@@ -1,0 +1,9 @@
+<query id="deleteRating" action="delete">
+	<tables>
+		<table name="document_star" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="document_srl" var="document_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and" />
+	</conditions>
+</query>

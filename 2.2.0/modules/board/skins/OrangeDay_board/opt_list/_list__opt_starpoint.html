@@ -1,0 +1,14 @@
+	{@
+		if(!$mi->star_user) $mi->star_user = 'star';
+		$oStarPointModel = getModel('starpoint');
+		$total_point = $oStarPointModel->getDocumentRatedTotalPoint($document->document_srl);
+	}
+	<!--@if($total_point->avg > 0)-->
+	   <span cond="!$module_info->star_user == ''" class="starpoint">
+		  <span cond="$module_info->star_user == 'all' || $module_info->star_user == 'point'" class="score">{number_format($total_point->avg, 1)}점</span>
+		  <span cond="$module_info->star_user == 'all' || $module_info->star_user == 'star'" class="starRating pr_tooltip" pr_color="dark" pr_position="b_right" title="{number_format($total_point->avg, 1)}점">
+			 <span style="width:{$total_point->avg*20}%"><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i></span>
+			 <i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i>
+		  </span>
+	   </span>
+	<!--@end-->

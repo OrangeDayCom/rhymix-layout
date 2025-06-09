@@ -1,0 +1,17 @@
+<query id="getFriendsForMember" action="select">
+    <tables>
+        <table name="member_friend" alias="friend" />
+        <table name="member" alias="member" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="friend.friend_group_srl" var="friend_group_srl" />
+        <condition operation="equal" column="friend.target_srl" var="member_srl" pipe="and" />
+        <condition operation="equal" column="member.member_srl" var="friend.member_srl" pipe="and" />
+    </conditions>
+    <navigation>
+        <index var="sort_index" default="rand()" order="asc" />
+    </navigation>
+</query>

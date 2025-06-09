@@ -1,0 +1,192 @@
+.rating-container {
+	--oday_starbg :rgba(100,100,100,.3) ;
+	display: flex;
+	justify-content: center; /* 컨테이너 전체 중앙 정렬 */
+	line-height:1
+}
+
+.rating-widget {
+	margin: 10px 0;
+	padding: 10px;
+	border:var(--oday_listBorder);
+	border-radius: 50px;
+	background-color: var(--oday_listBgColorUp);
+	box-shadow: var(--oday_listShadow);
+	max-width:100%;
+	text-align: center;
+	font-size:12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;	
+}
+.rating-widget > span {padding:0 15px}
+.rating-widget > span.submit-button { padding:0}
+.rating-widget > span { 
+	height: 35px; 
+}
+
+.rating-widget .rating-title {
+	border:var(--oday_listBorder);
+	border-radius: 50px;
+	background-color: var(--oday_listBgColorUp2);
+	box-shadow: var(--oday_listShadow);
+	line-height: 1;
+	padding:5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	margin-left:10px;
+	color:var(--oday_mainColorOpt2);
+	font-size:12px;
+}
+.rating-widget .rating-title i { margin-right:2px; }
+.rating-widget .rating-stats {
+	background: #f0f0f0;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.rating-widget .rating-average {
+	display: flex;
+    align-items: center;
+}
+.starpoint_act { display: flex; padding:0; border-radius:4px; font-size:1.5em;}
+.starpoint_act { position:relative; color:rgba(100,100,100,.3); }
+.starpoint_act span { display:flex;position:absolute; top:0; left:0; overflow:hidden; color: var(--oday_mainColorOpt); }
+.starpoint_act  i + i ,
+.rating-widget .stars .star + .star { margin-left:0}
+.rating-widget .labels {
+	margin-right:5px;
+}
+
+.rating-widget .stars {
+	display: flex;
+	align-items: center;
+}
+
+.rating-widget .star {
+	color:var(--oday_starbg);
+	cursor: default;
+	font-size:1.5em;
+    display: flex;
+}
+
+.rating-widget .star.filled {
+	color: var(--oday_mainColorOpt);;
+
+}
+
+.rating-widget .star.half-filled {
+	position: relative;
+	color:var(--oday_starbg);
+}
+
+.rating-widget .star.half-filled:before {
+	content: '★';
+	position: absolute;
+	left: 0;
+	width: 55%;
+	overflow: hidden;
+	color:var(--oday_mainColor);
+}
+
+.rating-widget .score {
+	margin-left: 8px;
+
+
+}
+#selected-value,
+.rating-widget .score em {font-weight:700; color:var(--oday_mainColor); font-size:1.2em; margin-right:2px; }
+.rating-widget .my-rating {
+	display: flex;
+	align-items: center;
+
+}
+
+.rating-widget .star-select {
+	position: relative;
+	cursor: pointer;
+	transition: transform 0.1s, color 0.2s;
+}
+
+.rating-widget .hover-score {
+	position: absolute;
+	top: -40%;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size:8px;
+	white-space: nowrap;
+	display: none ;
+}
+
+.rating-widget .star-select:hover .hover-score {
+	display: block;
+}
+
+.rating-widget .star-select:hover, 
+.rating-widget .star-select.hover {
+	color:var(--oday_mainColorOpt);;
+	opacity:1;
+	transform: scale(1.2);
+}
+
+.rating-widget .star-select.selected {
+color:var(--oday_mainColorOpt);;
+opacity:1;
+}
+
+.rating-widget .selected-rating {
+	text-align:right;
+	width: 30px;
+}
+
+.rating-widget .submit-button {
+	text-align: center;
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.rating-widget .submit-button .spb {
+	padding: 5px 20px !important;
+	background-color: var(--oday_mainColor) !important;
+	color: var(--oday_primaryBtnColor);
+	border: none;
+	border-radius: 50px;
+
+	cursor: pointer;
+	transition: background-color 0.2s;
+	margin: 0 auto;
+}
+
+.rating-widget .submit-button .spb:hover {
+	background-color: var(--oday_mainColorDark) !important;
+}
+
+.rating-widget .login-required {
+	margin-top: 0px;
+	margin-right:20px;
+	padding: 5px;
+	background-color: var(--oday_listBgColorDown);
+	border-radius: 4px;
+
+	text-align: center;
+
+}
+
+.rating-widget .already-rated {
+	display: inline-block;
+	text-align: center;
+}
+
+.rating-widget .my-rating-display {
+	display: inline-flex;
+	align-items: center;
+}
+
+/* 반응형 스타일 - 화면이 너무 좁을 경우 줄바꿈 허용 */
+@media (max-width: 768px) {
+	.rating-widget { width:95%; border-radius:10px;}
+	.rating-widget .rating-average { margin-bottom:5px}
+	.rating-widget .submit-button .spb {border-radius:5px; height:30px; padding:5px 10px !important}
+}

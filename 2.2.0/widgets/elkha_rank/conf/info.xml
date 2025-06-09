@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+	<title>Elkha Rank</title>
+	<version>0.4</version>
+	<date>2025-05-18</date>
+	<extra_vars>
+		<var id="rank_type" type="select">
+			<name>rank type</name>
+			<options>
+				<value>point</value>
+				<name>point (default)</name>
+			</options>
+			<options>
+				<value>friends</value>
+				<name>friends</name>
+			</options>
+			<options>
+				<value>votes</value>
+				<name>votes</name>
+			</options>
+			<options>
+				<value>votes2</value>
+				<name>votes (over 1,000,000 documents)</name>
+			</options>
+			<options>
+				<value>documents</value>
+				<name>documents</name>
+			</options>
+			<options>
+				<value>comments</value>
+				<name>comments</name>
+			</options>
+		</var>
+		<var id="except_members" type="textarea">
+			<name>except members</name>
+			<description>member_srls or user_ids</description>
+		</var>
+		<var id="list_count" type="text">
+			<name>list count</name>
+			<description>default: 10</description>
+		</var>
+		<var id="cache_expires" type="text">
+			<name>cache expires</name>
+			<description>default: 3600</description>
+		</var>
+		<var id="left_members" type="select">
+			<name>left members</name>
+			<options>
+				<value>S</value>
+				<name>skip (default)</name>
+			</options>
+			<options>
+				<value>I</value>
+				<name>include</name>
+			</options>
+			<options>
+				<value>E</value>
+				<name>exclude (lower performance)</name>
+			</options>
+		</var>
+		<var id="lang_left_member" type="text">
+			<name>name of left member</name>
+			<description>default: #회원정보없음</description>
+		</var>
+		<var id="lang_msg_not_founded" type="textarea">
+			<name>msg not founded</name>
+			<description>default: 대상을 찾을 수 없습니다.</description>
+		</var>
+		<var id="lang_rank" type="textarea">
+			<name>name of rank</name>
+			<description>default: 순위</description>
+		</var>
+		<var id="lang_rank_name" type="textarea">
+			<name>name of count</name>
+			<description>포인트 | 친구 수 | 추천 수 | 게시글 수 | 댓글 수</description>
+		</var>
+	</extra_vars>
+</widget>

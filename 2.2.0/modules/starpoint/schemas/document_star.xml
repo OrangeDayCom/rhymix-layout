@@ -1,0 +1,7 @@
+<table name="document_star">
+	<column name="document_star_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<column name="document_srl" type="number" size="11" notnull="notnull" index="idx_document_srl" />
+	<column name="member_srl" type="number" size="11" notnull="notnull" index="idx_member_srl" />
+	<column name="star_rate" type="number" size="11" notnull="notnull"  index="idx_star_rate"/>
+	<column name="regdate" type="date" index="idx_regdate" />
+</table>

@@ -1,0 +1,96 @@
+{@
+	$MemberModel = &getModel('member');
+	$member_info = $MemberModel->getMemberInfoByMemberSrl($oDocument->get('member_srl'));
+}
+{@
+  	$oPointModel = getModel('point');
+	$oModuleModel = &getModel('module');
+	$config = $oModuleModel->getModuleConfig('point');
+	
+	$point = $oPointModel->getPoint($oDocument->get('member_srl'));
+	$level = $oPointModel->getLevel($point, $config->level_step);
+	$next_point = $config->level_step[$level+1];
+	$now_point = $config->level_step[$level];
+	$need_point = (int)($next_point-$now_point);
+	$get_point = (int)($point-$now_point);
+	$remain_point = (int)($need_point - $get_point);
+	if($next_point > 0) $percenttemp =  (int)(($get_point / $need_point*1000));
+	$percent = $percenttemp / 10;
+
+	
+	if(isset($_COOKIE['setMetainfo'])) :
+	    $metainfo = $_COOKIE['setMetainfo'];
+	else :
+	endif;
+}
+<!--@if($oDocument->getUserID())-->
+
+	<!--@if($metainfo != 'view')-->
+		<!--@if($mi->read_sign == 'use' || $mi->read_alist == 'use')-->
+		<div class="sign_wrap">
+			<a class="meta_pluse meta_btn"><span>글쓴이</span>의&nbsp;<!--@if($mi->read_sign == 'use')--><em>서명</em><!--@end--><!--@if($mi->read_alist == 'use')--><em>작성글</em><!--@end-->&nbsp;보기&nbsp;<i class='bx bx-plus' ></i></a>
+		</div>
+		<!--@end-->
+	<!--@else-->
+	
+		
+		<!--@if($mi->read_sign == 'use')-->
+		<ul class="sign">
+			<li>
+				<div class="smeta">
+					<img cond="$oDocument->getProfileImage()" src="{$oDocument->getProfileImage()}" alt="{$oDocument->getNickName()}" class="profile" />
+					<span cond="!$oDocument->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+					<span class="level"><em>{$level}</em></span>
+				</div>
+				<div class="stext">
+					<a href="#popup_menu_area" class="member_{$oDocument->get('member_srl')} sign_name" onclick="return false">{$oDocument->getNickName()}</a>
+					<!--@if($grant->manager && $member_info->nick_name != $oDocument->getNickName())-->
+						<span class="sign_name"><i class='bx bx-transfer'></i> {$member_info->nick_name}</span>
+					<!--@end-->
+					<h3 cond="$member_info->mex_signtitle">{$member_info->mex_signtitle}</h3>
+					{$oDocument->getSignature()}
+					<!--@if($member_info->homepage)-->
+						<a href="{$member_info->homepage}" target="_blank" class="sign_home">{$member_info->homepage}</a>
+					<!--@end-->
+					<div class="exp-info" cond="$oDocument->isEditable()">
+						 <div class="exp-graph"><div class="bar" style="width: {$percent}%;"></div></div>
+						<div class="exp-sum">다음 레벨 {$next_point} - 총 획득 {$point} <br class="vm" /> ( 필요 {$need_point} = 획득 {$get_point} + 남음 {$remain_point} &nbsp;|&nbsp; <span>{$percent}</span>%)</div>
+					</div>
+				</div>
+				
+			</li>
+		</ul>
+		<!--@end-->
+		
+		<!--@if($mi->read_alist == 'use')-->
+			<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+			{@
+				$msrls = $mi->read_alist_con;
+			}
+			<!--@else-->
+			{@
+				$msrls = $layout_info->site_new_con;
+			}
+			<!--@end-->
+			<img class="zbxe_widget_output" widget="ap_profile" skin="OrangeDay_ap_profile" widget_sequence="3634" widget_cache="0m" ttl="10s" type="writer" tab_order="contents,network,intro,history" contents="document,comment" module_srls="{$msrls}" module_srls_act="C" thumb="N" />
+		<!--@end-->
+		<!--@if($mi->read_sign == 'use' || $mi->read_alist == 'use')-->
+			<div class="sign_wrap no">
+				<a class="meta_minus meta_btn"><span>글쓴이</span>의&nbsp;<!--@if($mi->read_sign == 'use')--><em>서명</em><!--@end--><!--@if($mi->read_alist == 'use')--><em>작성글</em><!--@end-->&nbsp;감추기&nbsp;<i class='bx bx-minus' ></i></a>
+			</div>
+		<!--@end-->
+	<!--@end-->
+
+<!--@end-->
+<script>
+$(function(){
+	$('.meta_pluse').click(function(){ 
+		setCookie( "setMetainfo", "view");
+		location.reload(true);
+	});
+	$('.meta_minus').click(function(){ 
+		setCookie( "setMetainfo", "");
+		location.reload(true);
+	});
+});
+</script>

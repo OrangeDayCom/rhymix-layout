@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<eventHandlers>
+		<eventHandler beforeAction="member.dispMemberInfo" class="view" method="triggerBeforeDispMemberModule" />
+		<eventHandler before="communication.addFriend" class="controller" method="beforeAddFriend" />
+		<eventHandler after="communication.addFriend" class="controller" method="afterAddFriend" />
+		<eventHandler before="communication.deleteFriend" class="controller" method="beforeDeleteFriend" />
+		<eventHandler after="communication.deleteFriend" class="controller" method="afterDeleteFriend" />
+	</eventHandlers>
+	<actions>
+		<action name="dispElkhabookAdminConfig" type="view" menu_name="elkhabook" admin_index="true" />
+		<action name="procElkhabookAdminInsertConfig" type="controller" />
+		<action name="procElkhabookAdminAlterIndex" type="controller" />
+		<action name="procElkhabookMyConfig" type="controller" permission="member" />
+		<!--
+		<action name="dispElkhabookIndex" type="view" index="true">
+			<route route="@$target_id:any" />
+			<route route="@$target_id:any/$doc_type:alpha" />
+		</action>
+		-->
+		<action name="dispElkhabookIndex" type="view" index="true" global-route="true">
+			<route route="@$target_id:any/$doc_type:alpha" /><!-- 예시: /@엘카/friends?page=2 -->
+			<route route="@$target_id:any" /><!-- 예시: /@엘카?page=2 -->
+		</action>
+		<action name="getElkhabookFriendList" type="model" />
+		<action name="getElkhabookConfig" type="model" permission="member" />
+		<action name="getElkhabookList" type="model" />
+	</actions>
+	<menus>
+		<menu name="elkhabook" type="all">
+			<title>마이로그</title>
+		</menu>
+	</menus>
+</module>
