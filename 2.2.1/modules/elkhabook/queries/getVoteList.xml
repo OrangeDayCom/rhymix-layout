@@ -1,0 +1,37 @@
+<query action="select">
+	<tables>
+		<table name="document_voted_log" alias="vote" />
+		<table name="documents" alias="doc" type="inner join">
+			<conditions>
+				<condition operation="equal" column="doc.document_srl" default="vote.document_srl" />
+				<condition operation="in" column="doc.module_srl" var="module_srl" filter="number" pipe="and" />
+			</conditions>
+		</table>
+	</tables>
+	<columns>
+		<column name="doc.*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="vote.member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<condition operation="more" column="vote.point" default="1" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="vote.regdate" order="desc" />
+		<list_count var="list_count" />
+		<page_count var="page_count" />
+		<page var="page" default="1" />
+	</navigation>
+</query>
+
+<!--
+EXPLAIN
+SELECT doc.*
+FROM td_document_voted_log `vote`
+INNER JOIN td_documents `doc`
+ON doc.document_srl = vote.document_srl
+AND doc.module_srl = ?
+WHERE vote.member_srl = ?
+AND vote.point > 0
+ORDER BY vote.regdate DESC
+LIMIT 20;
+-->

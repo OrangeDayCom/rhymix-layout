@@ -1,0 +1,53 @@
+<include target="_list_normal_table.html" cond="$grant->manager" />
+{@
+	if(!$mi->form_title) $mi->form_title = "N";
+	if(!$mi->form_mail) $mi->form_mail = "N";
+	if(!$mi->form_phone) $mi->form_phone = "N";
+	if(!$mi->form_textarea) $mi->form_textarea = "N";
+	if(!$mi->form_privacy) $mi->form_privacy = "F";
+	if(!$mi->form_category) $mi->form_category = "N";
+}
+
+<div id="list_inputform" class="bd-all set_font_list">
+	<img class="zbxe_widget_output" widget="ap_form" skin="OrangeDay_ap_form" widget_cache="0m" use_title="Y" use_email="{$mi->form_mail}" use_phone="{$mi->form_phone}" use_international="N" use_content="{$mi->form_textarea}" use_password="N" use_recaptcha="Y" redirect="M"
+	target_module_srl="{$mi->module_srl}"
+	privacy="{$mi->form_privacy}"
+	use_extra_keys="A" 
+	comment_status="O"
+	status="O"
+	<!--@if($mi->form_category == 'Y')-->
+		use_category="A"
+	<!--@else-->
+		use_category="N"
+	<!--@end-->
+	/>
+</div>
+<!--@if($mi->form_title == 'Y' || $mi->form_title == 'S')-->
+<style>
+<!--@if($mi->form_title != 'S')-->
+#list_inputform .formlist > li, #list_inputform .formlist .ap_item { display:inline-block; }
+#list_inputform .formlist h4,
+#list_inputform .formlist > li > label,
+#list_inputform .formlist > li > div > label { position:relative;  width:fit-content; border:var(--oday_listBorder); border-bottom:none; background-color:var(--oday_listBgColorUp); padding:0 1.5em; border-radius:10px 10px 0 0; min-height:3em; margin-bottom:-1px }
+#list_inputform .formlist h4:after,
+#list_inputform .formlist > li > label:after,
+#list_inputform .formlist > li > div > label:after { display:none; }
+.od-bord table tr > *, #list_inputform .formlist > li { padding:40px 10px;  border-bottom:none; }
+#list_inputform .extra_html { padding:0 0 0 10px; border-top:var(--oday_listBorder); }
+<!--@else-->
+#list_inputform .formlist h4,
+#list_inputform .formlist > li > label,
+#list_inputform .formlist > li > div > label { display:none; }
+.od-bord table tr > *, #list_inputform .formlist > li { padding:20px 10px 40px 10px;  }
+#list_inputform .extra_html { padding:0 0 0 10px;  }
+<!--@end-->
+.ap_hidden label,
+.ap_item h4,
+.ap_item > label{ color: var(--oday_mainColorOpt2);}
+#list_inputform .formlist > li > label + input { margin:10px 0}
+.extra_html .rx_ev_description { order:1; color: var(--oday_fontColor); font-weight:500; font-size:1.1em; padding:20px 0;  }
+.extra_html > *:not(.rx_ev_description) { order:2 !important; }
+#list_inputform .formlist .require { position:absolute; top:5px; right:8px;}
+#list_inputform :where(input, select, button) { height:2.8em !important}
+</style>
+<!--@end-->

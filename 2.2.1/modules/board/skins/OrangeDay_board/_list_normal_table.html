@@ -1,0 +1,170 @@
+<include target="opt_list/_list__opt_category_search.html" />
+<include target="opt_list/_list__opt_notice.html" />
+<!--@if(!Mobile::isMobileCheckByAgent())-->
+<div id="list-bd-table" class="get_font_list">
+	<table  class="tbl_board">
+		<thead>
+			<!-- LIST HEADER -->
+			<tr>
+				<block loop="$list_config=>$key,$val">
+				<th scope="col" cond="$val->type=='no' && $val->idx==-1"><span>{$lang->no}</span></th>
+				<th scope="col" cond="$val->type=='thumbnail' && $val->idx==-1"><span>{$lang->thumbnail}</span></th>
+				<th scope="col" cond="$val->type=='module_title' && $val->idx==-1"><span>{$lang->module_title}</span></th>				
+				<th scope="col" cond="$category_list && $val->type=='title' && $val->idx==-1">{$lang->category}</th>
+				<th scope="col" class="title" cond="$val->type=='title' && $val->idx==-1"><span>{$lang->title}</span></th>
+				<th scope="col" cond="$val->type=='title' && $val->idx==-1 && $mi->starpoint_use == 'use'"><span>평점</span></th>
+				<th scope="col" cond="$val->type=='nick_name' && $val->idx==-1"><span>{$lang->writer}</span></th>
+				<th scope="col" cond="$val->type=='user_id' && $val->idx==-1"><span>{$lang->user_id}</span></th>
+				<th scope="col" cond="$val->type=='user_name' && $val->idx==-1"><span>{$lang->user_name}</span></th>
+				<th scope="col" cond="$val->type=='regdate' && $val->idx==-1"><span><a href="{getUrl('sort_index','regdate','order_type',$order_type)}">{$lang->date}</a></span></th>
+				<th scope="col" cond="$val->type=='last_update' && $val->idx==-1"><span><a href="{getUrl('sort_index','update_order','order_type',$order_type)}">{$lang->last_update}</a></span></th>
+				<th scope="col" cond="$val->type=='last_post' && $val->idx==-1"><span><a href="{getUrl('sort_index','update_order','order_type',$order_type)}">{$lang->last_post}</a></span></th>
+				<th scope="col" cond="$val->type=='readed_count' && $val->idx==-1"><span><a href="{getUrl('sort_index','readed_count','order_type',$order_type)}">{$lang->readed_count}</a></span></th>
+				<th scope="col" cond="$val->type=='voted_count' && $val->idx==-1"><span><a href="{getUrl('sort_index','voted_count','order_type',$order_type)}">{$lang->voted_count}</a></span></th>
+				<th scope="col" cond="$val->type=='blamed_count' && $val->idx==-1"><span><a href="{getUrl('sort_index','blamed_count','order_type',$order_type)}">{$lang->blamed_count}</a></span></th>
+				<th scope="col" cond="$val->idx!=-1"><span><a href="{getUrl('sort_index', $val->eid, 'order_type', $order_type)}">{$val->name}</a></span></th>
+				</block>
+				
+				<th scope="col" cond="$grant->manager">관리</th>
+			</tr>
+			<!-- /LIST HEADER -->
+		</thead>
+		<tbody cond="!$document_list && !$notice_list">
+			<tr>
+				<td scope="col" cond="$category_list"></td>
+				<td colspan="{count($list_config)}"|cond="!$grant->manager" colspan="{count($list_config)+1}"|cond="$grant->manager">
+					<div class="no_documents">
+					<!--@if($search_keyword)-->
+						검색된 글이 없습니다.
+					<!--@else-->
+						{$lang->no_documents}
+						<!-- include target="opt_read/_read_opt_urlinfo.html" / -->
+					<!--@end-->
+					</div>
+				</td>
+			</tr>
+		</tbody>
+		<tbody cond="$document_list || $notice_list">
+			<!-- LIST -->
+			<tr loop="$document_list=>$no,$document" class="<!--@if(isset($document_srl) && $document_srl == $document->document_srl)--> readActive<!--@end-->">
+				<block loop="$list_config=>$key,$val">
+					<td class="number" cond="$val->type=='no' && $val->idx==-1">
+					<!--@if($document->isSecret() && !$oDocument->isGranted())-->
+						<i class='bx bxs-lock'></i>
+					<!--@else-->
+						<block cond="isset($document_srl) && $document_srl == $document->document_srl"><i class='bx bx-play'></i></block>
+						<block cond="!isset($document_srl) || $document_srl != $document->document_srl">{$no}</block>
+					<!--@end-->
+					</td>
+					<td cond="$val->type=='thumbnail' && $val->idx==-1">
+					<!--@if($document->thumbnailExists())-->
+						<img src='{$document->getThumbnail($mi->thumbnail_width2, $mi->thumbnail_height2, 'fill')}' alt="{$document->getTitle()}" class="thum viewthum" />
+					<!--@else-->
+					<!--@end--> 						
+					</td>
+					<td class="module_title" cond="$val->type=='module_title' && $val->idx==-1">
+						<a href="{getUrl('', 'mid', $document->get('mid'))}">{$document->get('module_title')}</a>
+					</td>
+					<td class="category" 
+					cond="$category_list && $val->type=='title' && $val->idx==-1" style="color:{$category_list[$document->get('category_srl')]->color}" 
+					onclick="showUpdateExtraModal(this, {$document->document_srl}, {$document->get('category_srl')}, 'category')"|cond="$grant->manager && $use_category_update">{$category_list[$document->get('category_srl')]->title}</td>
+					<td class="title" cond="$val->type=='title' && $val->idx==-1">
+						<div>
+							<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">
+							<!--@if($document->isSecret() && !$document->isGranted())-->
+								{$lang->msg_is_secret} 
+							<!--@elseif($document->isSecret() && $document->isGranted())-->
+								{strip_tags($document->getTitle())}
+							<!--@else-->
+								{strip_tags($document->getTitle())}
+							<!--@end-->
+							</a>
+							<span cond="$document->getCommentCount() && $mi->comment_use == 'yes'"  class="count">
+								<i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}
+							</span>
+							<span cond="$document->printExtraImages(60*60*$mi->duration_new)" 
+							class="newicon
+							<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$valz)-->
+								<!--@if($valz == 'secret')--> S<!--@end-->
+								<!--@if($valz == 'new')--> N<!--@end-->
+								<!--@if($valz == 'update')--> U<!--@end-->
+								<!--@if($valz == 'file')--> F<!--@end-->
+							<!--@end-->">
+								<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $valz, $key">
+									<block cond="$key == 'new'">N</block>
+									<block cond="$key == 'update'">U</block>
+								</block>
+							</span>
+						</div>
+					</td>
+					<td cond="$val->type=='title' && $val->idx==-1 && $mi->starpoint_use == 'use'">
+						<include target="opt_list/_list__opt_starpoint.html" cond="$mi->starpoint_use == 'use'" />
+					</td>
+					<td class="author" cond="$val->type=='nick_name' && $val->idx==-1">
+						<a cond="$document->getMemberSrl()" href="#popup_menu_area" class="member_{$document->get('member_srl')}" onclick="return false">{$document->getNickName()}</a>
+						<p cond="!$document->getMemberSrl()" class="author">{$document->getNickName()}</p>
+					</td>
+					<td class="author" cond="$val->type=='user_id' && $val->idx==-1">{$document->getUserID()}</td>
+					<td class="author" cond="$val->type=='user_name' && $val->idx==-1">{$document->getUserName()}</td>
+					<td class="date" cond="$val->type=='regdate' && $val->idx==-1"><span>{getTimeGap($document->get('regdate'), "Y.m.d")}</span></td>
+					<td class="date" cond="$val->type=='last_update' && $val->idx==-1"><span>{getTimeGap($document->get('last_update'), "Y.m.d")}</span></td>
+					<td class="date" cond="$val->type=='last_post' && $val->idx==-1">
+						<block cond="(int)($document->get('comment_count'))>0">
+							<a href="{$document->getUrl()}#comment" title="Last Reply" class="od_last">
+								{getTimeGap($document->get('last_update'), "Y.m.d")}							
+								<span cond="$document->getLastUpdater()">
+										<i>by</i> {$document->getLastUpdater()}
+								</span>
+							</a>
+						</block>
+					</td>
+					<td class="read" cond="$val->type=='readed_count' && $val->idx==-1">{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</td>
+					<td class="voteNum" cond="$val->type=='voted_count' && $val->idx==-1">{$document->get('voted_count')!=0?$document->get('voted_count'):'0'}</td>
+					<td class="voteNum" cond="$val->type=='blamed_count' && $val->idx==-1">{$document->get('blamed_count')!=0?$document->get('blamed_count'):'0'}</td>
+					<td class="exvar" cond="$val->idx!=-1">
+
+						<!--@if($document->cover_extra_info[$val->eid]->cover_extra=='Y')-->
+							<img width="{$document->cover_extra_info[$val->eid]->cover_size_width}" height="{$document->cover_extra_info[$val->eid]->cover_size_height}" src="{$document->cover_extra_info[$val->eid]->cover_extra_url}">
+						<!--@elseif($document->cover_extra_info[$val->eid]->cover_extra=='N')-->
+						<!--@else-->
+{@
+	$imgchk = '';
+	$href = '';
+	$filename = '';
+	$html = $document->getExtraValueHTML($val->idx);
+	if (!empty($html)) :
+		if (preg_match('/<a[^>]+href=["\']([^"\']+)["\'][^>]*>([^<]+)<\/a>/i', $html, $matches)) :
+			$href = html_entity_decode(trim($matches[1]));
+			$filename = trim($matches[2]);
+			$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+			$imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+			if (in_array($ext, $imageExtensions)) : 
+				$imgchk = 'ok';
+			else :
+				$imgchk = '';
+			endif;
+		endif;
+	endif;	
+}
+							<!--@if($imgchk=='ok')-->
+								<div><img src="{$href}" style="width: {$mi->thumbnail_width2}px;"></div>
+							<!--@else-->
+								<span onclick="showUpdateExtraModal(this, {$document->document_srl}, {$val->idx})"|cond="$grant->manager && $use_extra_vars_update && $val->eid === $extra_keys_for_update[$val->idx]->eid">{$document->getExtraValueHTML($val->idx)}</span>
+							<!--@end-->
+							
+						<!--@end-->
+					</td>
+				</block>
+
+				<td cond="$grant->manager" class="check"><input type="checkbox" name="cart" value="{$document->document_srl}" class="iCheck" title="Check This Article" onclick="doAddDocumentCart(this)" checked="checked"|cond="$document->isCarted()" /></td>
+			</tr>
+			<!-- /LIST -->
+		</tbody>
+	</table>
+</div>
+<!--@else-->
+	<include target="opt_list/_list__opt_mobile.html" />
+<!--@end-->
+<include target="opt_list/_list__opt_pagenavi.html" />
+<include target="opt_list/_list__opt_btnbox.html" />
+

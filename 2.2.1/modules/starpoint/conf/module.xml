@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<grants>
+	</grants>
+	<actions>
+		<action name="procStarpointDoRateDocument" type="controller" method="POST" />
+	</actions>
+	<menus>
+		<menu name="starpoint" type="all">
+			<title xml:lang="ko">게시글 별 평점</title>
+		</menu>
+	</menus>
+</module>

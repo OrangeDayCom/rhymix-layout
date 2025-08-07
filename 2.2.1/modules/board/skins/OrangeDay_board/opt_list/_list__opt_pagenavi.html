@@ -1,0 +1,67 @@
+<!-- ////////////////////////
+
+	페이지 네비
+
+ ////////////////////////-->
+{@ $prev_page = max($page-1, 1)}
+{@ $next_page = min($page+1, $page_navigation->last_page)}	
+<ul class="pagination" cond="$document_list || $notice_list">
+	 <!--@if(!Mobile::isMobileCheckByAgent())-->
+		<li class="vp">
+			<a cond="$page!=$prev_page" href="{getUrl('page',$prev_page,'document_srl','')}" class="prev"><i class='bx bxs-chevron-left' ></i></a>
+			<span cond="$page==$prev_page" class="prev disable"><i class='bx bxs-chevron-left' ></i></span>
+			<a class="frst_last bubble<!--@if($page==1)--> this<!--@end-->" href="{getUrl('page','','document_srl','')}" title="{$lang->first_page}">1</a>
+			<span cond="$page>($mi->page_count)/2+2" class="bubble">..</span>
+			<block loop="$page_no=$page_navigation->getNextPage()" cond="$page_no!=1 && $page_no!=$page_navigation->last_page">
+				<strong class="this" cond="$page==$page_no">{$page_no}</strong> 
+				<a cond="$page!=$page_no" href="{getUrl('page',$page_no,'document_srl','')}">{$page_no}</a>
+			</block>
+			<span cond="($page+($mi->page_count+1)/2<$page_navigation->last_page) && ($mi->page_count+1<$page_navigation->last_page)" class="bubble">..</span>
+			<a cond="$page_navigation->last_page!=1" class="frst_last bubble<!--@if($page==$page_navigation->last_page)--> this<!--@end-->" href="{getUrl('page',$page_navigation->last_page,'document_srl','')}" title="{$lang->last_page}">{$page_navigation->last_page}</a>
+			<a cond="$page!=$next_page" href="{getUrl('page',$next_page,'document_srl','')}" class="next"><i class='bx bxs-chevron-right'></i></a>
+			<span cond="$page==$next_page" class="next disable"><i class='bx bxs-chevron-right'></i></span>
+		</li>
+	<!--@end-->
+	<li>
+		<a cond="$page!=$prev_page" href="{getUrl('page',$prev_page,'document_srl','')}" class="prev"><i class='bx bxs-chevron-left' ></i></a>
+		<span cond="$page==$prev_page" class="prev disable"><i class='bx bxs-chevron-left' ></i></span>	
+		<input type="tel" class="page" placeholder="{$page}" />/ {$page_navigation->last_page} <a class="obtn go_move_page">GO</a>
+		<a cond="$page!=$next_page" href="{getUrl('page',$next_page,'document_srl','')}" class="next"><i class='bx bxs-chevron-right'></i></a>
+		<span cond="$page==$next_page" class="next disable"><i class='bx bxs-chevron-right'></i></span>		
+	</li>
+</ul>
+<script>
+$(document).ready(function() {
+	let maxPage = Number('{$page_navigation->last_page}'); 
+	$('.page').on('input', function() {
+		let currentValue = Number($(this).val());
+		if (currentValue > maxPage) {
+			$(this).val(maxPage);
+		}
+	});
+	
+    // 버튼 클릭 시 이동
+    $(".go_move_page").click(function() {
+        movePage();
+    });
+
+    // input에서 엔터키 눌렀을 때 이동
+    $(".page").keydown(function(e) {
+        if (e.key === "Enter" || e.keyCode === 13) {
+            e.preventDefault(); // 폼 제출 막기 (필요한 경우)
+            movePage();
+        }
+    });
+
+    // 페이지 이동 함수
+    function movePage() {
+	    var $pageInput = $('.page');
+	    var gopage = $pageInput.val();
+	    if (gopage && gopage.trim() !== '') {
+		   window.location.href = '{$domain}/{$mid}/page/' + gopage + '{$Fquery}';
+	    } else {
+		   $pageInput.focus(); // 값이 없을 때 입력 필드에 포커스
+	    }
+    }	
+});
+</script>

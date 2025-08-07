@@ -1,0 +1,34 @@
+<load target="./src/default.css" />
+<block loop="$options => $key, $option" cond="$option->list">
+		<div class="author_list set_font">
+			
+			
+			
+			<div class="ap_profile_document">
+				<h3><i class='bx bxs-file-blank'></i><!--@if(isset($this_b) && $this_b == 'yes')--><em>  현재 게시판에서</em><!--@end--> <span>{$oDocument->getNickName()}</span> 님의 {$lang->recent_document}</h3>
+				<block loop="$option->list => $opt" cond="$opt === 'document' && $profile_item->document">
+					<a loop="$profile_item->document => $no, $document" href="{getUrl('', 'document_srl', $document->document_srl)}">
+						<span class="ap_profile_title">{$document->title} 
+							<span cond="$document->readed_count"><i class='bx bxs-show' ></i>{$document->readed_count} </span>
+							<span cond="$document->comment_count"><i class='bx bxs-message-rounded-dots'></i>{$document->comment_count}</span>
+						</span>
+						<span class="ap_profile_regdate">{zdate($document->regdate, 'Y m.d')}</span>
+					</a>
+				</block>
+				<div class="nocon" cond="!$profile_item->document"><i class='bx bxs-message-square-error' ></i> 작성 글이 없습니다.</div>
+			</div>
+			
+			
+			<div class="ap_profile_comment">
+				<h3><i class='bx bxs-message-dots' ></i><!--@if(isset($this_b) && $this_b == 'yes')--><em> 현재 게시판에서</em><!--@end--> <span>{$oDocument->getNickName()}</span> 님의 {$lang->recent_comment}</h3>
+				<block loop="$option->list => $opt" cond="$opt === 'comment' && $profile_item->comment">
+					<a loop="$profile_item->comment => $no, $comment" href="{getUrl('', 'document_srl', $comment->document_srl, 'comment_srl', $comment->comment_srl)}#comment_{$comment->comment_srl}">
+						<span class="ap_profile_title">{strip_tags($comment->content)}</span>
+						<span class="ap_profile_regdate">{zdate($comment->regdate, 'Y m.d')}</span>
+					</a>
+				</block>
+				<div class="nocon" cond="!$profile_item->comment"><i class='bx bxs-message-square-error' ></i> 작성 댓글이 없습니다.</div>
+			</div>
+			
+		</div>
+</block>

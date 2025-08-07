@@ -1,0 +1,36 @@
+<query action="select">
+	<tables>
+		<table name="documents" alias="documents" />
+		<table name="modules" alias="modules" type="left join">
+			<conditions>
+				<condition operation="equal" column="modules.module_srl" default="documents.module_srl" />
+			</conditions>
+		</table>
+	</tables>
+	<columns>
+		<column name="count(documents.module_srl)" alias="count" />
+		<column name="documents.module_srl" alias="module_srl" />
+		<column name="modules.mid" />
+		<column name="modules.browser_title" />
+	</columns>
+	<conditions>
+		<condition operation="in" column="documents.member_srl" var="member_srl" notnull="notnull" />
+	</conditions>
+	<groups>
+		<group column="module_srl" />
+	</groups>
+</query>
+
+<!--
+$query = sprintf(
+				'SELECT documents.document_srl, count(documents.module_srl) `count`, documents.module_srl, modules.mid, modules.browser_title
+				FROM %sdocuments documents
+				LEFT JOIN %smodules modules
+				ON modules.module_srl = documents.module_srl
+				WHERE documents.member_srl = %d
+				GROUP BY documents.module_srl'
+				,$old_db->prefix
+				,$old_db->prefix
+				,$member_srl
+			);
+-->

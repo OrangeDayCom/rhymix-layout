@@ -1,0 +1,23 @@
+<ul class="popup">
+
+	<li loop="$widget_info->content_items =>$key,$item" <!--@if($widget_info->view_mode_ex)--> style="height:{$widget_info->view_mode_ex}"<!--@end-->>
+		<!--@if($item->getThumbnail())-->
+		<div class="bg_con" style="background-image:url('{$item->getThumbnail()}');"></div>
+		<!--@else-->
+		<div class="bg_no"></div>
+		<!--@end-->
+		<div class="conbox">
+			<span class="title">{html_entity_decode($item->getTitle())|autoescape}</span><br />
+			<span class="text">
+			 {nl2br($item->getExtraVar4())}
+			</span><br />
+
+		</div>
+    </li>
+
+</ul>
+<script>
+$(document).ready(function(){
+
+});
+</script>

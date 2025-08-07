@@ -1,0 +1,231 @@
+<load target="./src/default.css" />
+<load target="./src/default.js" />
+<load target="./src/tab.js" cond="$profile_info->tab !== 'N'" />
+
+<div class="ap_profile<!--@if($profile_info->tab !== 'N')--> is_tab<!--@end-->">
+
+	<!--// 프로필 이미지와 닉네임 -->
+	<header cond="$profile_info->header">
+	<block loop="$profile_info->header => $opt">
+		<div class="ap_profile_img" cond="$opt === 'profile_image'">
+			<img class="ap_profile_img_profile" src="<!--@if($profile_item->profile_image)-->{$profile_item->profile_image->src}<!--@else-->./src/no_profile.png<!--@end-->" style="max-width: {$profile_info->profile_image_max_width}px; max-height: {$profile_info->profile_image_max_height}px;" />
+		</div>
+		<div class="ap_profile_name" cond="$opt === 'nick_name'">
+			<a href="#" onclick="return false;" class="nName member_{$profile_item->member_srl}">{htmlspecialchars($profile_item->nick_name)}</a>
+		</div>
+	</block>
+	</header>
+
+	<!--// 탭 메뉴 사용시 내비게이션 출력 -->
+	<nav cond="$profile_info->tab !== 'N' && $profile_info->as_whole && count($options) > 1">
+		<ul>
+		{@ $i = 0;}
+			<li class="ap_profile_option<!--@if($i === 0)--> active<!--@end-->" loop="$options => $option" cond="$option->list">
+				<span>{$option->title}</span>
+				{@ $i++; }
+			</li>
+		</ul>
+	</nav>
+
+    <!--// 해당 회원이 지정된 프로필 출력 대상 그룹 소속일 경우 -->
+	<main class="ap_profile_info" cond="$profile_info->as_whole">
+	{@ $i = 0;}
+	<block loop="$options => $key, $option" cond="$option->list">
+
+		<!--// 기본 프로필 -->
+		<block cond="$key === 'profile'">
+		<h3 cond="$profile_info->tab === 'N'">{$option->title}</h3>
+		<section class="ap_profile_basic<!--@if($i === 0)--> active<!--@end-->">
+		{@ $i++; }
+			<block loop="$option->list => $opt">
+			<!--// 인적 사항 -->
+			<div cond="$opt === 'user_id'">
+				* {$lang->user_id} : {$profile_item->user_id}
+			</div>
+			<div cond="$opt === 'user_name'">
+				* {$lang->user_name} : {$profile_item->user_name}
+			</div>
+
+			<!--// 부가 사항 -->
+			<div class="ap_profile_email" cond="$opt === 'email_address'">
+				* {$lang->email_address} : <a href="mailto:{$profile_item->email_address}">{$profile_item->email_address}</a>
+			</div>
+			<div class="ap_profile_home" cond="$opt === 'homepage' && $profile_item->homepage">
+				* {$lang->homepage} : <a href="{$profile_item->homepage}" target="_blank">{$profile_item->homepage}</a>
+			</div>
+			<div class="ap_profile_blog" cond="$opt === 'blog' && $profile_item->blog">
+				* {$lang->blog} : <a href="{$profile_item->blog}" target="_blank">{$profile_item->blog}</a>
+			</div>
+			<div class="ap_profile_birth" cond="$opt === 'birthday' && $profile_item->birthday">
+				* {$lang->birthday} : {zdate($profile_item->birthday, 'Y-m-d')}
+			</div>
+			<div class="ap_profile_groups" cond="$opt === 'groups'">
+				* {$lang->member_group} : {$profile_item->groups}
+			</div>
+			<div class="ap_profile_regdate" cond="$opt === 'regdate'">
+				* {$lang->signup_date} : {zdate($profile_item->regdate, 'Y-m-d')}
+			</div>
+			<div class="ap_profile_login" cond="$opt === 'last_login'">
+				* {$lang->last_login} : {zdate($profile_item->last_login, 'Y-m-d')}
+			</div>
+
+			<!--// 사용자 정의 -->
+			<div class="ap_profile_extra" cond="$opt === 'extra_keys' && is_array($profile_item->extra_vars) && count($profile_item->extra_vars) > 0" loop="$profile_item->extra_vars => $eid, $var">
+				* {$var['title']} : {$var['value']}
+			</div>
+			</block>
+		</section>
+		</block>
+
+		<!--// 최근 작성 콘텐츠 -->
+		<block cond="$key === 'contents'">
+		<h3 cond="$profile_info->tab === 'N'">{$option->title}</h3>
+		<section class="ap_profile_content<!--@if($i === 0)--> active<!--@end-->">
+		{@ $i++; }
+			<block loop="$option->list => $opt">
+			<div class="ap_profile_document" cond="$opt === 'document' && $profile_item->document" style="width: {1/count($option->list) * 100}%">
+				<p>* {$lang->recent_document}</p>
+				<a loop="$profile_item->document => $no, $document" href="{getUrl('', 'document_srl', $document->document_srl)}">
+					<span class="ap_profile_img_thumb" cond="$profile_info->thumb === 'Y' && $document->src"><img src="{$document->src}" /></span>
+					<span class="ap_profile_document_title"><b>{$document->title}</b><sup>{$document->comment_count}</sup></span>
+					<span class="ap_profile_document_regdate">{zdate($document->regdate, 'Y-m-d')}</span>
+				</a>
+			</div>
+			<div class="ap_profile_comment" cond="$opt === 'comment' && $profile_item->comment" style="width: {1/count($option->list) * 100}%">
+				<p>* {$lang->recent_comment}</p>
+				<a loop="$profile_item->comment => $no, $comment" href="{getUrl('', 'document_srl', $comment->document_srl, 'comment_srl', $comment->comment_srl)}#comment_{$comment->comment_srl}">
+					<span class="ap_profile_comment_title"><b>{strip_tags($comment->content)}</b><span class="ap_profile_comment_regdate">{zdate($comment->regdate, 'Y-m-d')}</span></span>
+				</a>
+			</div>
+			</block>
+		</section>
+		</block>
+
+		<!--// 네트워킹 정보 -->
+		<block cond="$key === 'network'">
+		<h3 cond="$profile_info->tab === 'N'">{$option->title}</h3>
+		<section class="ap_profile_social<!--@if($i === 0)--> active<!--@end-->">
+		{@ $i++; }
+			<block loop="$option->list => $opt">
+			<div class="ap_profile_follows" cond="$opt === 'follows' && $profile_item->follows">
+				* {$lang->follow} : {$profile_item->follows} {$lang->following}
+			</div>
+			<div class="ap_profile_follow_sum" cond="$opt === 'follow_sum' && $profile_item->follow_sum">
+				* {$lang->follow_sum} : {$profile_item->follow_sum}{$lang->followcount}
+			</div>
+			<div class="ap_profile_followers" cond="$opt === 'followers' && $profile_item->followers">
+				* {$lang->follower} : {$profile_item->followers} {$lang->followed}
+			</div>
+			<div class="ap_profile_follower_sum" cond="$opt === 'follower_sum' && $profile_item->follower_sum">
+				* {$lang->follower_sum} : {$profile_item->follower_sum}{$lang->followcount}
+			</div>
+			</block>
+		</section>
+		</block>
+
+		<!--// 서명/소개 정보 -->
+		<block cond="$key === 'intro'">
+		<h3 cond="$profile_info->tab === 'N'">{$option->title}</h3>
+		<section class="ap_profile_intro<!--@if($i === 0)--> active<!--@end-->">
+		{@ $i++; }
+			<div class="ap_profile_signature" cond="$profile_item->signature">
+				<div class="ap_profile_signature_content">{$profile_item->signature}</div>
+			</div>
+			<div class="ap_profile_signature" cond="!$profile_item->signature">
+				<p class="ap_profile_signature_none" cond="!$profile_item->signature">{$lang->no_signature}</p>
+			</div>
+		</section>
+		</block>
+
+		<!--// 활동 내역 정보 -->
+		<block cond="$key === 'history'">
+		<h3 cond="$profile_info->tab === 'N'">{$option->title}</h3>
+		<section class="ap_profile_stat<!--@if($i === 0)--> active<!--@end-->">
+		{@ $i++; }
+			<block loop="$option->list => $opt">
+			<div class="ap_profile_total_document_count" cond="$opt === 'total_document_count' && $profile_item->total_document_count">
+				* {$lang->total_document_count} : {$profile_item->total_document_count}
+			</div>
+			<div class="ap_profile_total_comment_count" cond="$opt === 'total_comment_count' && $profile_item->total_comment_count">
+				* {$lang->total_comment_count} : {$profile_item->total_comment_count}
+			</div>
+
+			<div class="ap_profile_voting_document_count" cond="$opt === 'voting_document_count' && $profile_item->voting_document_count">
+				* {$lang->voting_document_count} : {$profile_item->voting_document_count}
+			</div>
+			<div class="ap_profile_voting_comment_count" cond="$opt === 'voting_comment_count' && $profile_item->voting_comment_count">
+				* {$lang->voting_comment_count} : {$profile_item->voting_comment_count}
+			</div>
+			<div class="ap_profile_voted_document_count" cond="$opt === 'voted_document_count' && $profile_item->voted_document_count">
+				* {$lang->voted_document_count} : {$profile_item->voted_document_count}
+			</div>
+			<div class="ap_profile_voted_document_sum" cond="$opt === 'voted_document_sum' && $profile_item->voted_document_sum">
+				* {$lang->voted_document_sum} : {$profile_item->voted_document_sum}
+			</div>
+			<div class="ap_profile_voted_comment_count" cond="$opt === 'voted_comment_count' && $profile_item->voted_comment_count">
+				* {$lang->voted_comment_count} : {$profile_item->voted_comment_count}
+			</div>
+			<div class="ap_profile_voted_comment_sum" cond="$opt === 'voted_comment_sum' && $profile_item->voted_comment_sum">
+				* {$lang->voted_comment_sum} : {$profile_item->voted_comment_sum}
+			</div>
+
+			<div class="ap_profile_blaming_document_count" cond="$opt === 'blaming_document_count' && $profile_item->blaming_document_count">
+				* {$lang->blaming_document_count} : {$profile_item->blaming_document_count}
+			</div>
+			<div class="ap_profile_blaming_document_count" cond="$opt === 'blaming_document_count' && $profile_item->blaming_document_count">
+				* {$lang->blaming_document_count} : {$profile_item->blaming_document_count}
+			</div>
+			<div class="ap_profile_blamed_document_count" cond="$opt === 'blamed_document_count' && $profile_item->blamed_document_count">
+				* {$lang->blamed_document_count} : {$profile_item->blamed_document_count}
+			</div>
+			<div class="ap_profile_blamed_document_sum" cond="$opt === 'blamed_document_sum' && $profile_item->blamed_document_sum">
+				* {$lang->blamed_document_sum} : {$profile_item->blamed_document_sum}
+			</div>
+			<div class="ap_profile_blamed_comment_count" cond="$opt === 'blamed_comment_count' && $profile_item->blamed_comment_count">
+				* {$lang->blamed_comment_count} : {$profile_item->blamed_comment_count}
+			</div>
+			<div class="ap_profile_blamed_comment_sum" cond="$opt === 'blamed_comment_sum' && $profile_item->blamed_comment_sum">
+				* {$lang->blamed_comment_sum} : {$profile_item->blamed_comment_sum}
+			</div>
+
+			<div class="ap_profile_accusing_document_count" cond="$opt === 'accusing_document_count' && $profile_item->accusing_document_count">
+				* {$lang->accusing_document_count} : {$profile_item->accusing_document_count}
+			</div>
+			<div class="ap_profile_accusing_comment_count" cond="$opt === 'accusing_comment_count' && $profile_item->accusing_comment_count">
+				* {$lang->accusing_comment_count} : {$profile_item->accusing_comment_count}
+			</div>
+			<div class="ap_profile_accused_document_count" cond="$opt === 'accused_document_count' && $profile_item->accused_document_count">
+				* {$lang->accused_document_count} : {$profile_item->accused_document_count}
+			</div>
+			<div class="ap_profile_accused_document_sum" cond="$opt === 'accused_document_sum' && $profile_item->accused_document_sum">
+				* {$lang->accused_document_sum} : {$profile_item->accused_document_sum}
+			</div>
+			<div class="ap_profile_accused_comment_count" cond="$opt === 'accused_comment_count' && $profile_item->accused_comment_count">
+				* {$lang->accused_comment_count} : {$profile_item->accused_comment_count}
+			</div>
+			<div class="ap_profile_accused_comment_sum" cond="$opt === 'accused_comment_sum' && $profile_item->accused_comment_sum">
+				* {$lang->accused_comment_sum} : {$profile_item->accused_comment_sum}
+			</div>
+			</block>
+		</section>
+		</block>
+
+	</block>
+	</main>
+
+	<!--// 해당 회원이 지정된 프로필 출력 대상 그룹 소속이 아닌 경우 -->
+	<main class="ap_profile_info" cond="!$profile_info->as_whole">
+		<block cond="$options['intro']">
+		<h3 cond="$profile_info->tab === 'N'">{$lang->signature}</h3>
+		<section class="ap_profile_intro active">
+			<div class="ap_profile_signature" cond="$profile_item->signature">
+				<div class="ap_profile_signature_content">{$profile_item->signature}</div>
+			</div>
+			<div class="ap_profile_signature" cond="!$profile_item->signature">
+				<p class="ap_profile_signature_none" cond="!$profile_item->signature">{$lang->no_signature}</p>
+			</div>
+		</section>
+		</block>
+	</main>
+
+</div>

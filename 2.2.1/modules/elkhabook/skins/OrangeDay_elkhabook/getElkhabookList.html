@@ -1,0 +1,168 @@
+<load target="/_assets/js/infinite-scroll.pkgd.min.js" />
+<load target="/_assets/js/masonry.pkgd.min.js" />	
+<aside loop="$output=>$_class,$_output" class="docs icon-{$_class}">
+
+	<div class="docs-ajax">
+		<!--@if(!$_output[1]->toBool())-->
+		<div class="msg">
+			{@
+			echo $_output[1]->getMessage();
+			if(strlen($_output[4][0] ?? '')):
+				echo '<span>공개대상 <em>' . \Context::getLang('elkhabook_contents_'.$_output[4][0]) . '</em></span>';
+			endif;
+			}
+		</div>
+		<!--@else if(is_array($_output[1]->data) && count($_output[1]->data))-->	
+		<h3 class="hx">{$_output[0]} ({$_output[1]->page_navigation->total_count})</h3>
+		<!--// 1.0.9 신규 기능: 공개 옵션 (단, 설정 가능한 값이 2개 이상일 때 공개 옵션을 지정할 수 있게.) -->
+		<!--@if($_member_info->member_srl == ($logged_info->member_srl ?? 0) && count($my_config = $_output[4] ?? []) && strlen($name = $_output[3][1] ?? ''))-->
+		<include target="procElkhabookMyConfig.html" />
+		<!--@endif-->
+			
+		{@
+		$regdate = 0;
+		$regdate2= 0;
+		}
+		
+		<ul id="medoc">
+		
+			<!--@foreach($_output[1]->data as $obj)-->
+			<li class="box {$regdate==$obj->getRegdate('Y-m-d')?'line':''}{$regdate2==$obj->getRegdate('ymdhi')?' time_hide':''}{$obj->get('valid')=='N'? ' valid_N':''}">
+				<!--@if($oModel->isAccessible($obj))-->
+					<div class="doc">
+						<!--@if(method_exists($obj, 'getTitleText'))-->
+							<!--@if($obj->getThumbnail())-->
+								<img src="{$obj->getThumbnail(100, 100)}" />
+							<!--@endif-->
+							<h4 class="hx">
+								<block cond="$board!=$oModel->getMid($obj->get('module_srl') ?: 0)">
+								<a href="{getUrl('','mid',$oModel->getMid($obj->get('module_srl') ?: 0))}" class="category"><i class="bx bxs-category-alt"></i> {@ echo $oModel->getBrowserTitle($obj->get('module_srl')); }</a>
+								</block>
+								<a href="{$obj->getPermanentUrl()}" class="title">{$obj->getTitleText()}</a>
+							</h4>					
+							<p class="p">{$s = $obj->getSummary(200)}{@ if(!strlen(trim($s))) echo '-'; }</p>
+						<!--@else if(isset($obj->elkhatalk))-->
+							<h4 class="hx">
+								<block cond="$obj->get('valid')!='N'">
+									{@ if($obj->roomName()) echo sprintf('<span class="room_name">[%s]</span> ', $obj->roomName()); }
+									{$obj->getContent2()}
+									<a cond="$obj->isGranted()" href="javascript:;" onclick="return procElkhatalk3Delete('{$lang->confirm_delete}', {$logged_info->member_srl}, {$obj->get('pk')});" class="delete">{$lang->cmd_delete}</a>
+								</block>
+								<block cond="$obj->get('valid')=='N'">{$obj->getContent2()}</block>
+							</h4>
+							<span class="p"></span>
+						<!--@else-->
+							<p class="p">
+								<a href="{getUrl('','mid',$oModel->getMid($obj->oDocument->get('module_srl') ?: 0))}" class="category"><i class="bx bxs-category-alt"></i> {@
+								echo $oModel->getBrowserTitle($obj->get('module_srl'));
+								}<br /></a> <a href="{$obj->oDocument->getPermanentUrl()}" class="comment">{$s = $obj->oDocument->getTitleText(100,'...')}{@ if(!strlen(trim($s))) echo '-'; }</a>
+							</p>
+							<h4 class="hx">
+								<a href="{$obj->getPermanentUrl()}" class="title">{$s = html_entity_decode($obj->getSummary(200))}{@ if(!strlen(trim($s))) echo '-'; }</a>
+							</h4>
+						<!--@endif-->
+
+						<div class="left">
+							<div class="regdate">{$regdate = $obj->getRegdate('Y-m-d')} {$obj->getRegdate('H:i')}</div>
+							{@
+							$buff = [];
+							if($_member_info->member_srl != $obj->get('member_srl')):
+								$nick_name = '';
+								if($obj->get('member_srl') > 0):
+									$author_info = \MemberModel::getMemberInfoByMemberSrl($obj->get('member_srl'));
+									if(($author_info->member_srl ?? 0) == $obj->get('member_srl'))
+										$nick_name = $author_info->nick_name;
+								endif;
+								if(!strlen($nick_name))
+									$nick_name = $obj->getNickName();
+								$buff[] = sprintf('<span class="tooltip author"><span class="label">%s </span><a href="%s" onclick="return false;" class="member_%d">%s</a></span> ', $lang->author, $oModel->getUrl('dispMemberInfo', $obj->get('member_srl'), 'getUrl'), $obj->get('member_srl'), $nick_name);
+							endif;
+							if(!isset($obj->elkhatalk)):
+								$info_arr = [
+									'bxs-show' => $obj->get('readed_count') ?: 0,
+									'bxs-message-rounded-dots' => $obj->get('comment_count') ?: 0,
+									'bxs-heart' => $obj->get('voted_count') ?: 0,
+									'bxs-skull' => abs($obj->get('blamed_count') ?: 0),
+								];
+								foreach($info_arr as $info_arr_key => $info_arr_val)
+									if($info_arr_val)
+										$buff[] = sprintf('<span><i class="bx %s" ></i>%s</span>', $info_arr_key, number_format($info_arr_val));
+							endif;
+							if(count($buff)):
+								echo '<div class="pinfo">' . implode(' ', $buff). '</div>';
+							endif;
+							}						
+						</div>
+					</div>
+				<!--@else-->
+					<div class="doc no_permission">
+						<i class="bi bi-exclamation-square-fill"></i> <span>{$lang->msg_not_permitted}</span> 
+					</div>
+				<!--@endif-->
+				{@
+				$regdate2 = $obj->getRegdate('ymdhi');
+				}
+			</li>
+			<!--@endforeach-->
+		</ul>
+		<!--@end-->
+	</div>
+
+	<div class="more" style="display:none; ">
+		{@
+		$page_name = $_output[2];
+		}
+		<!--@if($_output[1]->page_navigation->cur_page >= 3)-->
+			<span>
+				{@
+				$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl', $_output[3][0] ?? '');
+				if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+					$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+				endif;
+				$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+				$url .= ($_output[1]->page_navigation->cur_page -1);
+				}
+				<a href="{$url}" class="getElkhabookList"><i class='bx bxs-chevron-left' ></i></a>
+			</span>
+		<!--@else-->
+			<span style="opacity:.2"><i class='bx bxs-chevron-left' ></i></span>
+		<!--@end-->
+		<strong> <a href="javascript:;" onclick="return window.go_to_page('{$page_name}', {$_output[1]->page_navigation->cur_page}, '{$lang->elkhabook_go_to_page}');">{$_output[1]->page_navigation->cur_page}</a></strong>
+		<!--@if($_output[1]->page_navigation->cur_page < $_output[1]->page_navigation->last_page)-->
+			<span>
+				{@
+				$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl', $_output[3][0] ?? '');
+				if(is_object($_module_info) && $_module_info->module_srl && $_module_info->mid==$board):
+					$url .= strpos($url, '?')===FALSE? '?board='.$board : '&amp;board='.$board;
+				endif;
+				$url .= strpos($url, '?')===FALSE? "?$page_name=" : "&amp;$page_name=";
+				$url .= ($_output[1]->page_navigation->cur_page + 1);
+				}
+				<div id="page-nav"><a href="{$url}" class="pagination__next getElkhabookList"><i class='bx bxs-chevron-right' ></i></a></div>
+			</span>
+		<!--@else-->
+			<span style="opacity:.2"><i class='bx bxs-chevron-right' ></i></span>
+		<!--@end-->
+	</div>
+</aside>
+<div class="page-load-status" style="display:  none  ;">
+	<p class="infinite-scroll-request"><i class='bx bx-loader-circle bx-spin bx-rotate-90' ></i></p>
+	<p class="infinite-scroll-last">End of content</p>
+	<p class="infinite-scroll-error">No more pages to load</p>
+</div>
+<!--@if($_output[1]->page_navigation->cur_page < $_output[1]->page_navigation->last_page)-->
+<div class="infinity-btn-box"><a class="view-more-button xbtn"><i class='bx bx-plus'></i> View more</a></div>
+<!--@end-->
+<script>
+$(function(){
+	var $inficon = $("#medoc");	
+	$inficon.infiniteScroll({
+		path: '.pagination__next',
+		append: '.box',
+		button: '.view-more-button',
+		scrollThreshold: false,
+		status: '.page-load-status',
+		history: false,
+	});
+});	
+</script>

@@ -1,0 +1,399 @@
+{@
+	$oi = $layout_info;
+	if(!$oi->site_wing_gap) $oi->site_wing_gap = '20';
+	
+	if(!$mi->gall_cell_width) $mi->gall_cell_width = 300;
+	if(!$mi->gall_cell_gap) $mi->gall_cell_gap = 2;
+	if(!$mi->gall_cell_radius) $mi->gall_cell_radius = 10;
+	if(!$mi->gall_cell_border) $mi->gall_cell_border = 'yes';
+	if(!$mi->view_cell) $mi->view_cell = 'thum';	
+	if(!$mi->title_line) $mi->title_line = 0;
+	if(!$mi->view_cell_sum) $mi->view_cell_sum = 'summ';	
+	if(!$mi->summ_num) $mi->summ_num = 300;
+	if(!$mi->thumbnail_type) $mi->thumbnail_type = 'ratio';
+	if(!$mi->infinity_use) $mi->infinity_use  = "no";	
+	
+	
+	if(!$mi->gall_hint) $mi->gall_hint = 'no_use';
+
+	if($mi->gall_cell_gap == 'no' ) :
+		$mi->gall_cell_gap = 0;
+		$box_top = 10;
+	elseif($mi->gall_cell_gap < 10) :
+		$box_top = 10;
+	else :
+		$box_top = $mi->gall_cell_gap;
+	endif;
+	
+	if($mi->gall_cell_radius == 'no' ) :
+		$mi->gall_cell_radius = 0;
+	endif;
+	
+}
+
+<style>
+#list-gall { padding: {$box_top}px 0;  width: 100% !important; overflow:unset !important}
+#list-gall .box { margin-bottom:{$mi->gall_cell_gap}px; width:{$mi->gall_cell_width}px;  border-radius:{$mi->gall_cell_radius}px; <!--@if($mi->gall_cell_border =='no')--> border:none; <!--@end-->}
+#list-gall .box a { -webkit-line-clamp: {$mi->title_line};}
+.wrapGall .boxsize2 a img.thum  { min-height:300px;}
+.wrapGall.changeWidth .boxsize2 a img.thum  { min-height:unset;}
+.ttdiv { width:100%; padding:10px 0; margin-top:10px; font-size:.85em; text-align:center; background-color:var(--oday_listBgColor); border-radius:10px}
+@media screen and (max-width:768px){
+	.wrapGall .boxsize2 a img.thum  { min-height:auto;}
+}
+@media screen and (max-width:500px){
+
+}
+</style>
+
+<load target="/_assets/js/infinite-scroll.pkgd.min.js" />
+<load target="/_assets/js/masonry.pkgd.min.js" />
+
+<include target="opt_list/_list__opt_category_search.html" />
+
+<include target="opt_list/_list__opt_notice_pop.html" cond="$notice_list" />
+<!--@if(!$document_list && !$notice_list)-->
+	<div class="no_documents">
+	<!--@if($search_keyword)-->
+		검색된 글이 없습니다.
+	<!--@else-->
+		{$lang->no_documents}
+	<!--@end-->
+	</div>
+<!--@else-->
+
+	<!--@if($mi->gall_hint == 'use')-->
+	<div class="ttdiv" cond="$grant->manager">
+		<script>
+		window.addEventListener("load", function () {
+			var boxWidth = $('.boxsize').width();
+			$('.widthValue').text(boxWidth);
+		});
+		</script>	
+		(<span class="widthValue"></span>)(<span class="widthValue2"></span>)
+	</div>
+	<!--@end-->
+	
+	
+{@
+	$page_tno = $page ;
+	$page_no = $page + 1;
+}
+<div cond="$page > 1" class="infinitiNotice">전체 <span>{$page_navigation->last_page}</span>페이지 중 <span>{$page}</span>번째 페이지부터 시작되었습니다.<br class="vm" /> 첫 페이지 부터 보시려면 <a href="{getUrl('page','','','')}">여기</a>를 클릭해 주세요.</div>
+<div id="list-gall" class="wrapGall get_font_list" style="margin:0 auto; overflow:hidden;">
+	<div class="boxsize"></div>
+	<div loop="$document_list =>$no,$document" class="box boxsize<!--@if($mi->view_cell=='thum')--> titleIn<!--@end-->">
+		<input cond="$grant->manager" type="checkbox" name="cart" id="chk_{$document->document_srl}" value="{$document->document_srl}" class="listchk<!--@if($mi->view_cell=='sum')--> sum<!--@end-->" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+		<block cond="$mi->view_cell=='all' || $mi->view_cell=='thum'">
+			<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon
+				<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)-->
+				<!--@if($val == 'secret')-->S<!--@end-->
+				<!--@if($val == 'new')--> Fbox N<!--@end-->
+				<!--@if($val == 'update')--> Fbox U<!--@end-->
+				<!--@if($val == 'file')-->F<!--@end-->
+				<!--@end-->
+			">
+			<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+				<block cond="$key == 'new'">N</block>
+				<block cond="$key == 'update'">U</block>
+			</block>
+			</span>
+			<!--@if($document->isSecret())-->
+				<span class="newicon Fbox secret"><i class='bx bxs-lock'></i></span>
+			<!--@end-->
+			<!--@if(Mobile::isMobileCheckByAgent())-->
+			<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, 'cpage','')}" class="">
+			<!--@else-->
+			<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon('{strip_tags($document->getTitle())}','{getUrl('document_srl',$document->document_srl,'listStyle','galleryView')}');" target="viewgall">
+			<!--@end-->
+			<!--@if($document->isSecret() && !$document->isGranted())-->
+				<div class="thum no secret" /><i class='bx bxs-lock'></i></div>
+			<!--@elseif($document->isSecret() && $document->isGranted())-->
+				<!--@if($document->thumbnailExists())-->
+					<img src='{$document->getThumbnail($mi->thumbnail_width, $mi->thumbnail_height, $mi->thumbnail_type)}' alt="{$document->getTitle()}" class="thum viewthum" />
+				<!--@else-->
+					<div class="thum no" /><i class='bx bxs-camera-off'></i></div>
+				<!--@end--> 
+			<!--@else-->
+				<!--@if($document->thumbnailExists())-->
+					<img src='{$document->getThumbnail($mi->thumbnail_width, $mi->thumbnail_height, $mi->thumbnail_type)}' alt="{$document->getTitle()}" class="thum viewthum" />
+				<!--@else-->
+					<div class="thum no" /><i class='bx bxs-camera-off'></i></div>
+				<!--@end--> 
+			<!--@end-->
+				<ul cond="$mi->view_cell=='thum'" class="titlebox titleInbox">
+							<li cond="$mi->starpoint_use == 'use'" class="star">
+				<include target="opt_list/_list__opt_starpoint.html" />
+			</li>
+					<li class="columns">
+						<div class="category">{$category_list[$document->get('category_srl')]->title}</div>
+					</li>
+					<li class="title">
+						<!--@if($document->isSecret() && !$document->isGranted())-->
+							{$lang->msg_is_secret} 
+						<!--@elseif($document->isSecret() && $document->isGranted())-->
+							{strip_tags($document->getTitle())}
+						<!--@else-->
+							{strip_tags($document->getTitle())}
+						<!--@end-->
+					</li>
+					<li class="columns middle">
+						<div class="meta">
+							<img cond="$document->getProfileImage()" src="{$document->getProfileImage()}" alt="Profile" class="profile" />
+							<span cond="!$document->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+							<span class="author">{$document->getNickName()}</span>
+						</div>
+						<div class="od_date vp">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</div>
+						<div class="od_date vm">{getTimeGap($document->get('regdate'), "Y.m.d")}</div>				
+					</li>
+					<li class="columns bottom">
+						<span class="read"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+						<span cond="$document->getCommentCount() && $mi->comment_use == 'yes'" class="count"><i class='bx bxs-message-rounded-dots'></i>{$document->getCommentCount()}</span>
+						<span class="count" cond="$document->get('voted_count')!=0"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+					</li>
+				</ul>                   
+			</a>
+		</block>
+		<ul cond="$mi->view_cell=='all' || $mi->view_cell=='sum'" class="titlebox">
+			<li cond="$mi->starpoint_use == 'use'" class="star">
+				<include target="opt_list/_list__opt_starpoint.html" />
+			</li>
+			<li class="columns">
+				<div class="category" onclick="showUpdateExtraModal(this, {$document->document_srl}, {$document->get('category_srl')}, 'category')"|cond="$grant->manager && $use_category_update">{$category_list[$document->get('category_srl')]->title}</div>
+			</li>
+			<li class="title">
+				<!--@if(Mobile::isMobileCheckByAgent())-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" class="">
+				<!--@else-->
+				<a href="{getUrl('document_srl',$document->document_srl,'listStyle',$listStyle, '','')}" onClick="viewCon('{strip_tags($document->getTitle())}','{getUrl('document_srl',$document->document_srl,'listStyle','galleryView')}');" target="viewgall">
+				<!--@end-->
+				<!--@if($document->isSecret() && !$document->isGranted())-->
+					{$lang->msg_is_secret} 
+				<!--@elseif($document->isSecret() && $document->isGranted())-->
+					{strip_tags($document->getTitle())}
+				<!--@else-->
+					{strip_tags($document->getTitle())}
+				<!--@end-->
+				</a>
+			</li>
+			<!--@if($mi->view_cell_sum=='summ')-->
+			<li class="summary">{html_entity_decode($document->getSummary($mi->summ_num))|autoescape}</li>
+			<!--@else-->
+			<li class="full">{$document->getContent(false)} </li>
+			<!--@end-->     
+			<li class="columns middle">
+				<div class="meta">
+					<img cond="$document->getProfileImage()" src="{$document->getProfileImage()}" alt="Profile" class="profile" />
+					<span cond="!$document->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>
+					<a cond="$document->getMemberSrl()" cond="$list_config['nick_name']->idx" href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getNickName()}</a>				
+					<a cond="$document->getMemberSrl()" cond="$list_config['user_name']->idx" href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getUserName()}</a>
+					<a cond="$document->getMemberSrl()" cond="$list_config['user_id']->idx" href="#popup_menu_area" class="member_{$document->get('member_srl')} author" onclick="return false">{$document->getUserID()}</a>
+					<p cond="!$document->getMemberSrl()" class="author">{$document->getNickName()}</p>
+				</div>
+				<div class="od_date vp">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</div>
+				<div class="od_date vm">{getTimeGap($document->get('regdate'), "Y.m.d")}</div>
+			</li>
+			<li class="columns bottom">
+				<span class="read"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+				<span cond="$document->getCommentCount() && $mi->comment_use == 'yes'" class="count"><i class='bx bxs-message-rounded-dots'></i>{$document->getCommentCount()}</span>
+				<span class="count" cond="$document->get('voted_count')!=0"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+			</li>
+		</ul>  
+	</div>
+</div>
+<div class="wrap-infinity">
+	<div class="page-load-status" style="display:  none ;">
+		<p class="infinite-scroll-request"><i class='bx bx-loader-circle bx-spin bx-rotate-90' ></i></p>
+		<p class="infinite-scroll-last">End of content</p>
+		<p class="infinite-scroll-error">No more pages to load</p>
+	</div>
+	<!--@if($mi->infinity_use != 'yes')-->
+	<div class="infinity-btn-box"><a class="view-more-button"><i class='bx bx-plus'></i> View more <span><em class="currentPage">{$page}</em>/{$page_navigation->last_page}</span></a></div>
+	<!--@end-->
+</div>
+<div id="page-nav"><a href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division)}" class="pagination__next"></a></div>
+<div class="iframeCon"><iframe src ="" width="100%" height="100%" frameborder="no" id="iframeWin" name="viewgall"></iframe><div class="iframeBg"></div></div>
+<!--@end-->
+<include target="opt_list/_list__opt_btnbox.html" />
+
+<script>
+function viewCon(ta,tb) {
+	scrollDisable();
+	setTimeout(function() { 
+		$(".iframeCon").fadeIn();
+	}, 100);
+	document.getElementById('iframeWin').contentWindow.focus();
+	//history.pushState({page:"child"}, ta, tb);
+}
+var tUrl = "{getUrl('document_srl','')}";
+function closeCon() {
+	
+	scrollAble();
+	$(".iframeCon").hide();
+	$("#iframeWin").attr('src',"");
+	//history.go(-1);
+	document.title = "{Context::getBrowserTitle()}";
+	history.replaceState({}, null, tUrl);
+	//history.go(-1);
+	//history.replaceState({}, '바닥', '{$oDocument->getPermanentUrl()}?listStyle=galleryView');
+	//document.title = "{Context::getBrowserTitle()}";
+}
+var $inficon = $("#list-gall");
+$(function(){
+
+	var currentPage = Number('{$page}');
+	var $gallW = $('#list-gall').width();
+	if($gallW > 768) {
+		var $cellN = Math.round($gallW / {$mi->gall_cell_width});
+	} else {
+		var $cellN = 2;
+	}	
+	var $cellG = {$mi->gall_cell_gap} * ($cellN - 1);
+	var $cellB = ($gallW - $cellG) / $cellN;
+	var $cellW = $cellB;
+	if($cellN > 1) {
+		var $cellW2 = ($cellB * 2) + {$mi->gall_cell_gap};
+	} else {
+		var $cellW2 = $cellB;
+	}
+
+	/* 가로형 이미지 체크 */
+	function setDouble() {
+		$('.box').each(function() { 
+			var w = $(this).find(".viewthum").width();
+			var h = $(this).find(".viewthum").height();
+			var r = w/h;
+			if(r > 1 ) {
+				$(this).addClass('boxsize2');
+			}
+		});	
+	}	
+
+	function calcCellw() {
+		$('.boxsize, #list-gall .box').css({ 'width': $cellW});
+		$('.thum.no').css({ 'height': $cellW});
+		$('.changeWidth .box.boxsize2').css({ 'width' : $cellW2});
+		$('.widthValue2').text($gallW + ' ' + $cellN + ' ' + $cellG + ' ' + $cellB + ' ' + $cellW);
+	}
+	function doViewOne(){
+		$('.viewOne').addClass('acitvegall');
+		$('.viewTwo').removeClass('acitvegall');
+		$('.wrapGall').removeClass('changeWidth');
+		$('.box.boxsize2').css({ 'width' : $cellW});	
+	}
+	function doViewTwo(){
+		$('.viewTwo').addClass('acitvegall');
+		$('.viewOne').removeClass('acitvegall');
+		$('.wrapGall').addClass('changeWidth');
+		$('.changeWidth .box.boxsize2').css({ 'width' : $cellW2});
+	}
+	$(window).resize(function () {
+		$gallW = $('#list-gall').width();
+		if($gallW > 768) {
+			$cellN = Math.round($gallW / {$mi->gall_cell_width});
+		} else {
+			$cellN = 2;
+		}
+		$cellG = {$mi->gall_cell_gap} * ($cellN - 1);
+		$cellB = ($gallW - $cellG) / $cellN;
+		$cellW = $cellB;
+		$cellW2 = ($cellB * 2) + {$mi->gall_cell_gap};
+		
+			$('.boxsize, #list-gall .box').css({ 'width': $cellW});
+			$('.changeWidth .box.boxsize2').css({ 'width' : $cellW2});
+			$('.widthValue2').text($cellW + ' ' + $cellG);
+	});
+	setDouble();
+	calcCellw();	
+/* 메이슨리 */
+
+	let $grid = $inficon.masonry({
+		// options
+		itemSelector:'none',
+		columnWidth: '.boxsize',
+		//percentPosition: true,
+		//horizontalOrder: true,
+		gutter: {$mi->gall_cell_gap},
+		//visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+		hiddenStyle: { transform: 'translateY(30px)', opacity: 0 },
+		fitWidth: true
+	});
+ 	let msnry = $grid.data('masonry');
+	$grid.imagesLoaded( function() {
+		//$(".boxsize img").css({ "width" : "100%" }); 
+		$grid.masonry( 'option', { itemSelector: '.box' });
+		let $items = $grid.find('.box');
+		$grid.masonry( 'appended', $items );
+		
+	});
+/* 인피니티 스크롤 */
+<!--@if($mi->infinity_use == 'yes')-->
+	$grid.infiniteScroll({
+		// options
+		path: '.pagination__next',
+		append: '.box',
+		//  scrollThreshold: 500,
+		status: '.page-load-status',
+		history: false,
+		outlayer: msnry
+	});
+<!--@else-->	
+	$grid.infiniteScroll({
+		path: '.pagination__next',
+		append: '.box',
+		button: '.view-more-button',
+		scrollThreshold: false,
+		status: '.page-load-status',
+		history: false,
+		outlayer: msnry
+	});
+<!--@end-->
+	$grid.on( 'append.infiniteScroll', function( event ) {
+		setDouble();
+		calcCellw();
+		$inficon.masonry();
+	});
+	$('.view-more-button').click(function() {
+		
+		if(currentPage == {$page_navigation->last_page - 1}) {	
+			
+			setTimeout(function(){
+				$('.infinity-btn-box').hide();
+				$('.page-load-status').show();
+				$('.page-load-status .infinite-scroll-last').show();
+			},1000)			
+
+		} else {
+			currentPage = currentPage += 1;
+			$('.currentPage').text(currentPage);
+		}
+	 });
+/* 셀 사이즈 변환 */
+	$('.viewOne').click(function(){ 
+		viewOne();
+		$inficon.masonry();
+	});
+	$('.viewTwo').click(function(){ 
+		viewTwo();
+		$inficon.masonry();
+	});
+	
+	var $getColor = XE.cookie.get('setOdayGallWidth_{$mid}');
+	if ( $getColor == "one" ){
+		doViewOne();
+	} else if ( $getColor == "two" ) {
+		doViewTwo();
+	} else {
+		doViewOne();
+	}
+	function viewOne() {
+		setCookie( "setOdayGallWidth_{$mid}", "one");
+		doViewOne();
+	} 
+	function viewTwo() {
+		setCookie( "setOdayGallWidth_{$mid}", "two");
+		doViewTwo();
+	} 
+	
+});
+</script>

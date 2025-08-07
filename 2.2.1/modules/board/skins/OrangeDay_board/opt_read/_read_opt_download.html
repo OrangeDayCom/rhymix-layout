@@ -1,0 +1,6 @@
+<div cond="$oDocument->hasUploadedFiles()" class="downlist">
+	<a class="down_onoff">Attached file <i class='bx bxs-plus-square'></i></a>
+	<div class="down_file" style="display:none;">
+		<a loop="$oDocument->getUploadedFiles()=>$key,$file" href="{getUrl('')}{$file->download_url}" class="tooltipimg" data-photo="{$file->uploaded_filename}">{$file->source_filename} <span class="fileSize">{FileHandler::filesize($file->file_size)} <i class='bx bxs-downvote'></i>{number_format($file->download_count)}</span></a>
+	</div>
+</div>

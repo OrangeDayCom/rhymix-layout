@@ -1,0 +1,119 @@
+<include target="_setting.html" />
+<form class="ap_form floating-labels<!--@if($is_rx)--> rx_ajax<!--@end-->" action="./" method="post" onsubmit="return sendMessage(jQuery(this));" autocomplete="new-password">
+	<input type="hidden" name="mid" value="{$wi->target_mid}" />
+	<input type="hidden" name="password" value="{$wi->rand_password}" cond="!$is_logged && $wi->use_password != 'O'" />
+	<input type="hidden" name="title" value="" cond="$wi->use_title=='Y'" />
+	<input type="hidden" name="content" value="" />
+	<input type="hidden" name="category_srl" value="{$wi->target_category_srls}"|cond="!$wi->has_category" />
+	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!$wi->has_category" />
+	<input type="hidden" name="comment_status" value="ALLOW" cond="$wi->comment_status == 'A'" />
+	<input type="hidden" name="status" value="{$wi->status}" cond="$wi->status != 'O'" />
+	<input type="hidden" name="redirect" value="{$wi->redirect}" />
+	<input type="hidden" name="redirect_url" value="{$wi->redirect_url}" cond="$wi->redirect == 'U' && $wi->redirect_url" />
+	<div class="require"><i class='bx bx-health'></i> {$lang->is_required}</div>
+	<div class="apbtn-box"  cond="!$grant->write_document">
+		<div>로그인 후 작성하실 수 있습니다.</div>
+	</div>
+	<!--// 기본 정보 -->
+	<ul class="ap_hidden formlist">
+		<li>
+			<label for="nick_name">{$lang->name}<span class="require">&nbsp;<i class='bx bx-health'></i></span></label>
+			<div class="extra_html"> 
+				<input type="text" name="nick_name" value="{$logged_info->nick_name}" required="required" disabled="disabled" class="dsable" cond="$is_logged" />
+				<input type="text" name="nick_name" required="required" cond="!$is_logged" />						
+				<p class="rx_ev_description">참여자 이름을 알려주세요.</p>
+			</div>
+		</li>
+		<!--@if($wi->use_email != 'N')-->
+		<li>
+			<label for="email_address">{$lang->email}<span class="require" cond="$wi->use_email == 'R'">&nbsp;<i class='bx bx-health'></i></span></label>
+			<div class="extra_html"> 
+				<input type="e-mail" name="email_address" value="{$logged_info->email_address}" disabled="disabled"  class="dsable" cond="$is_logged" />
+				<input type="e-mail" name="email_address" required="required"|cond="$wi->use_email == 'R'" cond="!$is_logged" />
+				<p class="rx_ev_description">참여자 메일주소를 알려주세요.</p>
+			</div>
+
+		</li>
+		<!--@end-->
+		<!--@if($wi->use_phone != 'N')-->
+		<li>
+			<label for="phone_number" cond="!$wi->international">{$lang->phone}<span class="require" cond="$wi->use_phone == 'R'">&nbsp;<i class='bx bx-health'></i></span></label>
+			<div class="extra_html">
+				<input type="tel" name="phone_number" class="use_international"|cond="$wi->use_international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone == 'R'" disabled="disabled"|cond="$wi->phone_number" />
+				<p class="rx_ev_description">참여자 전화번호를 알려주세요.</p>
+			</div>
+			
+		</li>
+		<!--@end-->
+	</ul>
+	
+	<!--// 확장 변수 -->
+	<ul class="ap_extra_info formlist" cond="$wi->has_extra">		
+
+		{@ $is_fixed = array('tel', 'tel_v2', 'tel_intl', 'tel_intl_v2', 'checkbox', 'radio', 'date', 'time', 'kr_zip', 'file'); }
+		<li loop="$wi->target_extra_list => $key, $val">
+			<div class="ap_item ap_extra<!--@if($val->is_required == 'Y')--> is_required<!--@end-->" rel="{$val->type}" data-idx="{$val->idx}">
+				<h4 cond="in_array($val->type, $is_fixed)">{$val->name}<!--@if($val->is_required == 'Y')--><span class="require">&nbsp;<i class='bx bx-health'></i></span><!--@end--></h4>
+				<label for="extra_vars{$val->idx}" cond="!in_array($val->type, $is_fixed)">{$val->name}<!--@if($val->is_required == 'Y')--><span class="require">&nbsp;<i class='bx bx-health'></i></span><!--@end--></label>
+				<div class="extra_html">
+				{$val->getFormHTML()}
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	<!--// 메시지 -->
+	<h3 cond="$wi->use_content != 'Y' || $wi->has_category">추가 상세 입력<span class="require">&nbsp;<i class='bx bx-health'></i></span></h3>
+	<ul class="ap_message_info formlist" cond="$wi->use_content != 'Y' || $wi->has_category">
+		<!--// 내용 -->
+		<li class="ap_item ap_message" rel="content"  cond="$wi->use_content != 'Y'">
+			<textarea name="message" required style="height:200px"></textarea>
+		</li>
+		<!--// 분류 -->
+		<li class="ap_item ap_message" rel="category" cond="$wi->has_category">
+			<label for="category">{$lang->category}<span class="require">&nbsp;<i class='bx bx-health'></i></span></label>
+			<select name="category" required>
+				<option value=""></option>
+				<option loop="$wi->target_category_list => $key, $val" value="{$key}">{$val}</option>
+			</select>
+		</li>		
+	</ul>
+
+	<!--// 개인정보 안내문 -->
+	<ul class="ap_section ap_privacy" cond="$wi->privacy != 'N'">
+		<li class="formlist2">
+			<div class="t-box">
+				<input type="checkbox" name="privacy" value="" required />
+				<label for="privacy">개인정보 수집·이용 및 서비스 이용에 동의합니다.</label>
+			</div>
+			<div class="ap_privacy_content">
+				<div class="ap_privacy_desc">
+					<ul class="ap_privacy_agree">
+						<li class="ti"><i class='bx bx-stop'></i>수집하는 개인정보의 항목</li>
+						<li>- 이름(필수)<!--@if($wi->use_email != 'N')-->, 이메일<!--@if($wi->use_email == 'R')-->(필수)<!--@end--><!--@end--><!--@if($wi->use_phone != 'N')-->, 연락처<!--@if($wi->use_phone == 'R')-->(필수)<!--@end--><!--@end--></li>
+						<li class="ti"><i class='bx bx-stop'></i>개인정보의 수집·이용 목적</li>
+						<li>- 이름 : 해당 서비스에 대한 상담 진행을 위한 기본적인 대상자 정보 확인<br />
+						- 이메일, 휴대전화 : 해당 서비스에 대한 답변을 전달하기 위한 원활한 의사 소통 경로의 확보</li>
+						<li class="ti"><i class='bx bx-stop'></i>개인정보의 보유 및 이용기간</li>
+						<li>- 개인정보의 수집∙이용 목적 달성 시 바로 파기합니다.<br />
+						- 수집∙이용 목적을 달성한 경우에도 법률의 규정에 따라 보존할 필요가 있다면 고객의 개인정보를 보유할 수 있습니다.<br />
+						- 고객님은 개인정보 수집 및 이용 동의를 거부할 권리가 있습니다. <br />
+						- 동의를 거부하실 경우, 해당 서비스 이용이 불가합니다.</li>
+					</ul>
+				</div>
+			</div>
+		</li>
+	</ul>
+	<br /><br /><br />
+	<!--// 보내기 버튼 -->
+	<div class="apbtn-box" cond="$grant->write_document">
+		<input type="submit" value="등록하기" class="obtn big primary">
+	</div>
+	<div class="apbtn-box" cond="!$grant->write_document">
+		<div class="obtn big nouse">로그인 후 작성하실 수 있습니다.</div>
+	</div>
+	<br/><br/>
+</form>
+
+<!--// 현재 페이지 처리시 결과 출력 부분 -->
+<include target="result.html" cond="$wi->redirect == 'N'" />

@@ -1,0 +1,34 @@
+<!-- ////////////////////////
+
+	카테고리
+
+ ////////////////////////-->
+{@ $cate_list = array(); $current_key = null; }
+<!--@foreach($category_list as $key=>$val)-->
+	<!--@if(!$val->depth)-->
+		{@
+			$cate_list[$key] = $val;
+			$cate_list[$key]->children = array();
+			$current_key = $key;
+		}
+	<!--@elseif($current_key)-->
+		{@ $cate_list[$current_key]->children[] = $val }
+	<!--@end-->
+<!--@end-->
+
+<!--@if($mi->use_category=='Y')-->
+<div class="cTab circle">
+	<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->"><span>{$lang->total}</span></a>
+	<block loop="$cate_list=>$key,$val">
+		<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end--><!--@if(count($val->children))--> has_child<!--@end-->"><span>{$val->title}</span> <em cond="$val->document_count">{$val->document_count}</em></a>
+		<block cond="count($val->children)">
+			<a loop="$val->children=>$idx,$item" href="{getUrl('category',$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end-->"><span>{$item->title}</span> <em cond="$item->document_count">{$item->document_count}</em></a>
+		</block>
+	</block>
+</div>
+<!--@end-->
+<script>
+$('a.ctDep2').prev('a.ctDep3').css({
+	'border-radius' : '0 6px 6px 0'
+});
+</script>

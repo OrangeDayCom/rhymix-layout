@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+	<title xml:lang="ko">프로필 위젯</title>
+	<title xml:lang="en">Profile Widget</title>
+	<description xml:lang="ko">회원의 프로필을 출력하는 위젯입니다.</description>
+	<description xml:lang="en">A widget that displays a profile of the member.</description>
+	<version>0.4</version>
+	<date>2020-06-01</date>
+
+	<author email_address="cydemo@gmail.com" link="https://xetown.com">
+		<name xml:lang="ko">cydemo</name>
+		<name xml:lang="en">cydemo</name>
+	</author>
+
+	<extra_vars>
+
+        <group>
+            <title xml:lang="ko">기본 설정</title>
+            <title xml:lang="en">Basic Setting</title>
+				<var name="ttl" type="select">
+				<type>select</type>
+				<title xml:lang="ko">데이터 캐시 시간</title>
+				<title xml:lang="en">Data expire</title>
+				<description xml:lang="ko">프로필 데이터 유지 시간을 선택하세요.</description>
+				<description xml:lang="en">Select data expire duration time.</description>
+				<options value="10s" init="true">
+					<value>10s</value>
+					<name xml:lang="ko">10초</name>
+					<name xml:lang="en">10 seconds</name>
+				</options>
+				<options value="15s">
+					<value>15s</value>
+					<name xml:lang="ko">15초</name>
+					<name xml:lang="en">15 seconds</name>
+				</options>
+				<options value="30s">
+					<value>30s</value>
+					<name xml:lang="ko">30초</name>
+					<name xml:lang="en">30 seconds</name>
+				</options>
+				<options value="1m">
+					<value>1m</value>
+					<name xml:lang="ko">1분</name>
+					<name xml:lang="en">1 minute</name>
+				</options>
+				<options value="3m">
+					<value>3m</value>
+					<name xml:lang="ko">3분</name>
+					<name xml:lang="en">3 minutes</name>
+				</options>
+				<options value="5m">
+					<value>5m</value>
+					<name xml:lang="ko">5분</name>
+					<name xml:lang="en">5 minutes</name>
+				</options>
+				<options value="10m">
+					<value>10m</value>
+					<name xml:lang="ko">10분</name>
+					<name xml:lang="en">10 minutes</name>
+				</options>
+				<options value="15m">
+					<value>15m</value>
+					<name xml:lang="ko">15분</name>
+					<name xml:lang="en">15 minutes</name>
+				</options>
+				<options value="30m">
+					<value>30m</value>
+					<name xml:lang="ko">30분</name>
+					<name xml:lang="en">30 minutes</name>
+				</options>
+			</var>
+			<var id="type" type="radio">
+				<name xml:lang="ko">프로필 유형</name>
+				<name xml:lang="en">Type of Profile Widget</name>
+				<options init="true">
+					<value>writer</value>
+					<name xml:lang="ko">글쓴이 프로필</name>
+					<name xml:lang="en">Writer's Profile</name>
+				</options>
+				<options>
+					<value>mine</value>
+					<name xml:lang="ko">본인 프로필</name>
+					<name xml:lang="en">Profile of Mine</name>
+				</options>
+			</var>
+			<var id="target_group" type="member_group">
+				<name xml:lang="ko">출력 회원 그룹</name>
+				<name xml:lang="en">Target Member Group</name>
+                <description xml:lang="ko">체크된 그룹에 속한 회원만 프로필이 출력됩니다. 아무 그룹도 선택하지 않으면 모든 회원의 프로필을 출력할 수 있습니다.</description>
+                <description xml:lang="en">Only members belonging to the checked group will be displayed. If no group is selected, all members' profiles can be printed.</description>
+			</var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">프로필 헤더</title>
+            <title xml:lang="en">Profile Header</title>
+			<var id="header" type="checkbox">
+				<name xml:lang="ko">표시 항목</name>
+				<name xml:lang="en">Item to Display</name>
+				<options init="true">
+					<value>profile_image</value>
+					<name xml:lang="ko">프로필 이미지</name>
+					<name xml:lang="en">Profile Image</name>
+				</options>
+				<options init="true">
+					<value>nick_name</value>
+					<name xml:lang="ko">닉네임</name>
+					<name xml:lang="en">NickName</name>
+				</options>
+			</var>
+            <var id="image_width" type="text">
+                <name xml:lang="ko">프로필 이미지 가로 최대 크기</name>
+                <name xml:lang="en">Max-Width of Profile Image</name>
+                <description xml:lang="ko">프로필 이미지의 최대 가로 크기(max-width)를 정할 수 있습니다. (숫자만 입력. 기본값은 '회원설정'에서 허용한 최대 가로 크기)</description>
+                <description xml:lang="en">You can set the max-width of profile image. (Enter only numbers. The default is the max-width allowed in 'Membership Settings.')</description>
+            </var>
+            <var id="image_height" type="text">
+                <name xml:lang="ko">프로필 이미지 세로 최대 크기</name>
+                <name xml:lang="en">Max-Height of Profile Image</name>
+                <description xml:lang="ko">프로필 이미지의 최대 세로 크기(max-height)를 지정할 수 있습니다. (숫자만 입력. 기본값은 '회원설정'에서 허용한 최대 세로 크기)</description>
+                <description xml:lang="en">You can set the max-height of profile image. (Enter only numbers. The default is the max-height allowed in 'Membership Settings.')</description>
+            </var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">내비게이션</title>
+            <title xml:lang="en">Navigation</title>
+			<var id="tab" type="radio">
+				<name xml:lang="ko">내비게이션 탭</name>
+				<name xml:lang="en">Navigation Tab</name>
+				<options init="true">
+					<value>Y</value>
+					<name xml:lang="ko">사용</name>
+					<name xml:lang="en">Enable</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">사용 안함</name>
+					<name xml:lang="en">Disabled</name>
+				</options>
+			</var>
+			<var id="tab_order" type="select-multi-order">
+				<name xml:lang="ko">내비 탭 순서</name>
+				<name xml:lang="en">Navigatior Order</name>
+                <description xml:lang="ko">"내비게이션 탭"을 '사용'할 경우, 아래의 1~5에 해당하는 범주를 '표시함'으로 포함시키고 출력 순서를 조정합니다. '사용 안함'이면 이 설정은 영향을 끼치지 않습니다.</description>
+                <description xml:lang="en">When 'Enable' the "Navigation Tab" above, include the categories corresponding to 1 to 5 below into 'Show' and adjust the output order. If 'Disabled', this setting has no effect.</description>
+				<options>
+					<value>profile</value>
+					<name xml:lang="ko">기본 프로필(PROFILE)</name>
+					<name xml:lang="en">Basic Profile(PROFILE)</name>
+				</options>
+				<options>
+					<value>contents</value>
+					<name xml:lang="ko">콘텐츠(CONTENTS)</name>
+					<name xml:lang="en">Contents(CONTENTS)</name>
+				</options>
+				<options>
+					<value>network</value>
+					<name xml:lang="ko">네트워킹(NETWORK)</name>
+					<name xml:lang="en">Networking(NETWORK)</name>
+				</options>
+				<options>
+					<value>intro</value>
+					<name xml:lang="ko">서명/소개(INTRO)</name>
+					<name xml:lang="en">Signature(INTRO)</name>
+				</options>
+				<options>
+					<value>history</value>
+					<name xml:lang="ko">활동 내역(HISTORY)</name>
+					<name xml:lang="en">History(HISTORY)</name>
+				</options>
+			</var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">1. 기본 프로필</title>
+            <title xml:lang="en">1. Basic Profile</title>
+            <var id="profile_title" type="text">
+                <name xml:lang="ko">이 범주의 제목</name>
+                <name xml:lang="en">Title of This Category</name>
+            </var>
+			<var id="profile" type="select-multi-order">
+				<name xml:lang="ko">기본 표시 항목</name>
+				<name xml:lang="en">Basic Items</name>
+				<options>
+					<value>user_id</value>
+					<name xml:lang="ko">회원 ID</name>
+					<name xml:lang="en">User ID</name>
+				</options>
+				<options>
+					<value>user_name</value>
+					<name xml:lang="ko">이름</name>
+					<name xml:lang="en">User Name</name>
+				</options>
+				<options>
+					<value>email_address</value>
+					<name xml:lang="ko">이메일 주소</name>
+					<name xml:lang="en">E-mail Address</name>
+				</options>
+				<options>
+					<value>homepage</value>
+					<name xml:lang="ko">홈페이지</name>
+					<name xml:lang="en">Homepage</name>
+				</options>
+				<options>
+					<value>blog</value>
+					<name xml:lang="ko">블로그</name>
+					<name xml:lang="en">Blog</name>
+				</options>
+				<options>
+					<value>birthday</value>
+					<name xml:lang="ko">생일</name>
+					<name xml:lang="en">Birthday</name>
+				</options>
+				<options>
+					<value>groups</value>
+					<name xml:lang="ko">회원 그룹</name>
+					<name xml:lang="en">Groups to which the User Belong</name>
+				</options>
+				<options>
+					<value>regdate</value>
+					<name xml:lang="ko">회원 가입일</name>
+					<name xml:lang="en">Sign Up Date</name>
+				</options>
+				<options>
+					<value>last_login</value>
+					<name xml:lang="ko">최근 로그인 날짜</name>
+					<name xml:lang="en">Last Sign In Date</name>
+				</options>
+				<options>
+					<value>extra_keys</value>
+					<name xml:lang="ko">확장 정보</name>
+					<name xml:lang="en">User's Extra-Information</name>
+				</options>
+			</var>
+			<var id="extra_keys" type="text">
+				<name xml:lang="ko">출력할 회원 확장정보</name>
+				<name xml:lang="en">Display Member's Extra Info</name>
+				<description xml:lang="ko">출력하고 싶은 사용자정의 회원 정보의 '입력항목 id'를 쉼표(,) 단위로 입력해주세요. 입력하지 않으면 사용자정의 전체를 불러 들이지 않습니다.</description>
+				<description xml:lang="en">Please enter 'ID of item' of the custom member information you want to output in comma(,). If you do not enter it, the entire customization will not be imported.</description>
+			</var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">2. 콘텐츠</title>
+            <title xml:lang="en">2. Contents</title>
+            <var id="contents_title" type="text">
+                <name xml:lang="ko">이 범주의 제목</name>
+                <name xml:lang="en">Title of This Category</name>
+            </var>
+			<var id="contents" type="checkbox">
+				<name xml:lang="ko">콘텐츠 출력 항목</name>
+				<name xml:lang="en">Contents Items</name>
+				<options init="true">
+					<value>document</value>
+					<name xml:lang="ko">최근 글</name>
+					<name xml:lang="en">Recent Document</name>
+				</options>
+				<options init="true">
+					<value>comment</value>
+					<name xml:lang="ko">최근 댓글</name>
+					<name xml:lang="en">Recent Comment</name>
+				</options>
+			</var>
+			<var id="module_srls" type="module_srl_list">
+				<name xml:lang="ko">대상 모듈</name>
+				<name xml:lang="en">Target Modules</name>
+				<description xml:lang="ko">콘텐츠 수집/예외의 대상이 되는 모듈을 선택합니다.</description>
+				<description xml:lang="en">Select Modules that would be targets of collection/exception for contents.</description>
+			</var>
+			<var id="module_srls_act" type="select">
+				<name xml:lang="ko">수집/제외</name>
+				<name xml:lang="en">Collection of Exception</name>
+				<description xml:lang="ko">위에서 선택한 모듈에서 콘텐츠를 수집/제외합니다.</description>
+				<description xml:lang="en">Collect or Except for contents out of the selected modules above.</description>
+				<options init="true">
+					<value>C</value>
+					<name xml:lang="ko">수집</name>
+					<name xml:lang="en">Collect</name>
+				</options>
+				<options>
+					<value>E</value>
+					<name xml:lang="ko">제외</name>
+					<name xml:lang="en">Except</name>
+				</options>
+			</var>
+			<var id="thumb" type="select">
+				<name xml:lang="ko">최근 문서 섬네일 출력</name>
+				<name xml:lang="en">Display a Thumbnail of Recent Document</name>
+				<description xml:lang="ko">최근 문서를 출력할 때 섬네일 이미지도 불러들일 것인지 결정합니다.</description>
+				<description xml:lang="en">Decide whether to import a thumbnail image when displaying a recent document.</description>
+				<options init="true">
+					<value>Y</value>
+					<name xml:lang="ko">출력</name>
+					<name xml:lang="en">View</name>
+				</options>
+				<options>
+					<value>N</value>
+					<name xml:lang="ko">출력 안 함</name>
+					<name xml:lang="en">Dont' View</name>
+				</options>
+			</var>
+            <var id="thumb_width" type="text">
+                <name xml:lang="ko">섬네일 이미지 가로 크기</name>
+                <name xml:lang="en">Width of Thumbnail Image</name>
+                <description xml:lang="ko">섬네일 이미지의 가로 크기(width)를 정할 수 있습니다. (숫자만 입력. 기본값은 80)</description>
+                <description xml:lang="en">You can set the width of the thumbnail image. (Enter number only, default is 80)</description>
+            </var>
+            <var id="thumb_height" type="text">
+                <name xml:lang="ko">섬네일 이미지 세로 크기</name>
+                <name xml:lang="en">Height of Thumbnail Image</name>
+                <description xml:lang="ko">섬네일 이미지의 세로 크기(height)를 지정할 수 있습니다. (숫자만 입력. 기본값은 80)</description>
+                <description xml:lang="en">You can set the height of the thumbnail image. (Enter number only, default is 80)</description>
+            </var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">3. 네트워킹</title>
+            <title xml:lang="en">3. Networking</title>
+            <var id="network_title" type="text">
+                <name xml:lang="ko">이 범주의 제목</name>
+                <name xml:lang="en">Title of This Category</name>
+            </var>
+			<var id="network" type="select-multi-order">
+				<name xml:lang="ko">소셜 출력 정보</name>
+				<name xml:lang="en">Social Items</name>
+				<options>
+					<value>follows</value>
+					<name xml:lang="ko">팔로우(회원->친구)</name>
+					<name xml:lang="en">Following of the User</name>
+				</options>
+				<options>
+					<value>follow_sum</value>
+					<name xml:lang="ko">팔로우 수</name>
+					<name xml:lang="en">Following Number of the User</name>
+				</options>
+				<options>
+					<value>followers</value>
+					<name xml:lang="ko">팔로워(친구->회원)</name>
+					<name xml:lang="en">Followers for the User</name>
+				</options>
+				<options>
+					<value>follower_sum</value>
+					<name xml:lang="ko">팔로워 수</name>
+					<name xml:lang="en">Followers Number of the User</name>
+				</options>
+			</var>
+            <var id="follow_limit" type="text">
+                <name xml:lang="ko">팔로우/팔로워 출력 제한</name>
+                <name xml:lang="en">Limit Follow/Follower Output</name>
+                <description xml:lang="ko">표시 항목에서 팔로우 및 팔로워를 선택했을 경우, 몇 명의 회원을 출력할지 결정합니다. 아무 숫자도 입력하지 않으면 1명만 출력합니다.(1 이상의 숫자만 입력. 기본값은 1)</description>
+                <description xml:lang="en">Decide how many Follows/Followers you want to print. If no number is entered, only 1 will be output.(Only enter 1 or more digits. Default is 1)</description>
+            </var>
+			<var id="follow_naming" type="select">
+                <name xml:lang="ko">팔로우/팔로워 이름 유형</name>
+                <name xml:lang="en">Type of Call of Follow/Follower</name>
+                <description xml:lang="ko">팔로우/팔로워 회원의 명칭 유형을 선택할 수 있습니다.</description>
+                <description xml:lang="en">You can choose a type of Calling for Follow/Follower</description>
+				<options init="true">
+					<value>nick_name</value>
+					<name xml:lang="ko">회원 닉네임</name>
+					<name xml:lang="en">Nick Name</name>
+				</options>
+				<options>
+					<value>user_id</value>
+					<name xml:lang="ko">회원 ID</name>
+					<name xml:lang="en">User's ID</name>
+				</options>
+				<options>
+					<value>user_name</value>
+					<name xml:lang="ko">회원 이름</name>
+					<name xml:lang="en">User's Name</name>
+				</options>
+			</var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">4. 소개/서명</title>
+            <title xml:lang="en">4. Signature/Introduction</title>
+            <var id="intro_title" type="text">
+                <name xml:lang="ko">이 범주의 제목</name>
+                <name xml:lang="en">Title of This Category</name>
+            </var>
+			<var id="intro" type="checkbox">
+				<name xml:lang="ko">서명/소개</name>
+				<name xml:lang="en">Signature</name>
+				<options>
+					<value>signature</value>
+					<name xml:lang="ko">서명</name>
+					<name xml:lang="en">Signature</name>
+				</options>
+			</var>
+		</group>
+
+        <group>
+            <title xml:lang="ko">5. 활동 내역 정보</title>
+            <title xml:lang="en">5. History</title>
+            <var id="history_title" type="text">
+                <name xml:lang="ko">이 범주의 제목</name>
+                <name xml:lang="en">Title of This Category</name>
+            </var>
+			<var id="history" type="select-multi-order">
+				<name xml:lang="ko">기타 활동 정보</name>
+				<name xml:lang="en">Stats Items</name>
+				<options>
+					<value>total_document_count</value>
+					<name xml:lang="ko">총 게시글 수</name>
+					<name xml:lang="en">Total Document Count</name>
+				</options>
+				<options>
+					<value>total_comment_count</value>
+					<name xml:lang="ko">총 댓글 수</name>
+					<name xml:lang="en">Total Comment Count</name>
+				</options>
+
+				<options>
+					<value>voting_document_count</value>
+					<name xml:lang="ko">추천한 게시글 수</name>
+					<name xml:lang="en">Voting Document Count</name>
+				</options>
+				<options>
+					<value>voting_comment_count</value>
+					<name xml:lang="ko">추천한 댓글 수</name>
+					<name xml:lang="en">Voting Comment Count</name>
+				</options>
+				<options>
+					<value>voted_document_count</value>
+					<name xml:lang="ko">추천받은 게시글 수</name>
+					<name xml:lang="en">Voted Document Count</name>
+				</options>
+				<options>
+					<value>voted_document_sum</value>
+					<name xml:lang="ko">게시글의 추천 횟수</name>
+					<name xml:lang="en">Voted Document Sum</name>
+				</options>
+				<options>
+					<value>voted_comment_count</value>
+					<name xml:lang="ko">추천받은 댓글 수</name>
+					<name xml:lang="en">Voted Comment Count</name>
+				</options>
+				<options>
+					<value>voted_comment_sum</value>
+					<name xml:lang="ko">댓글의 추천 횟수</name>
+					<name xml:lang="en">Voted Comment Sum</name>
+				</options>
+
+				<options>
+					<value>blaming_document_count</value>
+					<name xml:lang="ko">비추천한 게시글 수</name>
+					<name xml:lang="en">Blaming Document Count</name>
+				</options>
+				<options>
+					<value>blaming_comment_count</value>
+					<name xml:lang="ko">비추천한 댓글 수</name>
+					<name xml:lang="en">Blaming Comment Count</name>
+				</options>
+				<options>
+					<value>blamed_document_count</value>
+					<name xml:lang="ko">비추천받은 게시글 수</name>
+					<name xml:lang="en">Blamed Document Count</name>
+				</options>
+				<options>
+					<value>blamed_document_sum</value>
+					<name xml:lang="ko">게시글의 비추천 횟수</name>
+					<name xml:lang="en">Blamed Document Sum</name>
+				</options>
+				<options>
+					<value>blamed_comment_count</value>
+					<name xml:lang="ko">비추천받은 댓글 수</name>
+					<name xml:lang="en">Blamed Comment Count</name>
+				</options>
+				<options>
+					<value>blamed_comment_sum</value>
+					<name xml:lang="ko">댓글의 비추천 횟수</name>
+					<name xml:lang="en">Blamed Comment Sum</name>
+				</options>
+
+				<options>
+					<value>accusing_document_count</value>
+					<name xml:lang="ko">신고한 게시글 수</name>
+					<name xml:lang="en">Accusing Document Count</name>
+				</options>
+				<options>
+					<value>accusing_comment_count</value>
+					<name xml:lang="ko">신고한 댓글 수</name>
+					<name xml:lang="en">Accusing Comment Count</name>
+				</options>
+				<options>
+					<value>accused_document_count</value>
+					<name xml:lang="ko">신고 당한 게시글 수</name>
+					<name xml:lang="en">Accused Document Count</name>
+				</options>
+				<options>
+					<value>accused_document_sum</value>
+					<name xml:lang="ko">게시글의 신고 당한 횟수</name>
+					<name xml:lang="en">Accused Document Sum</name>
+				</options>
+				<options>
+					<value>accused_comment_count</value>
+					<name xml:lang="ko">신고 당한 댓글 수</name>
+					<name xml:lang="en">Accused Comment Count</name>
+				</options>
+				<options>
+					<value>accused_comment_sum</value>
+					<name xml:lang="ko">댓글의 신고 당한 횟수</name>
+					<name xml:lang="en">Accused Comment Sum</name>
+				</options>
+			</var>
+        </group>
+	</extra_vars>
+</widget>

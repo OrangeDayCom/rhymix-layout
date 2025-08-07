@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">기본 스킨</title>
+    <title xml:lang="en">Default Skin</title>
+    <description xml:lang="ko">폼 위젯의 기본 스킨</description>
+    <description xml:lang="en">The default skin of FORM Widget</description>
+    <version>1.2.1</version>
+    <date>2020-05-28</date>
+    <link>https://xetown.com</link>
+
+    <author email_address="cydemo@gmail.com" link="https://xetown.com">
+        <name xml:lang="ko">cydemo</name>
+    </author>
+
+    <colorset>
+        <color name="default">
+            <title xml:lang="ko">기본색</title>
+            <title xml:lang="en">Default</title>
+        </color>
+    </colorset>
+</skin>

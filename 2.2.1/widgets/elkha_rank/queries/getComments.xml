@@ -1,0 +1,25 @@
+<query action="select">
+	<tables>
+		<table name="comments" alias="c" />
+		<table name="member" alias="m" type="inner join">
+			<conditions>
+				<condition operation="equal" column="m.member_srl" default="c.member_srl" />
+			</conditions>
+		</table>
+	</tables>
+	<columns>
+		<column name="ABS(c.member_srl)" alias="member_srl" />
+		<column name="count(*)" alias="count" />
+	</columns>
+	<conditions>
+		<condition operation="in" column="c.member_srl" var="member_srls" />
+		<condition operation="notin" column="c.member_srl" var="not_member_srls" />
+	</conditions>
+	<groups>
+		<group column="ABS(c.member_srl)" />
+	</groups>
+	<navigation>
+		<index default="count" order="desc" />
+		<list_count var="list_count" default="10" />
+	</navigation>
+</query>

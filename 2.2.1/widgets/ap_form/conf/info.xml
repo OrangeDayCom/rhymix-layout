@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+    <title xml:lang="ko">폼 위젯</title>
+    <title xml:lang="en">FORM Widget</title>
+    <description xml:lang="ko">게시판을 활용하여 폼(form) 형태 페이지를 출력하는 위젯입니다. 위젯을 통해 작성한 콘텐츠는 지정된 게시판으로 전송됩니다.</description>
+    <description xml:lang="en">FORM Widget that sends a post written through a widget to a specified bulletin board.</description>
+    <version>1.3.0</version>
+    <date>2025-02-08</date>
+    <author email_address="cydemo@gmail.com" link="https://xetown.com/">
+        <name xml:lang="ko">cydemo</name>
+    </author>
+
+    <extra_vars>
+        <var id="target_module_srl">
+            <type>mid</type>
+            <name xml:lang="ko">대상 게시판</name>
+            <name xml:lang="en">Target Board</name>
+            <description xml:lang="ko">문의 글이 등록될 "게시판"을 지정해주세요.</description>
+            <description xml:lang="en">Please select "the bulletin board" where your request will be posted.</description>
+        </var>
+        <var id="use_title">
+            <type>select</type>
+            <name xml:lang="ko">자동 제목</name>
+            <name xml:lang="en">Auto Title</name>
+            <description xml:lang="ko">문의 글의 제목을 자동으로 생성할 수 있습니다.</description>
+            <description xml:lang="en">You can automatically generate the subject of the content.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>Y</value>
+                <name xml:lang="ko">사용함</name>
+                <name xml:lang="en">Use</name>
+            </options>
+        </var>
+        <var id="use_email">
+            <type>select</type>
+            <name xml:lang="ko">이메일 필수/선택</name>
+            <name xml:lang="en">Email Required/Optional</name>
+            <description xml:lang="ko">로그인하지 않은 문의자의 이메일 입력을 필수 또는 선택으로 설정합니다.</description>
+            <description xml:lang="en">Set the non-sign-in user's email input to required or optional.</description>
+            <options>
+                <value>R</value>
+                <name xml:lang="ko">필수</name>
+                <name xml:lang="en">Required</name>
+            </options>
+            <options>
+                <value>O</value>
+                <name xml:lang="ko">선택</name>
+                <name xml:lang="en">Optional</name>
+            </options>
+        </var>
+        <var id="use_phone">
+            <type>select</type>
+            <name xml:lang="ko">전화번호 필수/선택</name>
+            <name xml:lang="en">Phone Number Required/Optional</name>
+            <description xml:lang="ko">문의자의 전화번호 입력을 필수 또는 선택으로 설정합니다.</description>
+            <description xml:lang="en">Set the user's phone number input to required or optional.</description>
+            <options>
+                <value>R</value>
+                <name xml:lang="ko">필수</name>
+                <name xml:lang="en">Required</name>
+            </options>
+            <options>
+                <value>O</value>
+                <name xml:lang="ko">선택</name>
+                <name xml:lang="en">Optional</name>
+            </options>
+        </var>
+        <var id="use_international">
+            <type>select</type>
+            <name xml:lang="ko">국제전화번호</name>
+            <name xml:lang="en">International Telephone Number</name>
+            <description xml:lang="ko">문의자 기본 정보의 전화번호를 국제전화번호로 받습니다.</description>
+            <description xml:lang="en">Get the phone number of the basic information as an international phone number.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>Y</value>
+                <name xml:lang="ko">사용</name>
+                <name xml:lang="en">Use</name>
+            </options>
+        </var>
+        <var id="use_content">
+            <type>select</type>
+            <name xml:lang="ko">자동 메시지</name>
+            <name xml:lang="en">Auto Message</name>
+            <description xml:lang="ko">문의 글의 메시지를 자동으로 생성할 수 있습니다.(확장변수로만 이뤄진 문의 페이지 구성에 유용합니다.)</description>
+            <description xml:lang="en">Able to generate a message automatically. (useful for an contact page consisting only of user-defined variables).</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>Y</value>
+                <name xml:lang="ko">사용함</name>
+                <name xml:lang="en">Use</name>
+            </options>
+        </var>
+        <var id="use_category">
+            <type>select</type>
+            <name xml:lang="ko">분류 지정</name>
+            <name xml:lang="en">Assign of Category</name>
+            <description xml:lang="ko">해당 게시판의 특정 "분류"로 콘텐츠 전송이 가능합니다.</description>
+            <description xml:lang="en">Content can be sent to a specific "Category" of the bulletin board.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>P</value>
+                <name xml:lang="ko">일부만 활용</name>
+                <name xml:lang="en">Use Partially</name>
+            </options>
+            <options>
+                <value>A</value>
+                <name xml:lang="ko">모두 활용</name>
+                <name xml:lang="en">Use All</name>
+            </options>
+        </var>
+		<var id="target_category_srls">
+			<type>text</type>
+			<name xml:lang="ko">분류 번호 지정</name>
+			<name xml:lang="en">Target Category</name>
+			<description xml:lang="ko">[위에서 '일부만 활용'을 택한 경우] 분류 번호(카테고리 번호)를 하나만 입력하면, 콘텐츠가 해당 분류로 자동 전송됩니다. 분류 번호를 쉼표(,)나 공백 단위로 여러 개 입력하면, 사용자가 해당 분류들을 직접 선택할 수 있게 됩니다.</description>
+			<description xml:lang="en">[In selecting 'Use Partially' above] Enter a category number, and the content is automatically sent to that category. Entering multiple category numbers in comma(,) or whitespace units allows the user to select a "type of request" from among them.</description>
+		</var>
+        <var id="use_password">
+            <type>select</type>
+            <name xml:lang="ko">비밀번호 사용</name>
+            <name xml:lang="en">Use of Password</name>
+            <description xml:lang="ko">비로그인 이용자의 콘텐츠 비밀번호 지정 방식을 선택합니다.</description>
+            <description xml:lang="en">Select the way of the content password for non-login users.</description>
+            <options>
+                <value>R</value>
+                <name xml:lang="ko">자동 지정</name>
+                <name xml:lang="en">Random</name>
+            </options>
+            <options>
+                <value>O</value>
+                <name xml:lang="ko">사용자 선택</name>
+                <name xml:lang="en">User Option</name>
+            </options>
+        </var>
+        <var id="use_extra_keys">
+            <type>select</type>
+            <name xml:lang="ko">사용자 정의 확장변수</name>
+            <name xml:lang="en">User-defined Extended Variables</name>
+            <description xml:lang="ko">게시판의 사용자 정의 확장변수를 사용합니다.</description>
+            <description xml:lang="en">Use a custom extension variable for the bulletin board.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>P</value>
+                <name xml:lang="ko">일부만 활용</name>
+                <name xml:lang="en">Use Partially</name>
+            </options>
+            <options>
+                <value>A</value>
+                <name xml:lang="ko">모두 활용</name>
+                <name xml:lang="en">Use All</name>
+            </options>
+        </var>
+		<var id="target_extra_keys">
+			<type>text</type>
+			<name xml:lang="ko">확장변수 지정</name>
+			<name xml:lang="en">Target Extended Variables</name>
+			<description xml:lang="ko">[위에서 '일부만 활용'을 택한 경우] 확장변수의 EID를 쉼표(,) 단위로 입력하면, 사용자가 해당 변수들의 값을 직접 입력할 수 있게 됩니다.</description>
+			<description xml:lang="en">[In selecting 'Use Partially' above] If you enter the EID of the extended variable in comma (,), the user can directly enter the value of the variable.</description>
+		</var>
+        <var id="comment_status">
+            <type>select</type>
+            <name xml:lang="ko">댓글 허용</name>
+            <name xml:lang="en">Allow Comments</name>
+            <description xml:lang="ko">저장된 게시물에 댓글을 허용합니다.</description>
+            <description xml:lang="en">Allow comments on saved posts.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">허용 안 함</name>
+                <name xml:lang="en">NOT Allow</name>
+            </options>
+            <options>
+                <value>A</value>
+                <name xml:lang="ko">허용함</name>
+                <name xml:lang="en">YES, Allow</name>
+            </options>
+            <options>
+                <value>O</value>
+                <name xml:lang="ko">사용자 선택</name>
+                <name xml:lang="en">User Option</name>
+            </options>
+        </var>
+        <var id="status">
+            <type>select</type>
+            <name xml:lang="ko">비밀글 사용</name>
+            <name xml:lang="en">Secret Post</name>
+            <description xml:lang="ko">게시물의 비밀/공개 여부를 설정합니다.</description>
+            <description xml:lang="en">Set whether the post is secret or public.</description>
+            <options>
+                <value>PUBLIC</value>
+                <name xml:lang="ko">공개</name>
+                <name xml:lang="en">PUBLIC</name>
+            </options>
+            <options>
+                <value>SECRET</value>
+                <name xml:lang="ko">비밀</name>
+                <name xml:lang="en">SECRET</name>
+            </options>
+            <options>
+                <value>O</value>
+                <name xml:lang="ko">사용자 선택</name>
+                <name xml:lang="en">User Option</name>
+            </options>
+        </var>
+        <var id="privacy">
+            <type>select</type>
+            <name xml:lang="ko">개인정보 안내</name>
+            <name xml:lang="en">Privacy Guide</name>
+            <description xml:lang="ko">전송되는 개인정보의 수집/활용/제공 사항을 안내합니다.</description>
+            <description xml:lang="en">Guide to the collection/utilization/provision of personal information posted.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>I</value>
+                <name xml:lang="ko">직접 입력</name>
+                <name xml:lang="en">Direct Input</name>
+            </options>
+            <options>
+                <value>F</value>
+                <name xml:lang="ko">파일 연결</name>
+                <name xml:lang="en">Files Connection</name>
+            </options>
+        </var>
+        <var id="privacy_title">
+            <type>text</type>
+            <name xml:lang="ko">개인정보 안내문 제목</name>
+            <name xml:lang="en">Privacy Guide Title</name>
+            <description xml:lang="ko">사용자에게 제공되는 개인정보 사항 안내문의 제목을 입력해주세요. (구분자 '\n'을 넣으면 복수의 안내문을 출력할 수 있습니다.)</description>
+            <description xml:lang="en">Please enter the title of privacy statement provided to the user. (Multiple guides can be printed by entering the separator '\n'.)</description>
+        </var>
+        <var id="privacy_desc">
+            <type>textarea</type>
+            <name xml:lang="ko">개인정보 안내문 설명(직접 입력)</name>
+            <name xml:lang="en">Privacy Guide Description(Direct Input)</name>
+            <description xml:lang="ko">사용자에게 제공되는 개인정보 사항 안내문을 입력해주세요. (HTML 가능. 구분자 '\n'을 넣으면 복수의 안내문을 출력할 수 있습니다.)</description>
+            <description xml:lang="en">Please fill the privacy statement provided to the user. (HTML available. Multiple guides can be printed by entering the separator '\n'.)</description>
+        </var>
+        <var id="privacy_file">
+            <type>text</type>
+            <name xml:lang="ko">개인정보 안내문 설명문(파일 삽입)</name>
+            <name xml:lang="en">Privacy Guide Description(Files Connection)</name>
+            <description xml:lang="ko">사용자에게 제공되는 개인정보 사항 안내문의 문서 파일명을 입력해주세요. (파일은 'privacy' 폴더에 저장돼 있어야 합니다. 구분자 '\n'을 넣으면 복수의 안내문을 출력할 수 있습니다.)</description>
+            <description xml:lang="en">Please fill document file names of the privacy statement provided to the user. (The file should be saved in the 'privacy' folder. Multiple guides can be printed by entering the separator '\n'.)</description>
+        </var>
+        <var id="use_recaptcha">
+            <type>select</type>
+            <name xml:lang="ko">스팸필터 적용</name>
+            <name xml:lang="en">Apply Spam Filter(Google reCAPTCHA)</name>
+            <description xml:lang="ko">라이믹스에 내장된 스팸필터 기능(구글 리캡챠)을 사용할 수 있습니다. 적용시 스팸필터 모듈의 캡챠 설정(글쓰기 액션)을 따릅니다.</description>
+            <description xml:lang="en">You can use the built-in Spam Filter feature (Google reCAPTCHA) in Rhymix. When applied, it follows the CAPTCHA settings('document' action) of the Spam Filter module.</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">사용 안 함</name>
+                <name xml:lang="en">Don't Use</name>
+            </options>
+            <options>
+                <value>Y</value>
+                <name xml:lang="ko">사용함</name>
+                <name xml:lang="en">Use</name>
+            </options>
+        </var>
+        <var id="redirect">
+            <type>select</type>
+            <name xml:lang="ko">페이지 이동</name>
+            <name xml:lang="en">Go to Page</name>
+            <description xml:lang="ko">문의접수 후 페이지 이동 방식을 선택합니다. ("현재 페이지 유지"는 비공개 게시판일 경우에 권장합니다.)</description>
+            <description xml:lang="en">Select how to move the page after receiving the inquiry. ("Keep current page" is recommended for private bulletins.)</description>
+            <options>
+                <value>N</value>
+                <name xml:lang="ko">현재 페이지 유지</name>
+                <name xml:lang="en">Keep Current Page</name>
+            </options>
+            <options>
+                <value>D</value>
+                <name xml:lang="ko">게시글 본문으로 이동</name>
+                <name xml:lang="en">Go to the Post</name>
+            </options>
+            <options>
+                <value>M</value>
+                <name xml:lang="ko">게시판 목록으로 이동</name>
+                <name xml:lang="en">Go to the Board</name>
+            </options>
+            <options>
+                <value>U</value>
+                <name xml:lang="ko">별도의 URL로 이동</name>
+                <name xml:lang="en">Go to the Custom URL</name>
+            </options>
+        </var>
+        <var id="redirect_url">
+            <type>text</type>
+            <name xml:lang="ko">문의접수 후 이동할 URL</name>
+            <name xml:lang="en">URL to go after receiving</name>
+            <description xml:lang="ko">위에서 별도 URL을 선택한 경우에 한해 여기에 입력한 URL로 이동합니다.</description>
+            <description xml:lang="en">If you select the Custom URL above, you will go to the URL entered here.</description>
+        </var>
+    </extra_vars>
+</widget>

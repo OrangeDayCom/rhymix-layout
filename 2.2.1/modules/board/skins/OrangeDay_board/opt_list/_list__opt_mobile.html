@@ -1,0 +1,90 @@
+<div id="list_mobile"  class="bd-all get_font_list">
+	<!--@if(!$document_list && !$notice_list)-->
+		<div class="no_documents">
+		<!--@if($search_keyword)-->
+			검색된 글이 없습니다.
+		<!--@else-->
+			{$lang->no_documents}
+			<!-- include target="opt_read/_read_opt_urlinfo.html" / -->
+		<!--@end-->
+		</div>
+	<!--@else-->
+		<!--@if($mi->default_style=='simple' || $mi->default_style=='classic')-->
+			<ul loop="$notice_list=>$no,$document" class="notice"  cond="$notice_list && $page < 2">
+				<li class="number"><i class='bx bxs-microphone bx-flip-horizontal'></i></li>
+				<li>
+					
+					<div class="list">
+						<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">
+							<block cond="isset($document_srl) && $document_srl == $document->document_srl"><i class='bx bx-play'></i></block>
+							<!--@if($document->isSecret() && !$document->isGranted())-->
+								{$lang->msg_is_secret} 
+							<!--@elseif($document->isSecret() && $document->isGranted())-->
+								{strip_tags($document->getTitle())}
+							<!--@else-->
+								{strip_tags($document->getTitle())}
+							<!--@end-->
+							</a>
+						<span cond="$list_config['comment_count']->idx" cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+						
+						<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)--><!--@if($val == 'secret')--> S<!--@end--><!--@if($val == 'new')--> N<!--@end--><!--@if($val == 'update')--> U<!--@end--><!--@if($val == 'file')--> F<!--@end--><!--@end-->">
+							<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+								<block cond="$key == 'new'">N</block>
+								<block cond="$key == 'update'">U</block>
+							</block>
+						</span>	
+		
+					</div>
+
+					<div class="end">
+						<span cond="$list_config['regdate']->idx" class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+						<span cond="$list_config['readed_count']->idx" class="read" cond="$document->get('readed_count')>0"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+						<span cond="$list_config['voted_count']->idx" cond="$document->get('voted_count')!=0" class="count"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+					</div>						
+					
+				</li>
+				<li cond="$grant->manager" class="chk_manager">
+					<input type="checkbox" name="cart" value="{$document->document_srl}" class="listchk" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+				</li>	
+			</ul>
+		<!--@end-->
+		<div loop="$document_list =>$no,$document" class="box<!--@if(isset($document_srl) && $document_srl == $document->document_srl)--> readActive<!--@end-->">
+			<div class="list">
+				<div class="title" cond="$list_config['title']->idx">
+					<div cond="$category_list[$document->get('category_srl')]->title" class="category">
+						{$category_list[$document->get('category_srl')]->title}
+					</div>				
+					<a href="{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}" rel="nofollow">
+					<block cond="isset($document_srl) && $document_srl == $document->document_srl"><i class='bx bx-play'></i></block>
+					<!--@if($document->isSecret() && !$document->isGranted())-->
+						{$lang->msg_is_secret} 
+					<!--@elseif($document->isSecret() && $document->isGranted())-->
+						{strip_tags($document->getTitle())}
+					<!--@else-->
+						{strip_tags($document->getTitle())}
+					<!--@end-->
+					</a>
+				</div>
+				<span cond="$list_config['comment_count']->idx" cond="$document->getCommentCount()"  class="count"><i class='bx bxs-message-rounded-dots com'></i>{$document->getCommentCount()}</span>
+				
+				<span cond="$document->printExtraImages(60*60*$mi->duration_new)" class="newicon<!--@foreach($document->getExtraImages(60*60*$mi->duration_new) as $key=>$val)--><!--@if($val == 'secret')--> S<!--@end--><!--@if($val == 'new')--> N<!--@end--><!--@if($val == 'update')--> U<!--@end--><!--@if($val == 'file')--> F<!--@end--><!--@end-->">
+					<block loop="$document->getExtraImages(60*60*$mi->duration_new) => $val, $key">
+						<block cond="$key == 'new'">N</block>
+						<block cond="$key == 'update'">U</block>
+					</block>
+				</span>	
+				<span cond="$grant->manager" class="chk_manager">
+					<input type="checkbox" name="cart" value="{$document->document_srl}" class="listchk" title="Check this" onclick="doAddDocumentCart(this)" <!--@if($document->isCarted())-->checked="checked"<!--@end--> />
+				</span>			
+			</div>
+
+			<div class="end">
+				<span class="author">{$document->getNickName()}</span>
+				<span cond="$list_config['regdate']->idx" class="od_date">{getTimeGap($document->get('regdate'), "Y.m.d - H:i")}</span>
+				<span cond="$list_config['readed_count']->idx" class="read" cond="$document->get('readed_count')>0"><i class='bx bxs-show' ></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+				<span cond="$list_config['voted_count']->idx" cond="$document->get('voted_count')!=0" class="count"><i class='bx bxs-heart'></i>{$document->get('voted_count')}</span>
+				<include target="opt_list/_list__opt_starpoint.html" cond="$mi->starpoint_use == 'use'" />
+			</div>		
+		</div>
+	<!--@end-->
+</div>	

@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">OrangeDay 게시판 스킨</title>
+    <version>2.2.1</version>
+    <date>2025</date>
+    <author email_address="yabssabi@gmail.com" link="https://www.orangeday.com">
+        <name xml:lang="ko">Yabi 夜飛</name>
+    </author>
+    <license>LGPL v2</license>
+	
+	
+    <extra_vars>
+		<group>
+			<title xml:lang="ko">레이아웃 제어</title>
+			<var name="use_sidewing" type="radio">
+				<title xml:lang="ko">사이드 독립 사용</title>
+				<description xml:lang="ko">🚨 오렌지데이 호라이즌 레이아웃 전용
+				레이아웃 설정에 따르지 않고 독립적으로 양쪽 사이드 섹션의 사용여부를 설정</description>
+				<options value="">
+					<title xml:lang="ko">레이아웃 설정 따르기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사이드 감추기</title>
+				</options>
+			</var>
+
+			<var name="use_site_width" type="radio">
+				<title xml:lang="ko">게시판 넓이,정렬 독립 지정</title>
+				<description xml:lang="ko">🚨 오렌지데이 호라이즌 레이아웃 전용
+				레이아웃 설정에 따르지 않고 독립적으로 게시판 넓이를 설정할 수 있습니다.
+				아래 "공통설정"의 "게시판 넓이", "게시판 정렬"값이 적용됩니다.</description>
+				<options value="">
+					<title xml:lang="ko">레이아웃 설정 따르기</title>
+				</options>				
+				<options value="yes">
+					<title xml:lang="ko">개별 넓이 지정</title>
+				</options>
+			</var>
+	
+		</group>
+		
+		
+		<group>
+			<title xml:lang="ko">테마</title>
+			
+		
+			<var name="use_darkMode" type="radio">
+				<title xml:lang="ko">다크모드 사용자 제어</title>
+				<description xml:lang="ko">방문자의 다크모드 제어판 사용 여부
+				🚨 오렌지데이 레이아웃 사용시 사용불가(레이아웃의 해당 기능 사용)</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_darkMode_set" type="radio">
+				<title xml:lang="ko">다크모드 강제 설정</title>
+				<description xml:lang="ko">다크모드 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="dark">
+					<title xml:lang="ko">다크</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">라이트</title>
+				</options>
+			</var>
+			
+			<var name="use_colorTheme" type="radio">
+				<title xml:lang="ko">컬러테마 사용자 제어</title>
+				<description xml:lang="ko">방문자의 컬러테마 사용 여부
+				🚨 오렌지데이 레이아웃 사용시 사용불가(레이아웃의 해당 기능 사용)</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_colorTheme_set" type="radio">
+				<title xml:lang="ko">컬러테마 강제 설정</title>
+				<description xml:lang="ko">컬러테마 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="white">
+					<title xml:lang="ko">화이트</title>
+				</options>
+				<options value="gray">
+					<title xml:lang="ko">그레이</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">오렌지</title>
+				</options>
+				<options value="blue">
+					<title xml:lang="ko">블루</title>
+				</options>
+				<options value="green">
+					<title xml:lang="ko">그린</title>
+				</options>
+				<options value="red">
+					<title xml:lang="ko">레드</title>
+				</options>
+				<options value="purple">
+					<title xml:lang="ko">보라</title>
+				</options>
+			</var>
+			<var name="use_brightTheme_set" type="radio">
+				<title xml:lang="ko">밝기 강제 설정</title>
+				<description xml:lang="ko">컬러테마 사용자 제어 중지시 모드를 설정할 수 있습니다.</description>
+				<options value="d1">
+					<title xml:lang="ko">저대비</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">중대비</title>
+				</options>
+				<options value="d3">
+					<title xml:lang="ko">고대비</title>
+				</options>
+				<options value="d4">
+					<title xml:lang="ko">모노크롬(Monochrome)</title>
+				</options>
+			</var>
+		</group>	
+		<group>
+			<title xml:lang="ko">게시판 유형 선택</title>
+			<var name="default_style" type="radio">
+				<title xml:lang="ko">목록 유형</title>
+				<options value="listtable">
+					<title xml:lang="ko">목록형-table</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">목록형-ul</title>
+				</options>				
+				<options value="gallery">
+					<title xml:lang="ko">갤러리형</title>
+				</options>
+				
+				<options value="webzinelist">
+					<title xml:lang="ko">웹진리스트형</title>
+				</options>
+				<options value="webzine">
+					<title xml:lang="ko">웹진박스형</title>
+				</options>
+				
+				<options value="bookmark">
+					<title xml:lang="ko">북마크형</title>
+				</options>
+				<options value="guest">
+					<title xml:lang="ko">방명록</title>
+				</options>
+				<options value="inputform">
+					<title xml:lang="ko">입력폼</title>
+				</options>
+				<options value="blog">
+					<title xml:lang="ko">블로그(강좌/매뉴얼)</title>
+				</options>
+				<options value="history">
+					<title xml:lang="ko">히스토리</title>
+				</options>
+				<options value="classic">
+					<title xml:lang="ko">클래식</title>
+				</options>
+				<!--options value="youtube">
+					<title xml:lang="ko">유투브</title>
+				</options>
+				<options value="history_step">
+					<title xml:lang="ko">히스토리 스텝</title>					
+				</options -->
+				
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">공통 설정</title>
+			<var name="use_btitle" type="radio">
+				<title xml:lang="ko">게시판 제목 사용</title>
+				<description xml:lang="ko">오렌지 레이아웃을 사용하지 않을 시 게시판 제목 사용 여부
+				브라우저 타이틀을 사용합니다.</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+			</var>					
+			<!-- var name="font_size" type="text" default="14">
+				<title xml:lang="ko">폰트크기</title>
+				<description xml:lang="ko">게시판 목록 폰트 크기 (기본 14px)</description>
+			</var -->
+			
+			<var name="site_badge" type="radio">
+				<title xml:lang="ko">오렌지데이 뱃지</title>
+				<description xml:lang="ko">게시판 하단의 오렌지데이 바로 가기 배너</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="use_no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+			</var>		
+			
+			<var name="preview" type="radio">
+				<title xml:lang="ko">게시판 유형 전환 버튼</title>
+				<description xml:lang="ko">게시판 유형을 바꿀수 있는 버튼이 노출됩니다.
+				관리자 테스트용으로 사용 추천.</description>
+				<options value="use">
+					<title xml:lang="ko">사용</title>
+				</options>				
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>
+
+			</var>
+
+
+			
+			<var name="search_sticky" type="text" default="0">
+				<title xml:lang="ko">서치박스 스티키 위치</title>
+				<description xml:lang="ko">목록 페이지 스크롤시 카테고리, 서치메뉴의 상단 고정 위치 (기본 0px)
+				- 상단에 메뉴에 검색창이 가린다면 메뉴 높이값 입력</description>
+			</var>
+			
+			<!-- var name="layout_gap" type="text" default="0">
+				<title xml:lang="ko">좌측 여백</title>
+				<description xml:lang="ko">
+				- "Orangeday 레이아웃" 사용시 레이아웃에서 설정한 "메뉴-가로 넓이"이 우선 적용됩니다.
+				- "Orangeday 레이아웃" 에서 설정값이 없을때 기본값은 0px 입니다.
+				- 입력한 값만큼 왼쪽 여백이 생성됩니다.
+				- 갤러리형, 북마크형, 유투브 형에 적용됩니다.</description>
+			</var -->
+
+			<var name="normal_list_height" type="text" default="60">
+				<title xml:lang="ko">목록 높이</title>
+				<description xml:lang="ko">목록의 높이 값 설정 (기본 60px)
+				- 목록형-table, 목록형-ul, 공지사항에 적용됩니다.</description>
+			</var>
+			<var name="page_align" type="radio">
+				<title xml:lang="ko">게시판 정렬</title>
+				<description xml:lang="ko">게시판의 정렬을 설정합니다.</description>
+				<options value="center">
+					<title xml:lang="ko">가운데</title>
+				</options>
+				<options value="left">
+					<title xml:lang="ko">좌측</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">꽉 채우기</title>
+				</options>
+			</var>
+			<var name="page_width" type="text" default="1000">
+				<title xml:lang="ko">게시판 넓이</title>
+				<description xml:lang="ko">게시판의 최대 넓이 지정. (기본 1000px)
+				레이아웃 설정에 따라 게시판 넓이 값은 무시될수 있습니다.</description>
+			</var>
+			<var name="use_backbg" type="radio">
+				<title xml:lang="ko">게시판 배경 색</title>
+				<description xml:lang="ko">목록, 읽기페이지의 아웃라인과 배경색 사용 여부</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용(투명)</title>
+				</options>
+			</var>					
+			<var name="category_type" type="radio">
+				<title xml:lang="ko">카테고리 타입</title>
+				<description xml:lang="ko">카테고리 보이기 형식, 클래식형 게시판은 심플 고정입니다.</description>
+				<options value="">
+					<title xml:lang="ko">버튼형</title>
+				</options>
+				<options value="T">
+					<title xml:lang="ko">테이블형</title>
+				</options>
+				<options value="C">
+					<title xml:lang="ko">트리형</title>
+				</options>
+				<options value="S">
+					<title xml:lang="ko">심플</title>
+				</options>	
+			</var>
+			<var name="con_searchbg" type="radio">
+				<title xml:lang="ko">카테고리/정렬/검색 박스 배경</title>
+				<description xml:lang="ko">게시판 상단 카테고리, 목록정렬, 검색 요소의 배경색 사용.
+				배경이미지를 사용할때만 적용됩니다. (배경이미지 사용시 기본 : 사용)</description>
+				<options value="use">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>					
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">게시글 평점 설정</title>
+			<var name="starpoint_use" type="radio">
+				<title xml:lang="ko">평점 사용</title>
+				<description xml:lang="ko">북마크형, 방명록, 입력폼, 히스트리 에서는 사용은 가능하지만 
+				목록에 표시 되지않습니다.</description>
+				<options value="use">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+
+			</var>
+			<var name="starpoint_list" type="radio">
+				<title xml:lang="ko">목록 표시</title>
+				<description xml:lang="ko">블로그형은 점수 고정입니다.</description>
+				<options value="">
+					<title xml:lang="ko">아이콘</title>
+				</options>
+				<options value="num">
+					<title xml:lang="ko">점수</title>
+				</options>
+			</var>
+			<var name="starpoint_icon" type="text" default="bx bxs-star">
+				<title>아이콘</title>
+				<description xml:lang="ko">기본 아이콘은 별입니다.
+				부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				추천 ) 별 : bx bxs-star / 하트 : bx bxs-heart / 유령 : bx bxs-ghost / 풍선 : bx bxs-balloon
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			
+		</group>
+
+		<group>
+			<title xml:lang="ko">읽기 페이지 설정</title>
+
+			<var name="list_in_read" type="radio">
+				<title xml:lang="ko">목록 보기</title>
+				<description xml:lang="ko">읽기 페이지에서 하단에 목록을 표시합니다.
+				- 목록형, 웹진형, 웹진리스트형 등에 적용됩니다.</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="use_no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>
+			
+			<var name="read_location" type="radio">
+				<title xml:lang="ko">현재 위치 바</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_title" type="radio">
+				<title xml:lang="ko">제목</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			
+		
+			<var name="read_meta" type="radio">
+				<title xml:lang="ko">작성자 정보</title>
+				<description xml:lang="ko">이름, 작성일, 조회수 등 일괄 보기 설정 
+				💜 표시 항목</description>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			
+			<var name="read_meta_name" type="radio">
+				<title xml:lang="ko">작성자 이름 💜</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			
+			<var name="read_meta_ip" type="radio">
+				<title xml:lang="ko">작성자 IP 💜</title>
+				<description xml:lang="ko">기본 감추기, 관리자는 상시 "보기"</description>
+				<options value="use">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_meta_date" type="radio">
+				<title xml:lang="ko">작성 일 💜</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_meta_count" type="radio">
+				<title xml:lang="ko">조회, 추천, 댓글 수 💜</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			
+			<var name="extravar_locaion" type="radio">
+				<title xml:lang="ko">확장 변수 위치</title>
+				<options value="top">
+					<title xml:lang="ko">글 상단</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">글 하단</title>
+				</options>
+			</var>
+			
+			<var name="read_vote" type="radio">
+				<title xml:lang="ko">추천 하기</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_tag" type="radio">
+				<title xml:lang="ko">태그</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_download" type="radio">
+				<title xml:lang="ko">첨부파일</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_utility" type="radio">
+				<title xml:lang="ko">게시글 메뉴</title>
+				<description xml:lang="ko">"이 게시물을.." 메뉴 (신고, 스크랩 등)</description>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+
+			<var name="read_sign" type="radio">
+				<title xml:lang="ko">서명</title>
+				<description xml:lang="ko">글 작성자의 정보를 보여줍니다.</description>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_alist" type="radio">
+				<title xml:lang="ko">작성자 최근 글/댓글</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_alist_con" type="text">
+				<title xml:lang="ko">작성자 최근 글 추출 대상</title>
+				<description xml:lang="ko">오렌지데이 레이아웃을 사용하시면, 레이아웃 메인에 사용되는 최신글 목록으로 지정됩니다.
+				오렌지데이 레이아웃을 사용하지 않을때 대상 srl 번호를 입력해 주세요. 비워 두면 전체 게시판에서 불러 옵니다.
+				현재 게시판에서만 불러오고 싶다면 "this"를 입력해 주세요.</description>
+			</var>
+			
+			<var name="read_bnavi" type="radio">
+				<title xml:lang="ko">하단 이전/다음 글</title>
+				<description xml:lang="ko">하단 이전글 다음글 표시</description>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>		
+		</group>
+		
+		
+		<group>
+			<title xml:lang="ko">SNS 설정</title>
+			<var name="read_sns" type="radio">
+				<title xml:lang="ko">SNS 공유</title>
+				<options value="">
+					<title xml:lang="ko">보기</title>
+				</options>
+				<options value="no_use">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="read_sns_force" type="radio">
+				<title xml:lang="ko">독립 사용</title>
+				<description xml:lang="ko">🚨 오렌지데이 호라이즌 레이아웃 전용
+				레이아웃 설정에 따르지 않고 독립적으로 SNS 설정합니다.</description>
+				<options value="">
+					<title xml:lang="ko">레이아웃 설정 따르기</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">개별 SNS 지정</title>
+				</options>
+			</var>
+			<var name="read_sns_list" type="checkbox">
+				<title xml:lang="ko">SNS 목록</title>
+				<description xml:lang="ko">기본은 모두 보기,
+				하나라도 체크하시면 체크한 항목만 보입니다.</description>
+				<options value="facebook">
+					<title xml:lang="ko">페이스북</title>
+				</options>
+				<options value="twitter">
+					<title xml:lang="ko">트위터</title>
+				</options>
+				<options value="linkedin">
+					<title xml:lang="ko">링크드인</title>
+				</options>
+				<options value="naver">
+					<title xml:lang="ko">네이버</title>
+				</options>
+				<options value="kakao">
+					<title xml:lang="ko">카카오톡</title>
+				</options>
+			</var>
+			<var name="use_kakao" type="text">
+				<title xml:lang="ko">카카오톡 추가</title>
+				<description xml:lang="ko">카카오 앱키(JavaScript) 값을 입력(입력 값 없으면 활성화 안됨)
+				레이아웃에서 입력된 값보다 우선 적용됩니다.</description>
+			</var>
+	
+		</group>
+		
+		
+		<group>
+			<title xml:lang="ko">댓글 설정</title>
+			<var name="comment_use" type="radio">
+				<title xml:lang="ko">댓글 사용</title>
+				<description xml:lang="ko">"권한 관리" 설정과 별개로 설정
+				방명록에는 적용되지 않습니다.</description>
+				<options value="">
+					<title xml:lang="ko">보이기</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>
+			</var>
+			<var name="comment_style" type="radio">
+				<title xml:lang="ko">스타일</title>
+				<description xml:lang="ko">댓글의 표현 방식을 정할 수 있습니다.
+				기본 : 심픝한 형태
+				메신저 :메신저 형태
+				+ 트리 : 댓글의 계층을 트리형식으로 표시</description>
+				<options value="default">
+					<title xml:lang="ko">기본</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">기본+트리 (디폴트)</title>
+				</options>
+				<options value="chat">
+					<title xml:lang="ko">메신저</title>					
+				</options>
+				<options value="chat_tree">
+					<title xml:lang="ko">메신저+트리</title>					
+				</options>
+			</var>
+			
+			<var name="comment_count" type="radio">
+				<title xml:lang="ko">대댓글 단계</title>
+				<description xml:lang="ko">대댓글을 달수 있는 하위 단계를 설정합니다. (디폴트 4단계)</description>
+				<options value="1">
+					<title xml:lang="ko">1</title>
+				</options>
+				<options value="2">
+					<title xml:lang="ko">2</title>
+				</options>
+				<options value="3">
+					<title xml:lang="ko">3</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">4</title>
+				</options>
+				<options value="5">
+					<title xml:lang="ko">5</title>
+				</options>
+				<options value="6">
+					<title xml:lang="ko">6</title>
+				</options>
+			</var>
+			
+		</group>
+		
+		<group>
+			<title xml:lang="ko">공통 설정 - 갤러리, 웹진, 북마크 등의 목록 박스</title>			
+			<var name="gall_cell_width" type="text">
+				<title xml:lang="ko">박스 크기</title>
+				<description xml:lang="ko">박스의 최소 크기 (기본 300px)</description>
+			</var>
+			
+			<var name="gall_cell_gap" type="text">
+				<title xml:lang="ko">박스 간격</title>
+				<description xml:lang="ko">박스 사이 간격. (기본 2px)
+				0으로 하고 싶으시면 no를 입력해 주세요.</description>
+			</var>
+			
+			<var name="gall_cell_radius" type="text">
+				<title xml:lang="ko">박스 라운드</title>
+				<description xml:lang="ko">박스 코너 라운드  (기본 10px)
+				0으로 하고 싶으시면 no를 입력해 주세요.</description>
+			</var>
+			
+			<var name="gall_cell_border" type="radio">
+				<title xml:lang="ko">박스 외곽선</title>
+				<description xml:lang="ko">박스 외곽라인 </description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">감추기</title>
+				</options>				
+			</var>		
+			
+		</group>
+		
+		
+		<group>
+			<title xml:lang="ko">갤러리형 게시판 설정</title>
+
+			<var name="view_cell" type="radio">
+				<title xml:lang="ko">목록 형식</title>
+				<description xml:lang="ko">썸네일+내용 보기, 썸네일만, 내용만을 선택할 수 있습니다.</description>
+				<options value="all">
+					<title xml:lang="ko">모두 보기 </title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">썸네일만 보기</title>
+				</options>
+				<options value="sum">
+					<title xml:lang="ko">내용만 보기</title>
+				</options>
+			</var>
+			
+			<var name="title_line" type="text" default="0">
+				<title xml:lang="ko">제목 줄 개수</title>
+				<description xml:lang="ko">제목의 줄 개수를 정할 수 있습니다.
+				1,2,3 등의 숫자로 입력해 주세요. 
+				0을 입력하시면 줄 잘림 없이 전체 제목이 출력됩니다.
+				</description>
+			</var>
+			
+			<var name="view_cell_sum" type="radio">
+				<title xml:lang="ko">내용만 보기 형식</title>
+				<description xml:lang="ko">요약 또는 전체보기 선택
+				🚨 전체 보기는 본문내용을 그대로 출력합니다.</description>
+				<options value="">
+					<title xml:lang="ko">요약 보기</title>
+				</options>
+				<options value="full">
+					<title xml:lang="ko">전체 보기</title>
+				</options>
+			</var>
+			<var name="summ_num" type="text" default="300">
+				<title xml:lang="ko">요약보기 글자 수</title>
+				<description xml:lang="ko">요약보기시에만 적용됩니다.</description>
+			</var>
+			
+			<var name="thumbnail_type" type="radio">
+				<title xml:lang="ko">썸네일 생성 방법</title>
+				<description xml:lang="ko">썸네일 생성 방법을 선택할 수 있습니다.
+				웹진은 강제 "꽉 채우기" 설정입니다.</description>
+				<options value="fill">
+					<title xml:lang="ko">꽉 채우기 (fill)</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비율 맞추기 (ratio)</title>
+				</options>
+			</var>
+			<var name="thumbnail_width" type="text" default="500">
+				<title xml:lang="ko">썸네일 가로크기</title>
+				<description xml:lang="ko">썸네일의 가로 크기를 지정할 수 있습니다. (기본 500px)
+				🚨 갤러리 창의 박스크기가 아닙니다. 🚨
+				- 상단의 "공통 설정 - 갤러리, 웹진, 북마크 등의 목록 박스 > 박스크기" 설정보다 큰 값을 넣어주세요.
+				- 가로형 이미지 크게 보기 기능 사용시 썸네일 크기가 2배로 커지니 적당한 크기로 지정해 주세요.
+				- 트래픽을 생각해서 적당한 크기로 지정해 주세요.
+				- 가로형 이미지는 자동으로 인식합니다.</description>
+			</var>
+			<var name="thumbnail_height" type="text" default="auto">
+				<title xml:lang="ko">썸네일 세로크기</title>
+				<description xml:lang="ko">썸네일의 세로 크기를 지정할 수 있습니다. (기본 auto)
+				- 비율 맞추기 설정시 : "auto" 입력
+				- 웹진은 "auto"입력시 정사각형으로 출력됩니다.</description>
+			</var>
+			<var name="infinity_use" type="radio">
+				<title xml:lang="ko">무한스크롤 사용</title>
+				<description xml:lang="ko">무한스크롤 사용 여부 설정, 
+				사용안함 : 버튼으로 추가 페이지 로드</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>		
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+		
+			</var>
+			
+			<var name="gall_hint" type="radio">
+				<title xml:lang="ko">디버그용</title>
+				<description xml:lang="ko">갤러리 레이아웃 디버거용 힌트코드 출력
+				사용안함으로 유지해 주세요.</description>
+				<options value="use">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>				
+			</var>
+			
+		</group>
+		
+
+		<group>
+			<title xml:lang="ko">블로그 게시판 설정</title>
+			<var name="blog_layout" type="radio">
+				<title xml:lang="ko">카테고리 메뉴 위치</title>
+				<description xml:lang="ko">메뉴 위치 선택</description>
+				<options value="left">
+					<title xml:lang="ko">왼쪽</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">오른쪽</title>
+				</options>
+			</var>
+			<var name="blog_menu_width" type="text" default="200">
+				<title xml:lang="ko">블로그 메뉴 넓이</title>
+				<description xml:lang="ko">기본 200px</description>
+			</var>
+			<!-- var name="blog_top_gap" type="text" default="0">
+				<title xml:lang="ko">게시판 상단 여백</title>
+				<description xml:lang="ko">상단 여백 설정 (기본 0px)
+				- 상단에 메뉴가 있다면 메뉴 높이값 입력</description>
+			</var -->
+			
+		</group>
+		
+		<group>
+			<title xml:lang="ko">히스토리 게시판 설정</title>
+			<var name="con_date" type="text">
+				<title xml:lang="ko">시작년도</title>
+			</var>
+			<var name="con_title" type="text">
+				<title xml:lang="ko">큰 제목</title>
+			</var>
+			<var name="con_sum" type="textarea">
+				<title xml:lang="ko">요약 설명</title>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">입력폼 게시판 설정</title>
+			<var name="form_title" type="radio">
+				<title xml:lang="ko">확장변수 설명글 질문글로 사용</title>
+				<description xml:lang="ko">확장변수 설정의 설명 글을 입력창 위에 배치하여 질문처럼 보이게 변경</description>
+				<options value="">
+					<title xml:lang="ko">비 사용</title>
+				</options>
+				<options value="Y">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="S">
+					<title xml:lang="ko">사용 + 변수명 숨김</title>
+				</options>
+			</var>
+			<var name="form_mail" type="radio">
+				<title xml:lang="ko">이메일 필수</title>
+				<options value="R">
+					<title xml:lang="ko">필수</title>
+				</options>
+				<options value="O">
+					<title xml:lang="ko">선택</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>				
+			</var>
+			<var name="form_phone" type="radio">
+				<title xml:lang="ko">연락처 필수</title>
+				<options value="R">
+					<title xml:lang="ko">필수</title>
+				</options>
+				<options value="O">
+					<title xml:lang="ko">선택</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>	
+			</var>
+			<var name="form_textarea" type="radio">
+				<title xml:lang="ko">에디터 사용</title>
+				<description xml:lang="ko">게시판 기본 에디터 사용 여부</description>
+				<options value="Y">
+					<title xml:lang="ko">필수</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>	
+			</var>
+			<var name="form_category" type="radio">
+				<title xml:lang="ko">분류 사용</title>
+				<description xml:lang="ko">게시판 분류(카테고리) 사용 여부</description>
+				<options value="Y">
+					<title xml:lang="ko">필수</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">사용안함</title>
+				</options>	
+			</var>
+			<var name="form_privacy" type="radio">
+				<title xml:lang="ko">개인정보 동의 필수</title>
+				<options value="">
+					<title xml:lang="ko">필수</title>
+				</options>
+				<options value="N">
+					<title xml:lang="ko">사용안함</title>
+				</options>	
+			</var>
+		</group>
+		
+		<group>
+			<title xml:lang="ko">배경 이미지</title>
+			<!-- var name="con_bg_type" type="radio">
+				<title xml:lang="ko">배경 : 타입</title>
+				<description xml:lang="ko">링크 또는 첨부한 배경 이미지의 밝기를 정해 주세요.
+				페이지 타이틀에 영향을 줍니다.</description>
+				<options value="white">
+					<title xml:lang="ko">밝은 이미지</title>
+				</options>
+				<options value="black">
+					<title xml:lang="ko">어두운 이미지</title>
+				</options>
+			</var -->
+			<var name="con_bg_use" type="radio">
+				<title xml:lang="ko">배경이미지 사용</title>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+			</var>
+			<var name="con_font_color" type="radio">
+				<title xml:lang="ko">페이지 타이틀 폰트 컬러</title>
+				<description xml:lang="ko">배경 이미지 사용 시. 사용된 이미지에 맞춰 폰트 컬러를 정해 주세요.
+				배경 이미지를 사용할때만 적용됩니다. (기본 : 화이트)</description>
+				<options value="">
+					<title xml:lang="ko">화이트</title>
+				</options>
+				<options value="black">
+					<title xml:lang="ko">블랙</title>
+				</options>
+			</var>
+
+			<var name="con_bg" type="text">
+				<title xml:lang="ko">배경 : 외부링크</title>
+				<description xml:lang="ko">외부링크 이미지를 배경으로 사용합니다.
+				외부링크와 업로드 동시에 존재할때 외부링크가 우선으로 적용됩니다.</description>
+			</var>
+			<var name="con_bg_dr" type="image">
+				<title xml:lang="ko">배경 : 업로드</title>
+				<description xml:lang="ko">외부 링크를 통하지 않고 업로드 파일로 대신합니다.
+				- 레이아웃 특성상 1500px × 1500px 이상의 이미지를 사용을 추천합니다.
+				- 무거운 이미지를 사용할 시 트래픽 발생할 수 있습니다.</description>
+			</var>
+		</group>
+
+    </extra_vars>
+</skin>
+

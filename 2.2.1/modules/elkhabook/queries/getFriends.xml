@@ -1,0 +1,14 @@
+<query action="select">
+	<tables>
+		<table name="member_friend" />
+	</tables>
+	<conditions>
+		<condition operation="in" column="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<condition operation="in" column="target_srl" var="target_srl" filter="number" pipe="and" />
+		<condition operation="in" column="friend_srl" var="friend_srl_list" pipe="and" />
+	</conditions>
+	<navigation>
+		<index default="friend_srl" order="desc" />
+		<list_count var="list_count" />
+	</navigation>
+</query>

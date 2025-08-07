@@ -1,0 +1,56 @@
+<div class="naviBoxBottom" cond="(isset($document_list[$no+1]) && $document_list[$no+1]->document_srl) || (isset($document_list[$no-1]) && $document_list[$no-1]->document_srl)">
+	<ul>
+		<!--@if($document_list[$no+1]->document_srl)-->
+				<li><a href="{getUrl('document_srl',$document_list[$no+1]->document_srl)}"> <i class='bx bxs-chevron-left'></i> <div><span>{$document_list[$no+1]->getTitle()}</span><span class="name">{$document_list[$no+1]->getNickName()}</span></div></a></li>
+		<!--@else-->
+			<!--@if(!$is_prevnext=='P')-->
+				<li class="disabled"></li>
+			<!--@end-->	
+		<!--@end-->
+		<!--// 현재목록 외 이전글-다음글 -->
+		<block cond="$is_prevnext">
+			<!--@if($is_prevnext=='P')-->
+				<li><a href="{getUrl('document_srl',$prevnext_doc,'page','','cpage','')}"><i class='bx bxs-chevron-left'></i> <div><span>{$prevnext_title}</span><span class="name">{$prevnext_nick}</span></div></a></li>
+			<!--@else-->
+				<li><a href="{getUrl('document_srl',$prevnext_doc,'page','','cpage','')}"> <div><span>{$prevnext_title}</span><span class="name">{$prevnext_nick}</span></div><i class='bx bxs-chevron-right'></i> </a></li>
+			<!--@end-->
+		</block>
+		<!--@if($document_list[$no-1]->document_srl)-->
+				<li><a href="{getUrl('document_srl',$document_list[$no-1]->document_srl)}"><div><span>{$document_list[$no-1]->getTitle()}</span><span class="name">{$document_list[$no-1]->getNickName()}</span></div> <i class='bx bxs-chevron-right'></i></a></li>
+		<!--@else-->
+			<!--@if($is_prevnext=='P' || $is_prevnext=='' )-->
+				<li class="disabled"></li>
+			<!--@end-->
+		<!--@end-->
+	</ul>
+</div>
+<style>
+.naviBoxBottom { position:relative;   padding: var(--oday_sideGapLR); padding-bottom:2em; padding-top:2em; /*  margin-bottom:2em; */  max-width: var(--oday_maxWidth);}
+.naviBoxBottom ul { display:flex; justify-content: space-between;  padding:30px 20px;  border-radius:var(--oday_listBorderRadius); background-color: color-mix(in srgb, var(--oday_listBgColor), #fff 10%);  border:var(--oday_listBorder); box-shadow:var(--oday_listShadow);}
+.no_bd_bg .naviBoxBottom ul { background-color: color-mix(in srgb, var(--oday_bodyBgColor), #fff 20%);}
+.naviBoxBottom ul li { width:45%;}
+.naviBoxBottom ul li:last-child { display: flex; justify-content: flex-end; text-align: right;}
+.naviBoxBottom ul li a { display:flex; align-items: center; width:100%}
+.naviBoxBottom ul li:last-child a {justify-content: flex-end;}
+.naviBoxBottom ul li a > * + * { margin-left:20px;}
+.naviBoxBottom ul li a i { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: calc(var(--oday_iptHeight) - 1px); height: calc(var(--oday_iptHeight) - 1px); border-radius: 100%; font-size:1.5em; opacity:1; background-color: var(--oday_listBgColorDown); transition:.3s; }
+.naviBoxBottom ul li a:hover i { opacity:1;  background-color:var(--oday_listBgColorDown2);}  
+.naviBoxBottom ul li a div {overflow: hidden; }
+.naviBoxBottom ul li a div span:first-child { display:block; font-size:1em; white-space: nowrap; overflow: hidden; width: 100%; text-overflow: ellipsis;}
+.naviBoxBottom ul li a div span:last-child { display:block; font-size:.8em; opacity:.6; margin-top:5px;  color:var(--oday_fontColor) }
+.naviBoxBottom + .naviBtn { margin-top: 0;  border-top: none;}
+:is(.color_scheme_dark),
+:root[color-theme='dark'] {
+	.naviBoxBottom ul {background-color: color-mix(in srgb, var(--oday_listBgColor), #fff 2%); }
+	.no_bd_bg .naviBoxBottom ul { background-color: color-mix(in srgb, var(--oday_bodyBgColor), #fff 2%);}
+}
+@media screen and (max-width:768px){
+	.naviBoxBottom ul { padding:15px 0px; }
+	.naviBoxBottom ul li { width:48%;}
+	.naviBoxBottom ul li a > * + * { margin-left:0px;}
+	.naviBoxBottom ul li a i { width: calc(var(--oday_iptHeight) - 10px); height: calc(var(--oday_iptHeight) - 5px); background-color:unset; color:var(--oday_mainColor)}
+	.naviBoxBottom ul li a:hover i { background-color:unset; color:var(--oday_mainColor) }
+	.naviBoxBottom ul li a div span:first-child { font-size:1em; }
+	.naviBoxBottom ul li a div span:last-child { margin-top:0; }
+}
+</style>

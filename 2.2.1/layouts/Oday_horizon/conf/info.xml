@@ -1,0 +1,1123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">OrangeDay 호라이즌</title>
+    <description xml:lang="ko">상단에 메뉴가 위치한 커뮤니티용 레이아웃</description>
+    <version>2.1.0</version>
+    <date>2025</date>
+    <author email_address="yabssabi@gmail.com" link="https://www.orangeday.com">
+        <name xml:lang="ko">Yabi 夜飛</name>
+    </author>
+    <menus>
+        <menu name="GNB" maxdepth="2" default="true">
+            <title xml:lang="ko">전역 네비게이션 바</title>
+            <title xml:lang="en">Global Navigation Bar</title>
+        </menu>
+        <menu name="LNB" maxdepth="2" default="true">
+            <title xml:lang="ko">LNB</title>
+            <title xml:lang="en">LNB</title>
+        </menu>
+    </menus>
+	
+	<extra_vars>
+	
+		<group>
+			<title xml:lang="ko">기본</title>
+
+			<var name="site_mid" type="text">
+				<title xml:lang="ko">홈 사용</title>
+				<description xml:lang="ko">시스템에서 지정한 홈 이외에 메뉴에서 메인을 사용 할 수 있습니다. 해당 미드(메뉴 URL) 값을 입력해 주세요.</description>
+			</var>
+			
+			<var name="site_title" type="text">
+				<title xml:lang="ko">사이트 명</title>
+				<description xml:lang="ko">사이트 명</description>
+			</var>			
+			<var name="logo_img" type="image">
+				<title xml:lang="ko">사이트 로고</title>
+				<description xml:lang="ko">사이트명으로 사용될 이미지 (배경이 없는 png, svg 사용 추천) </description>
+			</var>
+			<var name="use_logo_img" type="radio">
+				<title xml:lang="ko">사이트명 표시</title>
+				<description xml:lang="ko">메인 타이틀을 "사이트명"과 "사이트 로고" 이미지 중 하나를 정할 수 있습니다.</description>
+				<options value="">
+					<title xml:lang="ko">사이트명 사용</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">사이트 로고 사용</title>
+				</options>
+			</var>	
+			<var name="site_info1" type="textarea">
+				<title xml:lang="ko">사이트 설명1</title>
+				<description xml:lang="ko">하단 위치. 태그 사용. (주소, 대표자 명, 소개, 전화번호 등 기타)</description>
+			</var>
+			<var name="site_info2" type="textarea">
+				<title xml:lang="ko">사이트 설명2</title>
+				<description xml:lang="ko">하단 위치. 태그 사용. (주소, 대표자 명, 소개, 전화번호 등 기타)</description>
+			</var>
+			<var name="site_info3" type="textarea">
+				<title xml:lang="ko">사이트 설명3</title>
+				<description xml:lang="ko">하단 위치. 태그 사용. (주소, 대표자 명, 소개, 전화번호 등 기타)</description>
+			</var>
+			<var name="site_info4" type="textarea">
+				<title xml:lang="ko">사이트 설명4</title>
+				<description xml:lang="ko">하단 위치. 태그 사용. (주소, 대표자 명, 소개, 전화번호 등 기타)</description>
+			</var>
+			<var name="site_copyright" type="text">
+				<title xml:lang="ko">카피라이트 주체</title>
+				<description xml:lang="ko">위치 : (C) 'OOO' all rights reserved.</description>
+			</var>
+		</group>
+
+		<group>
+			<title xml:lang="ko">레이아웃</title>
+			<var name="widget_bg_center" type="radio">
+				<title xml:lang="ko">위젯 배경 - 중앙</title>
+				<description xml:lang="ko">메인 중앙의 박스형 배경 사용 여부</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="widget_bg_side" type="radio">
+				<title xml:lang="ko">위젯 배경 - 사이드</title>
+				<description xml:lang="ko">메인 중앙, 사이드(메인, 서브)의 박스형 배경 사용 여부</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>	
+			
+			<var name="layout_align" type="radio">
+				<title xml:lang="ko">메인 타입</title>
+				<description xml:lang="ko">메인 폭 100% 또는 고정값 사용 여부, 기본 Full</description>
+				<options value="">
+					<title xml:lang="ko">100%(Full)</title>
+				</options>
+				<options value="num">
+					<title xml:lang="ko">입력 값으로</title>
+				</options>	
+			</var>
+			<var name="site_width" type="text" default="1500">
+				<title xml:lang="ko">메인 넓이</title>
+				<description xml:lang="ko">위 항목의 "입력 값으로" 선택 시 메인 넓이 (숫자만, 최소 1000 이상, 기본 1500px)</description>
+			</var>
+			
+			<var name="layout_align_sub" type="radio">
+				<title xml:lang="ko">서브 타입</title>
+				<description xml:lang="ko">메인과 별도로 서브 타입 지정, 기본 "입력 값으로"</description>
+				<options value="full">
+					<title xml:lang="ko">100%(Full)</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">입력 값으로</title>
+				</options>	
+			</var>
+			<var name="site_width_sub" type="text" default="1500">
+				<title xml:lang="ko">서브 넓이</title>
+				<description xml:lang="ko">위 항목의 "입력 값으로" 선택 시 서브 넓이 (숫자만, 최소 1000 이상, 기본 1500px)</description>
+			</var>
+		
+			<var name="site_wing_width" type="text" default="250">
+				<title xml:lang="ko">양쪽 사이드 크기</title>
+				<description xml:lang="ko">사이드 크기, 양쪽 동일 (숫자만, 기본 250px)</description>
+			</var>
+			
+			<var name="site_wing_gap" type="text" default="40">
+				<title xml:lang="ko">창 간격</title>
+				<description xml:lang="ko">사이드와 메인 창들의 좌우 간격 (숫자만, 기본 40px)</description>
+			</var>
+			<var name="site_column_c1" type="radio">
+				<title xml:lang="ko">사이드 왼쪽</title>
+				<description xml:lang="ko">왼쪽 사이드 사용 여부</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_column_c3" type="radio">
+				<title xml:lang="ko">사이드 오른쪽</title>
+				<description xml:lang="ko">오른쪽 사이드 사용 여부</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>			
+			<var name="site_column_c1_con" type="textarea">
+				<title xml:lang="ko">사이드 왼쪽 - 내용</title>
+				<description xml:lang="ko">왼쪽 사이드 내용 입력 (HTML, 위젯코드 사용 가능) (미 입력시 폴더내 _page_left.html 파일을 불러 옵니다. )  (🚨 '_page_left.html' 기본 설정은 '메인 - 위젯 설정' 탭)</description>
+			</var>
+			<var name="site_column_c2_con" type="textarea">
+				<title xml:lang="ko"> 메인 - 내용</title>
+				<description xml:lang="ko">메인 내용 입력 (HTML, 위젯코드 사용 가능) (미 입력시 폴더내 _page_center.html 파일을 불러 옵니다. )  (🚨 '_page_center.html' 기본 설정은 '메인 - 위젯 설정' 탭)</description>
+			</var>
+			<var name="site_column_c3_con" type="textarea">
+				<title xml:lang="ko">사이드 오른쪽 - 내용</title>
+				<description xml:lang="ko">오른쪽 사이드 내용 입력 (HTML, 위젯코드 사용 가능) (미 입력시 폴더내 _page_right.html 파일을 불러 옵니다. )  (🚨 '_page_right.html' 기본 설정은 '메인 - 위젯 설정' 탭)</description>
+			</var>
+		</group>
+		
+		<group>
+			<title xml:lang="ko">홈 - 상단</title>
+			<var name="use_main_banner" type="radio">
+				<title xml:lang="ko">메인 상단 꾸미기</title>
+				<description xml:lang="ko">메인 상단을 구성할 수 있습니다. 서브에서는 보이지 않습니다. (기본 : 비사용)</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>			
+			<var name="use_main_banner_con" type="textarea">
+				<title xml:lang="ko">메인 상단 - 내용</title>
+				<description xml:lang="ko">위젯코드, HTML코드 등 을 사용 할 수 있습니다.
+				(미 입력시 폴더내 _page_top.html 파일을 불러 옵니다. )</description>
+			</var>
+			
+		</group>
+
+		
+		<group>
+			<title xml:lang="ko">위젯 - 중앙</title>
+			<var name="site_banner_use" type="radio">
+				<title xml:lang="ko">📕 상단 슬라이드 배너</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_banner" type="text">
+				<title xml:lang="ko">대상 게시판</title>
+				<description xml:lang="ko">관리자만 볼 수 있는 전용 게시판 생성 후 srl 입력, 사용법 참고. </description>
+			</var>
+			<var name="site_banner_num" type="text">
+				<title xml:lang="ko">슬라이드 배너 목록 수</title>
+				<description xml:lang="ko">해당 게시판의 최신글을 가져 옵니다. 기본 3개</description>
+			</var>
+
+			
+			
+			<var name="site_sp_banner_use" type="radio">
+				<title xml:lang="ko">📕 스페셜 배너</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_sp_banner" type="text">
+				<title xml:lang="ko">대상 게시판</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능 (글이 각각의 박스로 나옵니다, 배너처럼 강조하고 싶은 게시판에 사용)</description>
+			</var>
+			<var name="site_sp_banner_title" type="text">
+				<title xml:lang="ko">스페셜 배너 타이틀</title>
+				<description xml:lang="ko">기본 위젯 타이틀말고 별도의 큰 타이틀을 원할때</description>
+			</var>
+			<var name="site_sp_banner_icon" type="text">
+				<title xml:lang="ko">스페셜 배너 아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>
+			<var name="site_sp_banner_num" type="text">
+				<title xml:lang="ko">스페셜 배너 목록 수</title>
+				<description xml:lang="ko">기본 10개 </description>
+			</var>
+			<var name="site_sp_banner_type" type="radio">
+				<title xml:lang="ko">스페셜 글 타입</title>
+				<description xml:lang="ko">불러올 글 타입</description>
+				<options value="">
+					<title xml:lang="ko">최신글</title>
+				</options>
+				<options value="V">
+					<title xml:lang="ko">최다 조회</title>
+				</options>	
+				<options value="S">
+					<title xml:lang="ko">최다 추천</title>
+				</options>	
+				<options value="R">
+					<title xml:lang="ko">랜덤</title>
+				</options>	
+			</var>
+			<var name="site_sp_banner_limit" type="text">
+				<title xml:lang="ko">스페셜 목록 수</title>
+				<description xml:lang="ko">최다 조회, 추천 등의 기본 조건 (입력 값 이상 부터 조회, 기본 5) </description>
+			</var>
+				<var name="site_sp_banner_dura" type="text">
+				<title xml:lang="ko">조회 기간</title>
+				<description xml:lang="ko">1일 단위, 숫자만 입력, 기본 전체</description>
+			</var>
+			
+			
+			<var name="site_new_con" type="text">
+				<title xml:lang="ko">📕 최신 글</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_con_title" type="text">
+				<title xml:lang="ko">최신 글 타이틀</title>
+				<description xml:lang="ko">기본 위젯 타이틀말고 별도의 큰 타이틀을 원할때, 기본 "NEW POST"</description>
+			</var>
+			<var name="site_new_con_icon" type="text">
+				<title xml:lang="ko">최신 글 아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>
+			<var name="man_img" type="radio">
+				<title xml:lang="ko">최신 글 이미지</title>
+				<description xml:lang="ko">최신 글 이미지 사용 설정 및 위치</description>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">왼쪽</title>
+				</options>	
+				<options value="top">
+					<title xml:lang="ko">상단</title>
+				</options>	
+			</var>
+			<var name="man_width" type="text">
+				<title xml:lang="ko">최신 글 목록 크기</title>
+				<description xml:lang="ko">최신 글 목록의 최소 크기 (숫자만, 기본 300px) </description>
+			</var>			
+			<var name="man_gap" type="text">
+				<title xml:lang="ko">최신 글 목록 간격</title>
+				<description xml:lang="ko">최신 글 목록의 간격  (숫자만, 기본 30px)</description>
+			</var>
+			<var name="site_new_con_num" type="text">
+				<title xml:lang="ko">최신 글 목록 수</title>
+				<description xml:lang="ko">최신 글 목로수, 기본 20개</description>
+			</var>
+			<var name="man_img_width" type="text">
+				<title xml:lang="ko">최신 글 이미지 가로 크기</title>
+				<description xml:lang="ko">숫자만, 기본 100px, 이미지 상단 선택시 글목록 크기 적용</description>
+			</var>
+			<var name="man_img_height" type="text">
+				<title xml:lang="ko">최신 글 이미지 세로 크기</title>
+				<description xml:lang="ko">숫자만, 기본 100px</description>
+			</var>
+
+
+			<var name="site_new_gall_use" type="radio">
+				<title xml:lang="ko">📕 갤러리</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>				
+			<var name="site_new_gall_srl" type="text">
+				<title xml:lang="ko">대상 게시판(개별)</title>
+				<description xml:lang="ko">게시판 srl 넘버입력, ","로 여러개 입력 가능, 사진만 올리는 게시판 추천 </description>
+			</var>
+			<var name="site_new_gall_srl_use" type="radio">
+				<title xml:lang="ko">개별 대상 사용</title>
+				<description xml:lang="ko">기본 메인 최신 글 대상 사용, 체크시 개별 대상 사용.</description>
+				<options value="">
+					<title xml:lang="ko">대상 : 최신글</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">대상 : 개별</title>
+				</options>	
+			</var>
+			<var name="site_new_gall_title" type="text">
+				<title xml:lang="ko">갤러리 타이틀</title>
+				<description xml:lang="ko">기본 위젯 타이틀말고 별도의 큰 타이틀을 원할때, 기본 "GALLERY"</description>
+			</var>
+			<var name="site_new_gall_icon" type="text">
+				<title xml:lang="ko">갤러리 아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>
+			<var name="site_new_gall_num" type="text">
+				<title xml:lang="ko">갤러리 목록 수</title>
+				<description xml:lang="ko">기본 10개 </description>
+			</var>
+			<var name="site_new_gall_type" type="radio">
+				<title xml:lang="ko">갤러리 글 타입</title>
+				<description xml:lang="ko">불러올 글 타입</description>
+				<options value="">
+					<title xml:lang="ko">최신글</title>
+				</options>
+				<options value="V">
+					<title xml:lang="ko">최다 조회</title>
+				</options>	
+				<options value="S">
+					<title xml:lang="ko">최다 추천</title>
+				</options>	
+				<options value="R">
+					<title xml:lang="ko">랜덤</title>
+				</options>	
+			</var>
+			<var name="site_new_gall_limit" type="text">
+				<title xml:lang="ko">갤러리 목록 조건 수</title>
+				<description xml:lang="ko">최다 조회, 추천 등의 기본 조건 (입력 값 이상 부터 조회, 기본 5) </description>
+			</var>
+				<var name="site_new_gall_dura" type="text">
+				<title xml:lang="ko">조회 기간</title>
+				<description xml:lang="ko">1일 단위, 숫자만 입력, 기본 전체</description>
+			</var>
+			<var name="site_new_gall_width" type="text">
+				<title xml:lang="ko">갤러리 이미지 가로 크기</title>
+				<description xml:lang="ko">숫자만, 기본 200px</description>
+			</var>
+			<var name="site_new_gall_height" type="text">
+				<title xml:lang="ko">갤러리 이미지 세로 크기</title>
+				<description xml:lang="ko">숫자만, 기본 300px</description>
+			</var>			
+		</group>
+
+		
+		<group>
+			<title xml:lang="ko">위젯 - 배너</title>
+			<var name="banner_use" type="radio">
+				<title xml:lang="ko">📕  배너 메인페이지 사용 </title>
+				<description xml:lang="ko">메인페이지 배너 전체 사용 유무를 설정합니다.</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="banner_sub_use" type="radio">
+				<title xml:lang="ko">📕  배너 서브페이지 사용</title>
+				<description xml:lang="ko">서브페이지 배너 전체 사용 유무를 설정합니다.(오른쪽 사이드바에 표시)</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			
+			<var name="banner1_use" type="radio">
+				<title xml:lang="ko">📕  배너1</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="banner1_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner1_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner1_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner1_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner1_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner1_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>
+			<var name="banner1_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner1_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner1_img" type="image">
+				<title xml:lang="ko">이미지</title>
+			</var>
+
+
+			<var name="banner2_use" type="radio">
+				<title xml:lang="ko">📕  배너2</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="banner2_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner2_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner2_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner2_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner2_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner2_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			<var name="banner2_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner2_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner2_img" type="image">
+				<title xml:lang="ko">이미지</title>
+			</var>
+			
+			
+			<var name="banner3_use" type="radio">
+				<title xml:lang="ko">📕  배너3</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="banner3_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner3_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner3_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner3_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner3_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner3_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			<var name="banner3_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner3_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner3_img" type="image">
+				<title xml:lang="ko">이미지</title>
+			</var>
+			
+			<var name="banner4_use" type="radio">
+				<title xml:lang="ko">📕  배너4</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>			
+			<var name="banner4_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner4_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner4_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner4_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner4_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner4_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			<var name="banner4_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner4_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner4_img" type="image">
+				<title xml:lang="ko">이미지</title>
+			</var>
+			
+			<var name="banner5_use" type="radio">
+				<title xml:lang="ko">📕  배너5</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>			
+			<var name="banner5_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner5_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner5_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner5_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner5_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner5_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			<var name="banner5_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner5_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner5_img" type="image">
+				<title xml:lang="ko">배경 이미지</title>
+			</var>
+
+			<var name="banner6_use" type="radio">
+				<title xml:lang="ko">📕  배너6</title>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>			
+			<var name="banner6_title" type="text">
+				<title xml:lang="ko">제목</title>
+			</var>
+			<var name="banner6_text" type="text">
+				<title xml:lang="ko">설명</title>
+			</var>
+			<var name="banner6_title_img" type="image">
+				<title xml:lang="ko">제목 이미지</title>
+				<description xml:lang="ko">이미지 첨부시 제목, 설명은 사용되지 않습니다.</description>
+			</var>
+			<var name="banner6_url" type="text">
+				<title xml:lang="ko">링크</title>
+			</var>
+			<var name="banner6_win" type="checkbox">
+				<title xml:lang="ko">새창</title>
+				<options value="yes">
+					<title xml:lang="ko">메뉴 클릭시 새 창으로 열기</title>
+				</options>
+			</var>
+			<var name="banner6_icon" type="text">
+				<title xml:lang="ko">아이콘</title>
+				<description xml:lang="ko">부트스트랩, 박스아이콘 사용 해당 아이콘 폰트의 class 값을 사용하여 원하는 아이콘을 사용할 수 있습니다.
+				ex ) 부트스트랩 아이콘 &lt;i class=&quot;bi bi-bluesky&quot;&gt;&lt;/i&gt; 에서 'bi bi-bluesky' 값 입력
+				ex ) 박스아이콘 &lt;i class='bx bxs-star' &gt;&lt;/i&gt; 에서 'bx bxs-star' 값 입력
+				
+				 ( 부트 스트랩 https://icons.getbootstrap.kr/ )  ( 박스아이콘 https://v2.boxicons.com/ )</description>
+			</var>			
+			<var name="banner6_font" type="colorpicker">
+				<title xml:lang="ko">글자색</title>
+			</var>
+			<var name="banner6_bg" type="colorpicker">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">이미지 사용시 배경색이 그라데이션으로 이미지위에 배치됩니다.</description>
+			</var>
+			<var name="banner6_img" type="image">
+				<title xml:lang="ko">배경 이미지</title>
+			</var>
+			
+		</group>
+	
+		<group>
+			<title xml:lang="ko">위젯 - 왼쪽</title>
+			
+			<var name="site_new_top_use" type="radio">
+				<title xml:lang="ko">📕 최다조회</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_new_top_srl" type="text">
+				<title xml:lang="ko">대상 게시판(개별)</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_top_srl_use" type="radio">
+				<title xml:lang="ko">개별 대상 사용</title>
+				<description xml:lang="ko">기본 메인 최신 글 대상 사용, 체크시 개별 대상 사용.</description>
+				<options value="">
+					<title xml:lang="ko">대상 : 최신글</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">대상 : 개별</title>
+				</options>	
+			</var>				
+			<var name="site_new_top_num" type="text">
+				<title xml:lang="ko">목록 수</title>
+				<description xml:lang="ko">숫자만 입력, 기본 3개</description>
+			</var>
+			<var name="site_new_top_limit" type="text">
+				<title xml:lang="ko">최소 조회수</title>
+				<description xml:lang="ko">숫자만 입력, 기본 5회</description>
+			</var>
+			<var name="site_new_top_dura" type="text">
+				<title xml:lang="ko">조회 기간</title>
+				<description xml:lang="ko">1일 단위, 숫자만 입력, 기본 전체</description>
+			</var>
+			
+			<var name="site_new_sug_use" type="radio">
+				<title xml:lang="ko">📕 최다추천</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_new_sug_srl" type="text">
+				<title xml:lang="ko">대상 게시판(개별)</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_sug_srl_use" type="radio">
+				<title xml:lang="ko">개별 대상 사용</title>
+				<description xml:lang="ko">기본 메인 최신 글 대상 사용, 체크시 개별 대상 사용.</description>
+				<options value="">
+					<title xml:lang="ko">대상 : 최신글</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">대상 : 개별</title>
+				</options>	
+			</var>				
+			<var name="site_new_sug_num" type="text">
+				<title xml:lang="ko">목록 수</title>
+				<description xml:lang="ko">숫자만 입력, 기본 3개</description>
+			</var>
+			<var name="site_new_sug_limit" type="text">
+				<title xml:lang="ko">최소 추천수</title>
+				<description xml:lang="ko">숫자만 입력, 기본 3회</description>
+			</var>
+			<var name="site_new_sug_dura" type="text">
+				<title xml:lang="ko">조회 기간</title>
+				<description xml:lang="ko">1일 단위, 숫자만 입력, 기본 전체</description>
+			</var>			
+			
+			<var name="site_new_ran_use" type="radio">
+				<title xml:lang="ko">📕 랜덤</title>
+				<description xml:lang="ko"></description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_new_ran_srl" type="text">
+				<title xml:lang="ko">대상 게시판(개별)</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_ran_srl_use" type="radio">
+				<title xml:lang="ko">개별 대상 사용</title>
+				<description xml:lang="ko">기본 메인 최신 글 대상 사용, 체크시 개별 대상 사용.</description>
+				<options value="">
+					<title xml:lang="ko">대상 : 최신글</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">대상 : 개별</title>
+				</options>	
+			</var>				
+			<var name="site_new_ran_num" type="text">
+				<title xml:lang="ko">목록 수</title>
+				<description xml:lang="ko">숫자만 입력, 기본 3개</description>
+			</var>
+			<var name="site_new_ran_dura" type="text">
+				<title xml:lang="ko">조회 기간</title>
+				<description xml:lang="ko">1일 단위, 숫자만 입력, 기본 전체</description>
+			</var>
+			
+			<var name="site_rank_use" type="radio">
+				<title xml:lang="ko">📕 각종 랭킹</title>
+				<description xml:lang="ko">포인트, 글, 댓글 등의 순위시</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="site_rank_count" type="text">
+				<title xml:lang="ko">랭킹 순위</title>
+				<description xml:lang="ko">기본 10위까지. 5이상 권장</description>
+			</var>			
+			<var name="site_rank_targets" type="checkbox">
+				<title xml:lang="ko">랭킹 항목</title>
+				<description xml:lang="ko">체크된 항목만 랜덤으로 표시됩니다.(선택항목 없을 때는 전체 랜덤)</description>
+				<options value="point">
+					<title xml:lang="ko">포인트</title>
+				</options>	
+				<options value="friends">
+					<title xml:lang="ko">친구 수</title>
+				</options>	
+				<options value="documents">
+					<title xml:lang="ko">글 수</title>
+				</options>	
+				<options value="comments">
+					<title xml:lang="ko">댓글 수</title>
+				</options>	
+				<options value="votes">
+					<title xml:lang="ko">추천 수</title>
+				</options>	
+			</var>
+		</group>
+		<group>
+			<title xml:lang="ko">위젯 - 오른쪽</title>
+
+			<var name="site_notice" type="text">
+				<title xml:lang="ko">📕 공지사항</title>
+				<description xml:lang="ko">공지 게시판 생성 후 srl 입력. </description>
+			</var>
+			<var name="site_notice_link" type="text">
+				<title xml:lang="ko">공지사항 링크</title>
+				<description xml:lang="ko">공지사항 바로가기 링크 (필수 X), 해당 페이지 주소 입력 (ex: /Notice)</description>
+			</var>
+			<var name="site_notice_num" type="text">
+				<title xml:lang="ko">공지사항 목록 수</title>
+				<description xml:lang="ko">기본 3개</description>
+			</var>
+			
+			<var name="site_new_com_srl" type="text">
+				<title xml:lang="ko">📕 댓글(개별)</title>
+				<description xml:lang="ko">게시판 srl 넘버입력,  ","로 여러개 입력 가능, 빈칸은 모든 게시판 적용</description>
+			</var>
+			<var name="site_new_com_srl_use" type="radio">
+				<title xml:lang="ko">개별 대상 사용</title>
+				<description xml:lang="ko">기본 메인 최신 글 대상 사용, 체크시 개별 대상 사용.</description>
+				<options value="">
+					<title xml:lang="ko">대상 : 최신글</title>
+				</options>
+				<options value="yes">
+					<title xml:lang="ko">대상 : 개별</title>
+				</options>	
+			</var>				
+			<var name="site_new_com_num" type="text">
+				<title xml:lang="ko">댓글 목록 수</title>
+				<description xml:lang="ko">최신 댓글 목록 수, 기본 20개</description>
+			</var>
+			<var name="use_visitor" type="radio">
+				<title xml:lang="ko">📕 방문자 카운트</title>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+				<description xml:lang="ko">방문자 카운트 사용 여부 설정</description>
+			</var>			
+		</group>
+		
+		<group>
+			<title xml:lang="ko">서브 페이지</title>
+			
+			<var name="use_sub_page" type="radio">
+				<title xml:lang="ko">서브페이지 사이드 사용</title>
+				<description xml:lang="ko">서브 페이지에서 양쪽 사이드 페이지 사용 여부 (비사용시 : 메인 ○, 서브페이지 ×)</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="use_snb" type="radio">
+				<title xml:lang="ko">서브 메뉴 사용</title>
+				<description xml:lang="ko">서브 메뉴 사용여부. 모바일에서는 보이지 않습니다.</description>
+				<options value="yes">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="use_snb_location" type="radio">
+				<title xml:lang="ko">서브 메뉴 위치</title>
+				<description xml:lang="ko">서브 메뉴 위치 (기본위치 : 오른쪽), "서브 메뉴 강제 사용"시에도 적용</description>
+				<options value="left">
+					<title xml:lang="ko">왼쪽</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">오른쪽</title>
+				</options>	
+			</var>				
+			<var name="use_snb_force" type="radio">
+				<title xml:lang="ko">서브 메뉴 강제 사용</title>
+				<description xml:lang="ko">서브 페이지에서 사이드 비사용 설정시에도 강제로 서브메뉴를 보이게 설정합니다. 각 게시판에서 사이드 사용 중지한 경우 게시판 설정이 우선합니다. </description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>	
+			</var>
+			<var name="use_snb_scroll" type="text">
+				<title xml:lang="ko">서브 메뉴 높이 설정</title>
+				<description xml:lang="ko">서브 메뉴가 해당 높이로 고정됩니다. 스크롤바가 생성됩니다.</description>
+			</var>		
+		</group>
+		
+		<group>
+			<title xml:lang="ko">테마</title>
+			<var name="use_darkMode" type="radio">
+				<title xml:lang="ko">📕 다크모드 사용자 제어</title>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_darkMode_set" type="radio">
+				<title xml:lang="ko">다크모드 고정</title>
+				<description xml:lang="ko">"다크모드 사용자 제어 > 중지"시 모드를 설정할 수 있습니다.</description>
+				<options value="dark">
+					<title xml:lang="ko">다크</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">라이트</title>
+				</options>
+			</var>
+			
+			<var name="use_colorTheme" type="radio">
+				<title xml:lang="ko">📕 컬러테마 사용자 제어</title>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">중지</title>
+				</options>
+			</var>
+			<var name="use_colorTheme_set" type="select">
+				<title xml:lang="ko">컬러테마 고정</title>
+				<description xml:lang="ko">"컬러테마 사용자 제어 > 중지"시 모드를 설정할 수 있습니다.</description>
+				<options value="white">
+					<title xml:lang="ko">화이트</title>
+				</options>
+				<options value="gray">
+					<title xml:lang="ko">그레이</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">오렌지</title>
+				</options>
+				<options value="blue">
+					<title xml:lang="ko">블루</title>
+				</options>
+				<options value="green">
+					<title xml:lang="ko">그린</title>
+				</options>
+				<options value="red">
+					<title xml:lang="ko">레드</title>
+				</options>
+				<options value="purple">
+					<title xml:lang="ko">보라</title>
+				</options>
+			</var>
+			<var name="use_brightTheme_set" type="select">
+				<title xml:lang="ko">밝기 고정</title>
+				<description xml:lang="ko">"컬러테마 사용자 제어 > 중지"시 모드를 설정할 수 있습니다.</description>
+				<options value="d1">
+					<title xml:lang="ko">저대비</title>
+				</options>
+				<options value="d2">
+					<title xml:lang="ko">중대비</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">고대비</title>
+				</options>
+				<options value="d4">
+					<title xml:lang="ko">모노크롬(Monochrome)</title>
+				</options>
+			</var>
+		</group>
+		
+		<group>
+			<title xml:lang="ko">기타</title>
+			<var name="use_member" type="radio">
+				<title xml:lang="ko">회원가입</title>
+				<description xml:lang="ko">회원가입 사용 여부</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+			</var>
+			<var name="use_gnb_cover" type="radio">
+				<title xml:lang="ko">주메뉴 오버시 커버</title>
+				<description xml:lang="ko">주 메뉴 마우스 오버시 본문 내용 가리는 백월 사용 여부</description>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+				<options value="">
+					<title xml:lang="ko">백월</title>
+				</options>
+				<options value="backinfo">
+					<title xml:lang="ko">백월 + 사이트 정보</title>
+				</options>
+			</var>
+			<var name="view_bottom_gnb" type="radio">
+				<title xml:lang="ko">하단 GNB 사용</title>
+				<description xml:lang="ko">하단에 위치한 사이트맵 형식의 메인메뉴 보이기 설정</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">비사용</title>
+				</options>
+			</var>				
+			<var name="site_badge" type="radio">
+				<title xml:lang="ko">오렌지데이 뱃지</title>
+				<description xml:lang="ko">사이트 하단의 오렌지데이 바로 가기 배너</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>
+
+			<var name="googleSearch" type="text">
+				<title xml:lang="ko">구글 검색</title>
+				<description xml:lang="ko">검색엔진 ID 값 입력  (입력 값 없으면 적용 안됨)</description>
+			</var>
+			<var name="googleAnalytics" type="text">
+				<title xml:lang="ko">구글 애널리틱스</title>
+				<description xml:lang="ko">측정 ID 값 입력  (입력 값 없으면 적용 안됨)</description>
+			</var>
+			<var name="cafe24Traffic" type="text">
+				<title xml:lang="ko">카페24 트래픽</title>
+				<description xml:lang="ko">카페24제공 '도메인/throttle-me' 입력  (입력 값 없으면 적용 안됨)</description>
+			</var>
+			<var name="cafe24Disk" type="text">
+				<title xml:lang="ko">카페24 하드</title>
+				<description xml:lang="ko">카페24 서버 하드량(MB)  (숫자만, 입력 값 없으면 적용 안됨)</description>
+			</var>
+			<var name="use_sns" type="radio">
+				<title xml:lang="ko">SNS 공유 사용</title>
+				<description xml:lang="ko">페이스북, X(트위터), 링크드인 기본, 레이아웃 자체 운영, 사용시 게시판 SNS와 중복 노출</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>
+			<var name="use_sns_b" type="radio">
+				<title xml:lang="ko">SNS 설정 게시판 적용</title>
+				<description xml:lang="ko">레이아웃에서 지정한 설정을 게시판에도 적용</description>
+				<options value="">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="no">
+					<title xml:lang="ko">사용안함</title>
+				</options>
+			</var>			
+			<var name="site_sns_list" type="checkbox">
+				<title xml:lang="ko">SNS 목록</title>
+				<description xml:lang="ko">기본은 모두 보기,
+				하나라도 체크하시면 체크한 항목만 보입니다.</description>
+				<options value="facebook">
+					<title xml:lang="ko">페이스북</title>
+				</options>
+				<options value="twitter">
+					<title xml:lang="ko">트위터</title>
+				</options>
+				<options value="linkedin">
+					<title xml:lang="ko">링크드인</title>
+				</options>
+				<options value="naver">
+					<title xml:lang="ko">네이버</title>
+				</options>
+				<options value="kakao">
+					<title xml:lang="ko">카카오톡</title>
+				</options>
+			</var>			
+			<var name="use_kakao_layout" type="text">
+				<title xml:lang="ko">카카오톡 추가</title>
+				<description xml:lang="ko">카카오 앱키(JavaScript) 값을 입력.  (입력 값 없으면 적용 안됨, 추가로 오렌지데이 게시판사용 시 각각의 게시판에 카카오톡 앱키를 입력하지 않아도 전체에 적용, 게시판에서 설정한 값보다 우선 적용 됨)</description>
+			</var>			
+		</group>
+	</extra_vars>
+</layout>

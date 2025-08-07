@@ -1,0 +1,300 @@
+{@
+	if(!isset($listStyle) || !$listStyle) $listStyle = "";
+	if(!isset($sort_index) || !$sort_index) $sort_index = "";
+	if(!isset($search_target) || !$search_target) $search_target = "";
+	if(!isset($search_keyword) || !$search_keyword) $search_keyword = "";
+	if(!isset($category) || !$category) $category = "";
+
+	
+}
+<div class="stickyTopBox<!--@if($page > 1)--> no_notice<!--@end-->">
+		
+	<div class="sticky_box">
+		<div class="sticky_btn_box"><a class="sticky_close">× CLOSE</a> <label for="categorysearchopen" class="state_t">- KEEP CLOSED</label><input type="checkbox" class="checkonoff small" id="categorysearchopen" /><label for="categorysearchopen"></label></div>
+		<!--@if($mi->use_category=='Y')-->
+			<!-- ////////////////////////
+
+				카테고리
+
+			 ////////////////////////-->
+			{@ $cate_list = array(); $current_key = null; }
+			<!--@foreach($category_list as $key=>$val)-->
+				<!--@if(!$val->depth)-->
+					{@
+						$cate_list[$key] = $val;
+						$cate_list[$key]->children = array();
+						$current_key = $key;
+					}
+				<!--@elseif($current_key)-->
+					{@ $cate_list[$current_key]->children[] = $val }
+				<!--@end-->
+			<!--@end-->
+			
+			
+			<!--@if($mi->category_type=="B")-->
+			<div class="cTab circle">
+				<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->"><span>{$lang->total}</span></a>
+				<block loop="$cate_list=>$key,$val">
+					<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end--><!--@if(count($val->children))--> has_child<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+					<em cond="$val->document_count">{$val->document_count}</em></a>
+					<block cond="count($val->children)">
+						<a loop="$val->children=>$idx,$item" href="{getUrl('category',$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end-->"><span style="color:{$item->color}">{$item->title}</span> <em cond="$item->document_count">{$item->document_count}</em></a>
+					</block>
+				</block>
+			</div>
+			<!--@elseif($mi->category_type=="T")-->
+			<div class="cTab table">
+				<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->"><span>{$lang->total}</span></a>
+				<table>
+					<tr loop="$cate_list=>$key,$val" class="ctDep2_wrap">
+						<th>
+							<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end--><!--@if(count($val->children))--> has_child<!--@end-->">
+							<span style="color:{$val->color}">{$val->title}</span><em cond="$val->document_count">{$val->document_count}</em></a>
+						</th>
+						<td>
+							<block cond="count($val->children)">
+								<a loop="$val->children=>$idx,$item" href="{getUrl('category',$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end-->"><span style="color:{$item->color}">{$item->title}</span><em cond="$item->document_count">{$item->document_count}</em></a>
+							</block>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!--@elseif($mi->category_type=="C")-->
+			<div class="cTab tree">
+				<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->"><span>{$lang->total}</span></a>
+				<ul>
+					<li loop="$cate_list=>$key,$val" class="ctDep2_wrap">
+						<!--@if(count($val->children))-->
+						<a class="ctDep2 do_cateAddClass<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+						<em cond="$val->document_count">{$val->document_count}</em>
+						<i class="bx bxs-chevron-down"></i>
+						</a>
+						<!--@else-->
+						<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+						<em cond="$val->document_count">{$val->document_count}</em>
+						</a>
+						<!--@end-->
+						<div cond="count($val->children)">
+							<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+							<em cond="$val->document_count">{$val->document_count}</em></a>
+							<a loop="$val->children=>$idx,$item" href="{getUrl('category',$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end--> csdep{$item->depth}">
+							<i class="bx bx-subdirectory-right"></i><span style="color:{$item->color}">{$item->title}</span> <em cond="$item->document_count">{$item->document_count}</em></a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!--@else-->
+			<div class="cTab simple">
+				<a href="{getUrl('category','','page','')}" class="ctDep1<!--@if(!$category)--> on<!--@end-->"><span>{$lang->total}</span></a>
+				<block loop="$cate_list=>$key,$val">
+					<!--@if(count($val->children))-->
+					<a class="ctDep2 do_cateAddClass_simple<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+					<em cond="$val->document_count">{$val->document_count}</em>
+					<i class="bx bxs-chevron-down"></i>
+					</a>
+					<!--@else-->
+					<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+					<em cond="$val->document_count">{$val->document_count}</em>
+					</a>
+					<!--@end-->
+					<div cond="count($val->children)">
+						<a href="{getUrl('category',$val->category_srl,'document_srl','', 'page', '')}" class="ctDep2<!--@if($category==$val->category_srl)--> on<!--@end-->"><span style="color:{$val->color}">{$val->title}</span> 
+						<em cond="$val->document_count">{$val->document_count}</em></a><i class='bx bxs-arrow-from-left' ></i>
+						<a loop="$val->children=>$idx,$item" href="{getUrl('category',$item->category_srl,'document_srl','', 'page', '')}" class="ctDep3<!--@if($category==$item->category_srl)--> on<!--@end--> csdep{$item->depth}">
+						<span style="color:{$item->color}">{$item->title}</span> <em cond="$item->document_count">{$item->document_count}</em></a>
+					</div>
+				</block>
+			</div>
+			<!--@end-->
+			
+			<style>
+			.csdep { padding-left:5px; }
+			.csdep1 { padding-left:5px; }
+			.csdep2 { padding-left:15px; }
+			.csdep3 { padding-left:25px; }
+			.csdep4 { padding-left:35px; }
+			.csdep5 { padding-left:45px; }
+			.csdep6 { padding-left:40px; }
+			.csdep7 { padding-left:45px; }
+			.csdep8 { padding-left:50px; }
+			.csdep9 { padding-left:55px; }		
+			</style>			
+		<!--@end-->
+		<!-- ////////////////////////
+
+			검색창
+
+		 ////////////////////////-->
+		<div class="searchBox" cond="$grant->view">
+			<div class="sort">
+			<!--@if($order_type=="desc")-->
+			{@	$order_icon="down"; }
+			<!--@else-->
+			{@	$order_icon="up";	}
+			<!--@end-->
+				<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="on"|cond="$sort_index==''">기본 <em>({number_format($total_count)})</em></a>
+				<a href="{getUrl('sort_index','title','order_type',$order_type,'listStyle',$listStyle)}" class="on"|cond="$sort_index=='title'">
+					{$lang->title} <i cond="$sort_index=='title'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','regdate','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='regdate'">
+					{$lang->date} <i cond="$sort_index=='regdate'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','update_order','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='update_order'">
+					수정 <i cond="$sort_index=='update_order'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','readed_count','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='readed_count'">
+					조회 <i cond="$sort_index=='readed_count'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','comment_count','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='comment_count'">
+					댓글 <i cond="$sort_index=='comment_count'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','voted_count','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='voted_count'">
+					추천 <i cond="$sort_index=='voted_count'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a href="{getUrl('sort_index','blamed_count','order_type',$order_type,'listStyle',$listStyle)}" rel="nofollow" class="on"|cond="$sort_index=='blamed_count'">
+					비추 <i cond="$sort_index=='blamed_count'" class='bx bxs-chevron-{$order_icon}' ></i>
+				</a>
+				<a cond="$mi->default_style=='gallery' || $mi->default_style=='galleryai'" class="viewOne"><i class='bx bxs-grid-alt' ></i></a>
+				<a cond="$mi->default_style=='gallery' || $mi->default_style=='galleryai'" class="viewTwo"><i class='bx bxs-dashboard'></i></a>
+			</div>
+
+			<form action="{getUrl()}" method="get" onsubmit="return procFilter(this, search)" id="board_search" class="board_search" no-error-return-url="true">
+				<select name="search_target" class="niceselect">
+					<option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
+				</select>
+				<input type="hidden" name="vid" value="{$vid}" />
+				<input type="hidden" name="mid" value="{$mid}" />
+				<input type="hidden" name="category" value="{$category}" />
+				<input type="hidden" name="listStyle" value="{$listStyle}" />
+				<input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" placeholder="Search... " />
+				<button type="submit" class="" onclick="xGetElementById('board_search').submit();return false;"><i class='bx bx-search' ></i></button>
+				<a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}" class="searchreset"><i class='bx bx-revision' ></i></a>
+				<a cond="$last_division" href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="xbtn"><i class='bx bxs-chevrons-right' ></i></a>
+			</form>
+		</div>
+
+
+	</div>
+{@
+	if($sort_index == 'title') $stitle='제목';
+	if($sort_index == 'regdate') $stitle='날짜';
+	if($sort_index == 'update_order') $stitle='수정';
+	if($sort_index == 'readed_count') $stitle='조회';
+	if($sort_index == 'comment_count') $stitle='댓글';
+	if($sort_index == 'voted_count') $stitle='추천';
+	if($sort_index == 'blamed_count') $stitle='비추';
+}
+	<div class="sticky_open"><a>
+		<span><i class='bx bx-sitemap'></i>
+			<!--@if(isset($category_list) && isset($category_list[$category]))-->
+				<em>{$category_list[$category]->title}</em>
+			<!--@else-->
+				<em class="yet">분류</em>
+			<!--@end-->	
+		</span>
+		<span><i class='bx bx-sort'></i>
+			<!--@if($sort_index)-->
+				<em>{$stitle}<i cond="$sort_index" class='bx bxs-chevron-{$order_icon}' ></i></em>
+			<!--@else-->
+				<em class="yet">정렬</em>
+			<!--@end-->		
+		</span>
+		<span><i class='bx bx-search'></i>
+			<!--@if($search_keyword)-->
+				<em class="s-text">{htmlspecialchars($search_keyword)}</em>
+			<!--@else-->
+				<em class="yet">검색</em>
+			<!--@end-->			
+		</span>
+	</a></div>
+	<script>
+		$('select.niceselect').niceSelect();
+		$('a.ctDep2').prev('a.ctDep3').css({
+			'border-radius' : '0 6px 6px 0'
+		});
+		var $getCategorySearchOpen = XE.cookie.get('setCategorySearchOpen');
+
+		if( $getCategorySearchOpen == 'close' ) {
+			$('.sticky_box').hide();
+			$('.sticky_open, .sticky_close').show();
+			$('.state_t').text('+ KEEP OPEN');
+			$('input:checkbox[id="categorysearchopen"]').prop('checked', true);
+		} else {
+			$('.state_t').text('- KEEP CLOSED');
+		}
+
+		$(function(){ 
+			$('select.niceselect').niceSelect();
+			$('#categorysearchopen').change(function(){
+				if($(this).is(':checked')){
+					$('.sticky_box').hide();
+					$('.sticky_open, .sticky_close').show();
+					$('.state_t').text('+ KEEP OPEN');
+					setCookie( 'setCategorySearchOpen', 'close' , 365 );
+				}else{
+					$('.sticky_close').hide();
+					$('.state_t').text('- KEEP CLOSED');
+					setCookie( 'setCategorySearchOpen', 'open' , 365 );
+				}
+			});
+			$('.sticky_open a').click(function(){
+				$('.sticky_box').show();
+				$('.sticky_open').hide();
+			});
+			$('.sticky_close').click(function(){
+				$('.sticky_box').css({ 'display' : 'none' });
+				$('.sticky_open').show();
+			});
+			$('.do_cateAddClass').click(function(){			
+			    const $target = $(this).next();
+			    if ($target.hasClass("viewCategory")) {
+				   // 이미 열려 있으면 닫기
+				   $target.removeClass("viewCategory");
+			    } else {
+				   // 전체 닫고, 클릭한 것만 열기
+				   $('.cTab.tree div').removeClass("viewCategory");
+				   $target.addClass("viewCategory");
+			    }
+			});
+			$(document).click(function(e) {
+			    // 클릭한 대상이 .do_cateAddClass 또는 그 내부가 아니라면
+			    if (!$(e.target).closest('.do_cateAddClass, .cTab.tree div').length) {
+				   $('.cTab.tree div').removeClass('viewCategory'); // 카테고리 닫기
+			    }
+			});			
+			$('.cTab.tree ul li div').each(function() {
+			    const elementLeft = $(this).offset().left;             // 요소의 왼쪽 좌표
+			    const windowWidth = $(window).width();                 // 현재 창 너비
+			    const isRightSide = elementLeft > windowWidth / 2;     // 화면의 절반보다 오른쪽인가?
+
+			    if (isRightSide) {
+				   $(this).addClass('right');
+			    } else {
+				   $(this).removeClass('right');
+			    }
+			});
+			$('.do_cateAddClass_simple').click(function(){			
+				const $target = $(this).next();
+				if($(this).hasClass("viewCategory")) {
+					$(this).removeClass("viewCategory");
+					$(this).find(".bx").removeClass('bxs-chevron-up');
+					$(this).find(".bx").addClass('bxs-chevron-down');
+				}else{
+					$('.cTab.simple a').removeClass("viewCategory");
+					$('.cTab.simple a i').removeClass('bxs-chevron-up');
+					$('.cTab.simple a i').addClass('bxs-chevron-down');					  
+					$(this).addClass("viewCategory");
+					$(this).find(".bx").removeClass('bxs-chevron-Down');
+					$(this).find(".bx").addClass('bxs-chevron-up');					
+				}
+				if ($target.hasClass("viewCategory")) {
+					$target.removeClass("viewCategory");
+				} else {
+					$('.cTab.simple div').removeClass("viewCategory");
+					$target.addClass("viewCategory");
+				}
+			});			
+		});
+
+	</script>
+</div>

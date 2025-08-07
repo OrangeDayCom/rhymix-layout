@@ -1,0 +1,38 @@
+<!--@if($mi->read_meta_name == 'use' || $mi->read_meta_date == 'use' || $mi->read_meta_count == 'use')-->
+<ul class="rTitle">
+	<li class="meta">
+		<!--@if($mi->read_meta_name == 'use')-->
+		<div cond="!$oDocument->isNotice()">
+			<img cond="$oDocument->getProfileImage()" src="{$oDocument->getProfileImage()}" alt="Profile" class="profile" />
+			<span cond="!$oDocument->getProfileImage()" class="profile"><i class='bx bxs-ghost'></i></span>						
+		</div>
+		<div cond="$oDocument->isNotice()" class="profile notice"><i class='bx bx-microphone'></i></div>
+		<!--@end-->
+		<ul>
+			<!--@if($mi->read_meta_name == 'use')-->
+			<li>
+				<div cond="!$oDocument->isNotice()" class="author">
+					<a cond="!$oDocument->getMemberSrl() && $oDocument->isExistsHomepage()" href="{$oDocument->getHomepageUrl()}" target="_blank"  rel="nofollow noopener">{$oDocument->getNickName()}</a>
+					<block cond="!$oDocument->getMemberSrl() && !$oDocument->isExistsHomepage()">{$oDocument->getNickName()}</block>
+					<a cond="$oDocument->getMemberSrl()" href="#popup_menu_area" class="member_{$oDocument->get('member_srl')}" onclick="return false">{$oDocument->getNickName()}</a>
+				</div>
+				<span class="od_date" cond="$mi->read_meta_ip == 'use' || $grant->manager">{$oDocument->getIpaddress()}</span>
+			</li>
+			<!--@end-->
+			<li>
+				<!--@if($mi->read_meta_date == 'use')-->
+				<span class="od_date" cond="$oDocument->get('regdate') != $oDocument->get('last_update')">{getTimeGap($oDocument->get('last_update'), "Y.m.d - H:i")}</span>
+				<span class="" cond="$oDocument->get('regdate') != $oDocument->get('last_update')"><i class='bx bxs-chevron-left' ></i></span>
+				<span class="od_date">{getTimeGap($oDocument->get('regdate'), "Y.m.d - H:i")}</span>	
+				<!--@end-->
+				<!--@if($mi->read_meta_count == 'use')-->
+				<span class="count"><i class='bx bxs-show' ></i>{$oDocument->get('readed_count')}</span>
+				<span class="count" cond="$oDocument->getCommentCount() && $mi->comment_use == 'yes'"><i class='bx bxs-message-rounded-dots'></i>{$oDocument->getCommentCount()}</span>
+				<span class="count" cond="$oDocument->get('voted_count')!=0"><i class='bx bxs-heart'></i>{$oDocument->get('voted_count')}</span>
+				<!--@end-->
+			</li>
+		</ul>
+		
+	</li>
+</ul>
+<!--@end-->

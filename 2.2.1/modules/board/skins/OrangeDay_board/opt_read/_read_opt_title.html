@@ -1,0 +1,19 @@
+{@ 
+
+	$Contitle = strip_tags($oDocument->getTitle());
+<!--//	
+	$loc_browsertitle = $Contitle.'- OrangeDay.com';
+	Context::setBrowserTitle($loc_browsertitle);
+//-->
+}
+<script>
+	$(function() {
+		if (window.self !== window.top) {
+			/** 검색을 위한 바닥 타이틀 설정 **/
+			parent.document.title = "{Context::getBrowserTitle()}";
+		} 
+	});
+</script>
+<ul class="rTitle">
+	<li class="title"><h1>{$Contitle}</h1></li>
+</ul>

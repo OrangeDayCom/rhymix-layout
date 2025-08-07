@@ -1,0 +1,127 @@
+{@
+	$count_v = (int)($oDocument->get('voted_count'));
+	$count_b = (int)($oDocument->get('blamed_count')) * -1;
+	if ($count_v > 0 && $count_b > 0 ) :
+		$totalVote = $count_v + $count_b;
+		$totalVotePer = ($count_v / $totalVote) * 100;
+		$casev = 10;
+	elseif ($count_v > 0 && $count_b < 1 ) :
+		$totalVotePer = 100;
+		$totalVote = $count_v + $count_b;
+		$casev = 2;
+	elseif ($count_v < 1 && $count_b > 0 ) :
+		$totalVotePer = 0;
+		$totalVote = $count_v + $count_b;
+		$casev = 2;
+	endif;
+}
+<div class="voteVs">
+	<div class="voteA voteV">		
+		<a cond="$oDocument->getMyVote() === false || $oDocument->getMyVote() < 0" href="#" onclick="doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}');return false;" class="voted metatooltip" title="추천">
+			<i class='bx bxs-heart' ></i>
+		</a>
+		<a cond="$oDocument->getMyVote() > 0" href="#" onclick="doCallModuleAction('document','procDocumentVoteUpCancel','{$oDocument->document_srl}');return false;" class="voted metatooltip" title="추천">
+			<i class='bx bxs-heart' ></i>
+		</a>		
+		<span class="active">{$count_v}</span>
+	</div>		
+	<div class="voteGraph<!--@if($oDocument->get('voted_count') || $oDocument->get('blamed_count'))--> activeVs<!--@end-->">
+		<div class="perbar" style="width: <!--@if($oDocument->get('voted_count') || $oDocument->get('blamed_count'))-->{$totalVotePer}<!--@else-->0<!--@end-->%;">
+		<!--@if($oDocument->get('voted_count') || $oDocument->get('blamed_count'))-->
+			<i class='bx bxs-heart bx-tada' cond="$totalVotePer > 50"></i>
+			<i class='bx bxs-hot bx-tada' cond="$totalVotePer == 50"></i>
+			<i class='bx bxs-skull bx-tada'  cond="$totalVotePer < 50"></i>
+		<!--@end-->
+		</div>
+	</div>
+	<div class="voteA voteB">
+		<span class="active">{$count_b}</span>		
+		<a cond="$oDocument->getMyVote() === false || $oDocument->getMyVote() > 0" href="#" onclick="doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}');return false;" class="voted metatooltip" title="비추천">
+			<i class='bx bxs-skull' ></i>
+		</a>
+		<a cond="$oDocument->getMyVote() < 0" href="#" onclick="doCallModuleAction('document','procDocumentVoteDownCancel','{$oDocument->document_srl}');return false;" class="voted metatooltip" title="비추천">
+			<i class='bx bxs-skull' ></i>
+		</a>
+	</div>
+</div>
+{@
+	$args = new stdClass();
+	$args->more_point = 1;
+	$args->document_srl = $document_srl;
+	$output = executeQueryArray('document.getVotedMemberList',$args);
+}
+<div cond="$output->data" class="voteVsTitle"><i class='bx bxs-heart' ></i>  추천인 </div>
+<div cond="$output->data" class="voteVsList">
+		
+		<a loop="$output->data=>$key,$val" href="#popup_menu_area" onclick="return false" title="{$val->nick_name}">
+			{@
+				$oMemberModel = getModel('member');
+				$profile_info = $oMemberModel->getProfileImage($val->member_srl);
+			}
+			<!--@if($profile_info->src)-->
+			<img src="{$profile_info->src}" title="{$val->nick_name}" class="profile metatooltip">
+			<!--@else-->
+			<span title="{$val->nick_name}" class="profile metatooltip"><i class='bx bxs-ghost'></i></span>						
+			<!--@end-->
+			<em>{$val->nick_name}</em>
+		</a>
+
+</div>
+<style>
+.voteVs { padding: var(--oday_sideGapLR); opacity:1; display:flex; align-items: center; width:100%; max-width:400px;  margin:0 auto; margin-bottom:2em; padding-top:20px; }
+.voteVs:has( + .voteVsTitle) { margin-bottom:1em; }
+.voteGraph {mix-blend-mode: luminosity; opacity:.5}
+.voteGraph.activeVs {mix-blend-mode:unset; opacity:1}
+.voteA {flex-shrink: 0; width:fit-content; height:fit-content; display:flex; align-items: center; justify-content: center;}
+.voteA span { font-size:.9em;}
+.voteA i { font-size:1.4em;}
+.voteA > * + * { margin-left:5px;}
+.voteA.voteV {color:var(--oday_mainColor); padding-right:20px;}
+.voteA.voteV a {color:var(--oday_mainColor); }
+.voteA.voteB {color:var(--oday_mainColorLight); padding-left:20px;}
+.voteA.voteB a {color:var(--oday_mainColorLight);}
+.voteVs .voteGraph {  background-color: color-mix(in srgb, var(--oday_mainColor), transparent 80%);/* border:4px solid var(--oday_listBgColor);*/  width:100%; height:2px; border-radius:3px; display: flex; align-items: center;}
+.voteVs .voteGraph .perbar { height:2px; background-color:var(--oday_mainColor); border-radius:10px 0 0 10px;  display: flex; align-items: center; justify-content: flex-end;}
+.voteVs .voteGraph .perbar > * { color:var(--oday_mainColor); font-size:1.8em; margin-right: -15px; margin-top: -6px; }
+.voteVs .voteGraph .perbar > .bxs-skull { color:var(--oday_mainColorLight);}
+.voteVs .voteGraph .perbar > .bxs-hot { color:var(--oday_fontHoverColor);}
+.voteVsTitle { text-align:center; font-size:11px; font-weight:500; padding: var(--oday_sideGapLR); padding-bottom:5px; }
+.voteVsTitle i { font-size:1.4em}
+
+.voteVsList { display:flex; align-items: center; justify-content: center; padding: var(--oday_sideGapLR); margin-bottom:2em; flex-wrap: wrap; max-width:var(--oday_maxWidth)} 
+.voteVsList a { margin-bottom:2px}
+.voteVsList a + a { margin-left:2px;}
+.voteVsList a .profile { width: var(--oday_metaIconSize); height: var(--oday_metaIconSize);  display:flex; align-items: center; justify-content: center; border-radius:100%;
+border: var(--oday_listBorder); background-color: var(--oday_listBgColorUp1); font-size:calc(var(--oday_metaIconSize) * .5); color:var(--oday_fontColor);}
+.voteVsList a .profile i { opacity:.7}
+.voteVsList a em {width: var(--oday_metaIconSize); overflow: hidden; display: inline-block; white-space: nowrap; text-overflow: ellipsis; word-break: break-all; margin-top: 3px; font-size: 9px; text-align: center;}
+</style>
+<script>
+$(function(){
+	$(".metatooltip").tooltip({
+		delay:0,
+		opacity:1,
+		position: { 
+			my: "center bottom-20", at: "center top+10",
+			using: function( position ) {
+				$( this ).css( position );
+				$( "<div>" )
+				.addClass( "ui-tooltip-arrow" )
+				.addClass( "bottom" )
+				.appendTo( this );
+			}		
+		}
+	});	   
+});
+
+</script>	
+<script>
+/*
+jQuery(function($){
+    for(var i=0 ; i < $(".voteVsList a .profile").length; i++){
+        var f_color = "#"+(parseInt(Math.random()*0xffffff)).toString(16);
+        $(".voteVsList a .profile").eq(i).css("color",f_color);
+    }
+});
+*/
+</script>

@@ -1,0 +1,23 @@
+<query id="getCommentListByMemberSrl" action="select">
+	<tables>
+		<table name="comments" />
+	</tables>
+	<columns>
+		<column name="comment_srl" />
+		<column name="document_srl" />
+		<column name="content" />
+		<column name="regdate" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="is_secret" default="N" pipe="and" />
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" pipe="and" />
+		<condition operation="in" column="module_srl" var="module_srl" filter="number" pipe="and" />
+		<condition operation="notin" column="module_srl" var="exclude_module_srl" filter="number" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="list_order" default="list_order" order="asc" />
+		<list_count var="list_count" default="5" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

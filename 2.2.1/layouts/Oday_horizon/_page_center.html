@@ -1,0 +1,164 @@
+{@
+	/* 슬라이드메인배너 */	
+	if(!$oi->site_banner_use) $oi->site_banner_use = 'yes';
+	if(!$oi->site_banner_num) $oi->site_banner_num = 3;
+	/* 스페셜배너 */
+	if(!$oi->site_sp_banner_use) $oi->site_sp_banner_use = 'yes';
+	if(!$oi->site_sp_banner_num) $oi->site_sp_banner_num = 10;	
+	if(!$oi->site_sp_banner_type) $oi->site_sp_banner_type ='N';
+	if(!$oi->site_sp_banner_limit) $oi->site_sp_banner_limit =5;
+	if(!$oi->site_sp_banner_dura) $oi->site_sp_banner_dura = 0;
+	$site_sp_banner_dura = $oi->site_sp_banner_dura * 24;
+	/* 뉴글 */
+	if(!$oi->man_img) $oi->man_img = 'left';
+	if(!$oi->man_width) $oi->man_width = 300;
+	if(!$oi->man_gap) $oi->man_gap = 30;
+	if(!$oi->site_new_con_num) $oi->site_new_con_num = 20;
+	if(!$oi->man_img_width) $oi->man_img_width = 100;
+	if(!$oi->man_img_height) $oi->man_img_height = 100;	
+	if($oi->man_img =='left') :
+		$manimg_use ='Y';
+		$manimg_posi = 'h';
+	elseif($oi->man_img =='top') :
+		$manimg_use ='Y';
+		$manimg_posi = 'v';
+		$oi->man_img_width = $oi->man_width;
+	else :
+		$manimg_use ='N';
+	endif;
+	/* 갤러리 */
+	if(!$oi->site_new_gall_use) $oi->site_new_gall_use ='yes';
+	if(!$oi->site_new_gall_srl_use) $oi->site_new_gall_srl_use  ='no';
+	if(!$oi->site_new_gall_num) $oi->site_new_gall_num = 10;
+	if(!$oi->site_new_gall_type) $oi->site_new_gall_type ='N';
+	if(!$oi->site_new_gall_limit) $oi->site_new_gall_limit =5;
+	if(!$oi->site_new_gall_dura) $oi->site_new_gall_dura = 0;
+	$site_new_gall_dura = $oi->site_new_gall_dura * 24;
+	if(!$oi->site_new_gall_width) $oi->site_new_gall_width = 200;
+	if(!$oi->site_new_gall_height) $oi->site_new_gall_height = 300;		
+	if($oi->site_new_gall_srl_use == 'yes') :
+		$site_new_gall_srl = $oi->site_new_gall_srl;
+	else :
+		$site_new_gall_srl = $oi->site_new_con;
+	endif;
+}
+ 
+<!--@if($oi->site_banner_use=='yes')-->
+	<!-- 상단 풀배너 -->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" list_type="banner_one" view_mode="1" order_target="update_order" order_type="desc" extravar_name="exvar_title" extravar2_name="exvar_url" extravar3_name="exvar_target" extravar4_name="exvar_con"  show_thumbnail="N" thumbnail_width="1200" thumbnail_height="auto" thumbnail_type="fill" show_browser_title="Y" show_category="N" show_title="Y" show_contents="Y" content_cut_size="300"  show_all_meta="Y" show_nickname="N" show_regdate="N" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+	module_srls="{$oi->site_banner}"
+	list_count="{$oi->site_banner_num}" /> 
+<!--@end-->
+
+<include target="banner.html" cond="$oi->banner_use == 'yes'" />
+
+<!--@if($oi->site_sp_banner_use=='yes')-->
+	<!-- 새글들 중 강조할 게시판 원형 박스에 새글이 보임 -->
+	<!--@if($oi->site_sp_banner_title)-->
+		<div class="index_title">
+			<div><i class="{$oi->site_sp_banner_icon}"></i> {$oi->site_sp_banner_title}</div>
+			<!--@if($oi->site_sp_banner_type !='N' || $oi->site_sp_banner_dura)-->
+			<span>
+				<!--@if($oi->site_sp_banner_type=='V')-->
+				조회
+				<!--@elseif($oi->site_sp_banner_type=='S')-->
+				추천
+				<!--@elseif($oi->site_sp_banner_type=='R')-->
+				랜덤
+				<!--@else-->
+				<!--@end-->
+				<!--@if($oi->site_sp_banner_dura)-->
+				{$oi->site_sp_banner_dura}<em>d</em> 
+				<!--@end-->
+			</span>
+			<!--@end-->
+		</div>
+	<!--@end-->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" list_type="circle" view_mode="1" order_type="desc" show_thumbnail="Y" thumbnail_type="fill" show_browser_title="N" show_category="N" show_title="Y" subject_cut_size="30" show_contents="Y" content_cut_size="500" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="Y" show_vote_count="N" show_read_count="N" 
+	thumbnail_width="100" thumbnail_height="60" 
+	module_srls="{$oi->site_sp_banner}" 
+	list_count="{$oi->site_sp_banner_num}"
+	<!--@if(!$oi->site_sp_banner_title)-->
+		show_main_title="HOT TOPIC" 
+		show_main_title_icon="bx bxs-hot"
+	<!--@end-->	
+	<!--@if($oi->site_sp_banner_type=='V')-->
+	order_target="readed_count" 
+	use_limit="readed_count_upper" 
+	<!--@elseif($oi->site_sp_banner_type=='S')-->
+	order_target="voted_count" 
+	use_limit="voted_count_upper" 
+	<!--@elseif($oi->site_sp_banner_type=='R')-->
+	order_target="rand()" 
+	<!--@else-->
+	order_target="update_order" 
+	<!--@end-->	
+	/> 
+<!--@end-->
+
+<!-- 새글  -->	
+<!--@if($oi->site_new_con_title)-->
+	<div class="index_title"><div><i class="{$oi->site_new_con_icon}"></i> {$oi->site_new_con_title}</div></div>
+<!--@end-->
+<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" order_target="update_order" order_type="desc" thumbnail_type="fill" show_browser_title="Y" show_category="Y" show_title="Y" subject_cut_size="" show_contents="Y" content_cut_size="500" show_all_meta="Y" show_nickname="N" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+list_type="masonry"
+show_thumbnail="{$manimg_use}"
+thumbnail_width="{$oi->man_img_width}"
+thumbnail_height="{$oi->man_img_height}" 
+view_mode="" 
+view_mode_ex="{$manimg_posi}"
+man_width="{$oi->man_width}"
+man_gap="{$oi->man_gap}"
+module_srls="{$oi->site_new_con}" 
+list_count="{$oi->site_new_con_num}"
+ <!--@if(!$oi->site_new_con_title)-->
+	show_main_title="NEW POST" 
+	show_main_title_icon="bx bxs-book"
+<!--@end-->
+/> 
+
+<!-- 갤러리 -->
+<!--@if($oi->site_new_gall_use=='yes')-->
+	<!--@if($oi->site_new_gall_title)-->
+		<div class="index_title">
+			<div><i class="{$oi->site_new_gall_icon}"></i> {$oi->site_new_gall_title}</div>
+			<!--@if($oi->site_new_gall_type!='N' || $oi->site_new_gall_dura)-->
+			<span>
+				<!--@if($oi->site_new_gall_type=='V')-->
+				조회
+				<!--@elseif($oi->site_new_gall_type=='S')-->
+				추천
+				<!--@elseif($oi->site_new_gall_type=='R')-->
+				랜덤
+				<!--@else-->
+				<!--@end-->
+				<!--@if($oi->site_new_gall_dura)-->
+				{$oi->site_new_gall_dura}<em>d</em> 
+				<!--@end-->
+			</span>
+			<!--@end-->
+		</div>
+	<!--@end-->
+	<img class="zbxe_widget_output" widget="contentextended_oday" skin="OrangeDay_contentextended" content_type="document" view_secret_document="not_show" list_type="banner_several" view_mode="1" order_type="desc" show_thumbnail="N" thumbnail_type="fill" show_browser_title="Y" show_category="N" show_title="Y" show_contents="Y" content_cut_size="300" show_all_meta="Y" show_nickname="Y" show_regdate="Y" show_comment_count="Y" show_vote_count="Y" show_read_count="Y" 
+	module_srls="{$site_new_gall_srl}" 
+	list_count="{$oi->site_new_gall_num}"
+	duration_article="{$site_new_gall_dura}"
+	thumbnail_width="{$oi->site_new_gall_width}" 
+	thumbnail_height="{$oi->site_new_gall_height}"
+	<!--@if(!$oi->site_new_gall_title)-->
+		show_main_title="GALLERY" 
+		show_main_title_icon="bx bx-image-alt"
+	<!--@end-->
+	<!--@if($oi->site_new_gall_type=='V')-->
+	order_target="readed_count" 
+	use_limit="readed_count_upper" 
+	<!--@elseif($oi->site_new_gall_type=='S')-->
+	order_target="voted_count" 
+	use_limit="voted_count_upper" 
+	<!--@elseif($oi->site_new_gall_type=='R')-->
+	order_target="rand()" 
+	<!--@else-->
+	order_target="update_order" 
+	<!--@end-->
+	/>
+<!--@end-->

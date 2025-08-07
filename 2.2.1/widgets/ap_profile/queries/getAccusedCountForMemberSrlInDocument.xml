@@ -1,0 +1,24 @@
+<query id="getAccusedCountForMemberSrlInDocument" action="select">
+	<tables>
+		<table name="document_declared" alias="accused" />
+	</tables>
+	<columns>
+		<column name="count(*)" alias="count" />
+		<column name="sum(declared_count)" alias="sum" />
+	</columns>
+	<conditions>
+		<query operation="equal" column="document_srl" alias="document_srl">
+			<tables>
+				<table name="documents" alias="documents" />
+			</tables>
+			<columns>
+				<column name="document_srl" />
+			</columns>
+			<conditions>
+				<condition operation="equal" column="documents.member_srl" var="member_srl" filter="number" notnull="notnull" />
+				<condition operation="equal" column="documents.document_srl" var="accused.document_srl" pipe="and" />
+			</conditions>
+		</query>
+	</conditions>
+</query>
+

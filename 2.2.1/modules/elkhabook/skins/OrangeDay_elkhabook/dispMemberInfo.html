@@ -1,0 +1,294 @@
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+<include target="/_assets/__set_jscss.html" />
+<!--@end-->
+<load target="/_assets/js/infinite-scroll.pkgd.min.js" />
+<load target="/_assets/js/masonry.pkgd.min.js" />	
+{@
+// 위젯에서 그대로 쓰져다 쓸 수 있도록 dispElkhabookIndex 메소드를 비워둠.
+
+$oModel = getModel('elkhabook');
+//$oModel->setMemberInfo();
+
+$elkhabook_config = $oModel->getConfig();
+
+\Context::setCanonicalUrl( $oModel->getUrl('dispMemberInfo', $_member_info->member_srl ?? 0, 'getNotEncodedFullUrl') );
+
+$oModel->getElkhabookFriendList($_member_info->member_srl ?? 0);
+$count_info = $oModel->getElkhabookCountInfo($_member_info->member_srl ?? 0);
+
+$oModuleModel = getModel('module');
+//$point_config = $oModuleModel->getModuleConfig('point');
+list($point, $level, $point_name) = $oModel->level($_member_info->member_srl);
+\Context::loadLang(\RX_BASEDIR . 'modules/point/lang');
+$board = $board ?? '';
+
+$member_config = \MemberModel::getMemberConfig();
+$_mid = $member_config->mid ?: $mid;
+require_once($tpl_path . 'invertColor.func.php');
+ob_start();
+}
+
+<script>
+	window.elkhabook_member_srl = {$_member_info->member_srl};
+</script>
+<load target="style.css" />
+<load target="script.min.js" />
+<section class="minfo">
+	<ul class="nav nav-tabs" cond="$is_logged && $logged_info->menu_list && $_member_info->member_srl == $logged_info->member_srl">
+		<li loop="$logged_info->menu_list=>$key,$val" class="active"|cond="$key==$act">
+			<a href="{getUrl('', 'act', $key, 'mid', $mid)}">{lang($val)}</a>
+		</li>
+	</ul>
+	<ul class="whoiam me">
+		<li class="left">
+			<!--@if(isset($_member_info->profile_image) && isset($_member_info->profile_image->src))-->
+			<img src="{$_member_info->profile_image->src}" alt=""  class="profile"/>
+			<!--@else-->
+			<span title="{$lang->elkhabook_no_profile_image}" class="profile"><i class='bx bxs-ghost'></i></span>
+			<!--@endif-->
+			<div class="lv">Lv<span>{$level}</span></div>
+			<div class="group">
+			<!--@foreach($_member_info->group_list as $val)-->
+			<span>{$val}</span>
+			<!--@endforeach)-->
+			</div>
+		</li>
+		<li class="right">
+			
+			<ul class="">
+				<li class="m_info">
+					<a class="btn_view_follow xbtn small follow_show">팔로우 보기 </a>
+					<div class="pack">
+						<a href="javascript:;" onclick="jQuery(this).addClass('member_'+{$_member_info->member_srl});" class="name">{$_member_info->nick_name}</a>
+						<!--@if(($is_logged && $logged_info->member_srl != $_member_info->member_srl))-->
+							<span class="elkhabook_tpl_button">{@
+							$oModel->getElkhabookFriendButton($_member_info->member_srl);
+							echo $oModel->get('tpl_button');
+							}</span>
+						<!--@end-->
+					</div>
+					<div class="link">
+						<a href="{$_member_info->homepage}" target="_blank">{$_member_info->homepage}</a>
+					</div>
+					<!--// 팔로우 | 언 팔로우 -->
+					<div class="follow">
+						<span class="">
+							<span class="title"><i class='bx bxs-user' ></i> {$lang->elkhabook_follower}</span>
+							<span class="num">{$count_info['팔로워'] + $count_info['친구']}</span>
+						</span>
+						<span class="">
+							<span class="title"><i class='bx bxs-star'></i> {$lang->elkhabook_following}</span>
+							<span class="num">{$count_info['팔로잉']}</span>				
+						</span>
+						<span class="">
+							<span class="title"><i class='bx bxs-heart'></i> {$lang->voted_count}</span>
+							<span class="num">{$oModel->voted_count($_member_info->member_srl)}</span>				
+						</span>
+						<!--@if($is_logged && $logged_info->member_srl == $_member_info->member_srl)-->
+						<span class="">
+							<span class="title"><i class='bx bx-coin-stack' ></i> {$point_name}</span>
+							<span class="num">{@ echo number_format($point); }</span>
+						</span>
+						<!--@end-->
+					</div>		
+
+					{@
+					$signature = $_member_info->signature ?? '';
+					$signature = str_ireplace(['<\/div>', '<\/p>', '<\/li>'], '<br />', $signature);
+					}
+					<!--@if(strlen($signature))-->
+					<div class="signature">
+					{$signature}</div>
+					<!--@end-->
+					
+					<div class="date">
+						<span class="title">{$lang->signup_date}</span>
+						<span class="num">{@ echo zdate($_member_info->regdate,'Y-m-d'); }</span>
+						<!--@if($is_logged && ($logged_info->member_srl == $_member_info->member_srl || $logged_info->is_admin=='Y'))-->
+						<span class="title">{$lang->last_login}</span>
+						<span class="num">{zdate($_member_info->last_login,'Y-m-d')}</span>
+						<!--@end-->
+					</div>
+					<!--@if($is_logged && ($logged_info->member_srl == $_member_info->member_srl || $logged_info->is_admin=='Y'))-->
+					<div class="date">
+						<!--@if(count($nick_list = array_reverse($oModel->getNickList($_member_info->member_srl))))-->
+						<span class="title">{$lang->cmd_modify_nickname_log}</span>
+						<ul class="nickhistory">				
+							<!--@foreach($nick_list as $val)-->
+								<li class="tooltip"><i class='bx bxs-left-arrow' ></i> {$val->before_nick_name} <span class="log_date"> {date('Y-m-d', strtotime($val->regdate))}</span></li>
+							<!--@endforeach)-->
+						</ul>
+						<!--@end-->			
+					</div>	
+					<!--@end-->
+					<!--@if($is_logged && ($logged_info->member_srl == $_member_info->member_srl || $logged_info->is_admin=='Y'))-->		
+					{@
+						$oPointModel = getModel('point');
+						$oModuleModel = &getModel('module');
+						$config = $oModuleModel->getModuleConfig('point');
+						
+						$point = $point;
+						$next_point = $config->level_step[$level+1];
+						$now_point = $config->level_step[$level];
+						$need_point = (int)($next_point-$now_point);
+						$get_point = (int)($point-$now_point);
+						$remain_point = (int)($need_point - $get_point);
+						if($next_point > 0) $percenttemp =  (int)(($get_point / $need_point*1000));
+						$percent = $percenttemp / 10;
+						
+					}	
+					<div class="stext">
+						<div class="exp-graph"><div class="bar" style="width: {$percent}%;"></div></div>
+						<div class="exp-sum">다음 레벨 필요 p : {$next_point} &nbsp;&nbsp;/&nbsp;&nbsp; 총 획득 p : {$point} <br class="vm" />( 필요 p : {$need_point} = 획득 p : {$get_point} + 남은 p : {$remain_point} &nbsp;|&nbsp; <span>{$percent}</span>%)</div>
+					</div>
+					<!--@end-->
+					<!--@if($is_logged && ($logged_info->member_srl == $_member_info->member_srl))-->
+					<div class="memberBtnBox" >
+						<a href="{getUrl('act','dispMemberModifyInfo','member_srl','')}" class="xbtn">{$lang->cmd_modify_member_info}</a>
+						<a href="{getUrl('act','dispMemberModifyPassword','member_srl','')}" class="xbtn">{$lang->cmd_modify_member_password}</a>
+						<a href="{getUrl('act','dispMemberModifyEmailAddress')}" class="xbtn">{$lang->cmd_modify_member_email_address}</a>
+						<a href="{getUrl('act','dispMemberLeave','member_srl','')}" class="xbtn end">{$lang->cmd_leave}</a>
+					</div>	
+					<!--@end-->			
+				</li>
+				<li class="friend">
+					<a class="btn_view_follow xbtn small follow_hidden">정보 보기</a>
+					{@
+					$target_member_srl = $_member_info->member_srl;
+					$friend_types = ['친구' => $lang->friend,'팔로워' => $lang->elkhabook_follower, '팔로잉' => $lang->elkhabook_following];
+					}
+					<!--@foreach($friend_types as $friend_type => $label)-->
+					<div class="group">
+						<div class="title">{$label} <span>{$count_info[$friend_type]}</span></div>
+						<div class="list"><include target="getElkhabookFriendList.html" /></div>
+					</div>
+					<!--@end-->
+				</li>
+			</ul>
+
+		</li>
+	</ul>
+
+	<div class="whoiam elkhabook">
+			<div class="btn_navi">
+				<a href="@{$_member_info->nick_name}?page=1"  class="getElkhabookList view_doc<!--@if(!$cpage)--> active<!--@end-->"><i class='bx bxs-file-blank'></i> 문서</a>
+				<a href="@{$_member_info->nick_name}?cpage=1"  class="getElkhabookList view_com<!--@if($cpage)--> active<!--@end-->"><i class='bx bxs-message-dots' ></i> 댓글</a>
+			</div>
+
+			{@
+			$list = [];
+			$doc_list = $oModel->getCategory($_member_info->member_srl ?: 0);
+			$cmt_list = $oModel->getCategoryCmt($_member_info->member_srl ?: 0);
+
+			// 하나로 합치기.
+			foreach($doc_list as $regex => $val):
+				if(strpos($regex, '__') === 0)
+					continue;
+				$list[$regex] = $val;
+			endforeach;
+			foreach($cmt_list as $regex => $val):
+				if(strpos($regex, '__') === 0)
+					continue;
+				if(isset($list[$regex])):
+					$i = 0;
+					foreach($val['docs'] as $v):
+						if(isset($doc_list['__module_srls'][$v->module_srl]))
+							continue;
+						while(isset($list[$regex]['docs'][$i]))
+							$i++;
+						$list[$regex]['docs'][$i] = $v;
+					endforeach;
+				else:
+					$list[$regex] = $val;
+				endif;
+
+				krsort($list[$regex]['docs']);
+			endforeach;
+
+			foreach($list as $regex => $val):
+				$class = 'hide_'.md5($regex);
+				$i = 0;
+			}
+			<aside>
+				<div class="hx">
+					<h3>{$val['label']}</h3>
+					<!--@if(count($val['docs']) > $val['more'])-->
+					<div class="more">
+						<a href="javascript:;" onclick="jQuery('.{$class}').toggle(); return false;">more</a>
+					</div>
+					<!--@endif-->
+				</div>
+				<ul>
+				<li loop="$val['docs']=>$v" style="display:none;"|cond="$i >= $val['more']" class="li li2 {@ echo $i >= $val['more'] ? $class : ''; }">
+					{@
+					$url = $oModel->getUrl('dispMemberInfo', $_member_info->member_srl, 'getUrl');
+					$url .= strpos($url, '?')===FALSE? '?board='.$v->mid : '&amp;board='.$v->mid;
+					}
+					<a href="{$url}" class="on"|cond="$board != '' && $v->mid==$board" class="getElkhabookList">{@
+						echo $oModel->getBrowserTitle($v->module_srl);
+						}</a> <span class="span">({@
+						echo $doc_list['__module_srls'][$v->module_srl] ?? 0;
+						echo isset($cmt_list['__module_srls'][$v->module_srl])? ', ' . $cmt_list['__module_srls'][$v->module_srl] : '';
+					})</span>
+					{@ $i++; }
+				</li>
+				</ul>
+			</aside>
+			{@
+			endforeach;
+			}
+	
+			{@
+			// $show_count = 1; // 초기 화면이 탭 형태로 1개만 보여진다면 이 값에 1 선언합니다. 예를들어 2 값을 넣으면 3번째 목록부터 빈 값을 제공하여 부하가 덜 발생합니다.
+			$oModel->getElkhabookList();
+			echo '<div class="sidebar_r getElkhabookList" data-show_count="'.($show_count ?? 99).'">' . $oModel->get('getElkhabookList') . '</div>';
+			}
+	</div>
+	{@
+	$document_srl = 0;
+	$member_srl = 0;
+	}
+</section>
+<!--@if(strpos($layout_info->layout,"Oday") === false)-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!--@end-->
+<script>
+<!--@if(!$cpage)-->
+$('.getElkhabookList .icon-comment').css('display','none');
+<!--@end-->
+$(function(){
+	$(".metatooltip").tooltip({
+		delay:0,
+		opacity:1,
+		position: { 
+			my: "center bottom-20", at: "center top+10",
+			using: function( position ) {
+				$( this ).css( position );
+				$( "<div>" )
+				.addClass( "ui-tooltip-arrow" )
+				.addClass( "bottom" )
+				.appendTo( this );
+			}
+		}
+	});
+	$('.nav-tabs li:eq(0)').addClass('active');
+	$('.view_doc').click(function(){
+		$('.view_doc').addClass('active');
+		$('.view_com').removeClass('active');
+	});
+	$('.view_com').click(function(){
+		$('.view_doc').removeClass('active');
+		$('.view_com').addClass('active');
+	});
+	$('.follow_show').click(function(){
+		$('.m_info').hide();
+		$('.friend').show();
+	});
+	$('.follow_hidden').click(function(){
+		$('.m_info').show();
+		$('.friend').hide();
+	});
+	
+});
+</script>

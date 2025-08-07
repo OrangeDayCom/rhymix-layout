@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+	<title>마이로그</title>
+	<version>1.0.12</version>
+	<date>2020-01-21</date>
+	<category>service</category>
+	<author email_address="m@elkha.kr" link="http://elkha.kr/">
+		<name>엘카</name>
+	</author>
+</module>

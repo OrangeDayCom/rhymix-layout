@@ -1,0 +1,26 @@
+<query id="getDocumentListByMemberSrl" action="select">
+	<tables>
+		<table name="documents" />
+	</tables>
+	<columns>
+		<column name="document_srl" />
+		<column name="title" />
+		<column name="nick_name" />
+		<column name="comment_count" />
+		<column name="readed_count" />
+		<column name="regdate" />
+		<column name="status" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="status" default="PUBLIC" pipe="and" />
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" pipe="and" />
+		<condition operation="in" column="module_srl" var="module_srl" filter="number" pipe="and" />
+		<condition operation="notin" column="module_srl" var="exclude_module_srl" filter="number" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="list_order" default="list_order" order="asc" />
+		<list_count var="list_count" default="5" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

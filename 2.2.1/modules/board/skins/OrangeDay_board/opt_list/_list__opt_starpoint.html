@@ -1,0 +1,13 @@
+	{@
+		$oStarPointModel = getModel('starpoint');
+		$total_point = $oStarPointModel->getDocumentRatedTotalPoint($document->document_srl);
+	}
+	<!--@if($total_point->avg > 0)-->
+	   <span class="starpoint">
+		  <span cond="$mi->starpoint_list == 'num'" class="score"><i class='bx {$mi->starpoint_icon}' ></i>{number_format($total_point->avg, 1)}</span>
+		  <span cond="$mi->starpoint_list == 'icon'" class="starRating pr_tooltip" title="{number_format($total_point->avg, 1)}점">
+			 <span style="width:{$total_point->avg*20}%"><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i></span>
+			 <i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i><i class='bx {$mi->starpoint_icon}' ></i>
+		  </span>
+	   </span>
+	<!--@end-->

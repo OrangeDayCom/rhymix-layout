@@ -1,0 +1,43 @@
+<!--// Extra Var 내용 있을 때만 출력 -->
+{@ $ExtraVars_ok = false; }
+<block loop="$oDocument->getExtraVars() => $key,$val">
+{@
+	if($val->getValueHTML()):
+		$ExtraVars_ok = true;
+		break;
+	endif;
+}
+</block>
+<!--@if($ExtraVars_ok)-->
+<div id="exOut" class="set_font" cond="$oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted())">
+	<table border="1" cellspacing="0" summary="Extra Form Output" class="tbl_rymix xe_content">
+		<tr loop="$oDocument->getExtraVars() => $key,$val" cond="$val->getValueHTML()">
+{@
+        $imgchk = '';
+        $href = '';
+        $filename = '';
+	$html = $val->getValueHTML();
+
+	if (preg_match('/<a[^>]+href=["\']([^"\']+)["\'][^>]*>([^<]+)<\/a>/i', $html, $matches)) :
+		$href = html_entity_decode(trim($matches[1]));
+		$filename = trim($matches[2]);
+		$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+		$imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+		if (in_array($ext, $imageExtensions)) : 
+			$imgchk = 'ok';
+		else :
+			$imgchk = '';
+		endif;
+	endif;
+}
+			<th scope="row">{$val->name}</th>
+			<!--@if($imgchk=='ok')-->
+				<td><div><img src="{$href}" style="width:100px;"><br />{$val->getValueHTML()|noescape}</div></td>
+			<!--@else-->
+				<td>{$val->getValueHTML()|noescape}</td>
+			<!--@end-->
+		</tr>
+	</table>
+</div>
+<!--@end-->
+

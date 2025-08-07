@@ -1,0 +1,49 @@
+<!--@if($oi->use_darkMode == 'yes' || $oi->use_colorTheme == 'yes' || $is_logged)-->
+	<ul class="loginF">
+		<li class="setBoxlist">
+			<ul>
+			<!--@if($oi->use_darkMode == 'yes')-->
+				<li class="mod-theme-pc mod-dark">
+					<!-- span>Dark Mode</span -->
+					<div>
+						<a onclick="setThemeDark()" class="ovt viewDark"><i class='bx bxs-moon'></i></a>
+						<a onclick="setThemeLight()" class="ovt viewLight"><i class='bx bxs-sun' ></i></a>
+					</div>
+				</li>
+			<!--@end-->
+			<!--@if($oi->use_colorTheme == 'yes')-->
+				<li class="mod-theme-pc mod-theme color">
+					<!-- span>Color</span -->
+					<div>
+						<a onclick="setTheme_color('white');" class="tooltip tooltipSet" title="화이트"><i class='bx bxs-palette white' ></i></a> 
+						<a onclick="setTheme_color('gray');" class="tooltip tooltipSet" title="블루그레이"><i class='bx bxs-palette gray' ></i></a>
+						<a onclick="setTheme_color('orange');" class="tooltip tooltipSet" title="오렌지"><i class='bx bxs-palette orange' ></i></a> 
+						<a onclick="setTheme_color('blue');" class="tooltip tooltipSet" title="블루"><i class='bx bxs-palette blue' ></i></a> 
+						<a onclick="setTheme_color('green');" class="tooltip tooltipSet" title="그린"><i class='bx bxs-palette green' ></i></a>
+						<a onclick="setTheme_color('red');" class="tooltip tooltipSet" title="레드"><i class='bx bxs-palette red' ></i></a>
+						<a onclick="setTheme_color('purple');" class="tooltip tooltipSet" title="보라"><i class='bx bxs-palette purple' ></i></a>
+					</div>
+				</li>
+				<li class="mod-theme-pc mod-theme bright">
+					<!-- span>Brightness </span -->
+					<div>
+						<a onclick="setTheme_bright('d1');" class="tooltip tooltipSet" title="저대비"><i class='bx bx-signal-1 d1' ></i></a> 
+						<a onclick="setTheme_bright('d2');" class="tooltip tooltipSet" title="중대비"><i class='bx bx-signal-3 d2' ></i></a> 
+						<a onclick="setTheme_bright('d3');" class="tooltip tooltipSet" title="고대비"><i class='bx bx-signal-5 d3' ></i></a>
+						<a onclick="setTheme_bright('d4');" class="tooltip tooltipSet" title="모노크롬"><i class='bx bxs-adjust d4'></i></a>						
+					</div>
+				</li>
+			<!--@end-->
+			</ul>
+		</li>
+		<!--@if($oi->use_member == 'yes')-->
+		<li cond="$is_logged"  class="m-tool">
+			<a href="{getUrl('act', 'dispMemberInfo')}" rel="nofollow" class="user"> {$logged_info->nick_name} <span>{$logged_info->user_id}</span></a>
+			<em>Lv.{$level}</em>
+			<div class="level"><div class="bar" style=" width : {($per / 10)}%" ></div></div>
+			<a href="{getUrl('act','dispMemberLogout')}" title="{$lang->cmd_logout}"><i class='bx bx-log-out bx-flip-horizontal' ></i></a>
+			<a cond="$logged_info->is_admin == 'Y'" href="{getUrl('', 'module', 'admin')}" target="_blank" rel="nofollow" title="{$lang->cmd_management}" class=""><i class="bx bxs-cog"></i></a>
+		</li>
+		<!--@end-->
+	</ul>	
+<!--@end-->	

@@ -1,0 +1,35 @@
+<query action="select">
+	<tables>
+		<table name="member_scrap" alias="scrap" />
+		<table name="documents" alias="doc" type="inner join">
+			<conditions>
+				<condition operation="equal" column="doc.document_srl" default="scrap.document_srl" />
+				<condition operation="in" column="doc.module_srl" var="module_srl" filter="number" pipe="and" />
+			</conditions>
+		</table>
+	</tables>
+	<columns>
+		<column name="doc.*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="scrap.member_srl" var="member_srl" filter="number" notnull="notnull" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="scrap.list_order" order="desc" />
+		<list_count var="list_count" />
+		<page_count var="page_count" />
+		<page var="page" default="1" />
+	</navigation>
+</query>
+
+<!--
+EXPLAIN
+SELECT doc.*
+FROM td_member_scrap `scrap`
+INNER JOIN td_documents `doc`
+ON doc.document_srl = scrap.document_srl
+AND doc.module_srl = ?
+WHERE scrap.member_srl = ?
+ORDER BY scrap.list_order DESC
+LIMIT 20;
+-->
